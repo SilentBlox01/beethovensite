@@ -33,9 +33,11 @@ import {
   FileText,
   QrCode,
   Network,
+  Mail,
   CheckCircle,
   XCircle,
   Clock,
+  Cookie,
   Radar,
   Server,
   Activity,
@@ -43,6 +45,9 @@ import {
   Laptop,
   Ghost,
   Eye,
+  Smartphone,
+  FileSearch,
+  ClipboardCheck,
   Shuffle,
   Search,
   MapPin,
@@ -435,6 +440,27 @@ export const Tools: React.FC = () => {
   const [spsResult, setSpsResult] = useState<{ risk: 'High' | 'Moderate' | 'Low', apis: string[], brokers: string[] } | null>(null);
   const [spsNoiseQueries, setSpsNoiseQueries] = useState<string[]>([]);
   const [noiseActive, setNoiseActive] = useState(false);
+
+  // --- Privacy Lab Additions ---
+  const [cookieReport, setCookieReport] = useState<{ cookies: string[]; localStorage: string[]; sessionStorage: string[] }>({ cookies: [], localStorage: [], sessionStorage: [] });
+  const [cookieScanTime, setCookieScanTime] = useState<string | null>(null);
+  const [socialPlatform, setSocialPlatform] = useState<'facebook' | 'instagram' | 'twitter' | 'tiktok'>('facebook');
+  const [socialFindings, setSocialFindings] = useState<string[]>([]);
+  const [socialScore, setSocialScore] = useState(100);
+  const [metadataFindings, setMetadataFindings] = useState<string[]>([]);
+  const [metadataFileName, setMetadataFileName] = useState<string>('');
+  const [metadataCleaned, setMetadataCleaned] = useState<Blob | null>(null);
+  const [aliasDomain, setAliasDomain] = useState('privacy-mail.io');
+  const [aliasValue, setAliasValue] = useState('');
+  const [aliasCopied, setAliasCopied] = useState(false);
+  const [otpNumber, setOtpNumber] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [otpFindings, setOtpFindings] = useState<string[]>([]);
+  const [consentSnippet, setConsentSnippet] = useState('');
+  const [allowAnalytics, setAllowAnalytics] = useState(true);
+  const [allowPerformance, setAllowPerformance] = useState(true);
+  const [allowMarketing, setAllowMarketing] = useState(false);
 
   // --- LOGIC: Drag & Drop Handlers ---
   const handleDragOver = (e: React.DragEvent) => {
@@ -921,6 +947,14 @@ export const Tools: React.FC = () => {
       }, 3000);
   };
 
+  const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 4000) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeout);
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timer);
+      return res;
+  };
+
   // --- BREACH RADAR 2.0 LOGIC ---
   const logRadar = (msg: string) => {
       setRadarLogs(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 15));
@@ -1142,11 +1176,127 @@ export const Tools: React.FC = () => {
     setTimeout(() => setNoiseActive(false), 3000);
   };
 
+  const runCookieAudit = () => {
+    const cookies = document.cookie ? document.cookie.split(';').map(c => c.trim()).filter(Boolean) : [];
+    const localEntries = Object.keys(localStorage || {}).map(key => `${key}: ${localStorage.getItem(key)}`);
+    const sessionEntries = Object.keys(sessionStorage || {}).map(key => `${key}: ${sessionStorage.getItem(key)}`);
+    setCookieReport({ cookies, localStorage: localEntries, sessionStorage: sessionEntries });
+    setCookieScanTime(new Date().toLocaleTimeString());
+  };
+
+  const clearTracking = () => {
+    if (document.cookie) {
+        document.cookie.split(';').forEach(c => {
+            const eq = c.indexOf('=');
+            const name = eq > -1 ? c.substr(0, eq) : c;
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`; 
+        });
+    }
+    localStorage.clear();
+    sessionStorage.clear();
+    runCookieAudit();
+  };
+
+  const analyzeSocialPrivacy = (platform: 'facebook' | 'instagram' | 'twitter' | 'tiktok') => {
+    setSocialPlatform(platform);
+    const checks: Record<typeof platform, string[]> = {
+        facebook: [
+            t.tools.socialChecks.twoFactor,
+            t.tools.socialChecks.visibility,
+            t.tools.socialChecks.apps,
+            t.tools.socialChecks.location,
+            t.tools.socialChecks.face
+        ],
+        instagram: [
+            t.tools.socialChecks.twoFactor,
+            t.tools.socialChecks.messages,
+            t.tools.socialChecks.visibility,
+            t.tools.socialChecks.tags,
+            t.tools.socialChecks.access
+        ],
+        twitter: [
+            t.tools.socialChecks.twoFactor,
+            t.tools.socialChecks.visibility,
+            t.tools.socialChecks.dms,
+            t.tools.socialChecks.data,
+            t.tools.socialChecks.location
+        ],
+        tiktok: [
+            t.tools.socialChecks.twoFactor,
+            t.tools.socialChecks.visibility,
+            t.tools.socialChecks.messages,
+            t.tools.socialChecks.data,
+            t.tools.socialChecks.ads
+        ]
+    };
+    const score = Math.max(40, 100 - checks[platform].length * 6);
+    setSocialScore(score);
+    setSocialFindings(checks[platform]);
+  };
+
+  const inspectMetadata = async (file: File) => {
+    setMetadataFileName(file.name);
+    const buffer = await file.arrayBuffer();
+    const text = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+    const findings: string[] = [];
+    const patterns = [
+        { regex: /Author\s*\(([^)]+)\)/i, label: 'Author' },
+        { regex: /Creator\s*\(([^)]+)\)/i, label: 'Creator' },
+        { regex: /Producer\s*\(([^)]+)\)/i, label: 'Producer' },
+        { regex: /Title\s*\(([^)]+)\)/i, label: 'Title' },
+        { regex: /CreationDate\s*\(([^)]+)\)/i, label: 'CreationDate' },
+        { regex: /LastModifiedBy\s*\w*:?\s*([^\n]+)/i, label: 'LastModifiedBy' }
+    ];
+    patterns.forEach(p => {
+        const match = text.match(p.regex);
+        if (match && match[1]) findings.push(`${p.label}: ${match[1].trim()}`);
+    });
+    if (text.includes('PDF-')) findings.push('PDF signature detected');
+    if (text.includes('[Content_Types].xml')) findings.push('Office package detected');
+    setMetadataFindings(findings.length ? findings : [t.tools.metadataNone]);
+    const scrubbed = text.replace(/(Author|Creator|Producer|Title|CreationDate|LastModifiedBy)[^\n]*/gi, '$1: [removed]');
+    setMetadataCleaned(new Blob([scrubbed], { type: file.type }));
+  };
+
+  const generateAlias = () => {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let local = '';
+    for (let i = 0; i < 10; i++) local += getRandomChar(alphabet);
+    const alias = `${local}@${aliasDomain}`;
+    setAliasValue(alias);
+    navigator.clipboard.writeText(alias).catch(() => {});
+    setAliasCopied(true);
+    setTimeout(() => setAliasCopied(false), 1500);
+  };
+
+  const runOtpSimulation = () => {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    setOtpCode(code);
+    setOtpSent(true);
+    const notes = [
+        t.tools.smsRisks.simSwap,
+        t.tools.smsRisks.intercept,
+        t.tools.smsRisks.forward,
+    ];
+    if (otpNumber.startsWith('+1')) notes.push(t.tools.smsRisks.carrierLock);
+    setOtpFindings(notes);
+  };
+
+  const buildConsentSnippet = () => {
+    const consentText = `consent = { required: true, analytics: ${allowAnalytics}, performance: ${allowPerformance}, marketing: ${allowMarketing} };`;
+    const snippet = `<!-- ${t.tools.consentTitle} -->\n<div class="consent-banner">\n  <p>${t.tools.consentCopy}</p>\n  <ul>\n    <li>${t.tools.consentRequired}</li>\n    ${allowAnalytics ? '<li>'+t.tools.consentAnalytics+'</li>' : ''}\n    ${allowPerformance ? '<li>'+t.tools.consentPerformance+'</li>' : ''}\n    ${allowMarketing ? '<li>'+t.tools.consentMarketing+'</li>' : ''}\n  </ul>\n  <script>${consentText}</script>\n</div>`;
+    setConsentSnippet(snippet);
+  };
+
   useEffect(() => {
       if (activeTab === 'privacy' && !deviceInfo) {
           // Optional: Auto load or wait for user action
       }
   }, [activeTab]);
+
+  useEffect(() => {
+      buildConsentSnippet();
+  }, [allowAnalytics, allowPerformance, allowMarketing]);
 
   const tabs = [
       { id: 'keys', label: t.tools.tabKeys, icon: <KeyRound size={18} /> },
@@ -1956,13 +2106,149 @@ export const Tools: React.FC = () => {
                                 <p className="text-slate-700 dark:text-slate-200 text-lg">Your Real IP: <strong className="bg-white dark:bg-slate-900 px-3 py-1 rounded-lg border border-red-200 dark:border-red-800 font-mono text-red-600 dark:text-red-400 ml-2 shadow-sm">{webrtcIP}</strong></p>
                             </div>
                         )}
-                        
+
                         {!webrtcIP && !webrtcLoading && webrtcIP !== null && (
                             <div className="animate-scale-in bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 p-8 rounded-[2rem] shadow-xl relative z-10 max-w-md w-full">
                                 <CheckCircle size={56} className="mx-auto mb-6 text-green-500 drop-shadow-md" />
                                 <h3 className="text-3xl font-black text-green-600 tracking-tight">{t.tools.webrtcSafe}</h3>
                             </div>
                         )}
+                    </div>
+
+                    {/* Cookie and Storage Scanner */}
+                    <ToolCard title={t.tools.cookieTitle} icon={<Cookie size={24} />} color="amber">
+                        <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.cookieDesc}</p>
+                        <div className="flex gap-3 mb-4">
+                            <Button onClick={runCookieAudit} size="sm" className="rounded-xl">{t.tools.scan}</Button>
+                            <Button onClick={clearTracking} size="sm" variant="outline" className="rounded-xl">{t.tools.clear}</Button>
+                        </div>
+                        {cookieScanTime && <div className="text-xs text-slate-400 mb-3">{t.tools.lastScan} {cookieScanTime}</div>}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800">
+                                <div className="font-bold text-amber-700 dark:text-amber-400 mb-1">Cookies</div>
+                                <div className="space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
+                                    {cookieReport.cookies.length === 0 ? <div className="text-amber-500 text-xs italic">{t.tools.none}</div> : cookieReport.cookies.map((c,i)=>(<div key={i} className="bg-white/70 dark:bg-black/20 p-2 rounded-lg border border-amber-100 dark:border-amber-800 text-amber-700 dark:text-amber-200">{c}</div>))}
+                                </div>
+                            </div>
+                            <div className="p-3 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+                                <div className="font-bold text-blue-700 dark:text-blue-300 mb-1">localStorage</div>
+                                <div className="space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
+                                    {cookieReport.localStorage.length === 0 ? <div className="text-blue-500 text-xs italic">{t.tools.none}</div> : cookieReport.localStorage.map((c,i)=>(<div key={i} className="bg-white/70 dark:bg-black/20 p-2 rounded-lg border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-200">{c}</div>))}
+                                </div>
+                            </div>
+                            <div className="p-3 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
+                                <div className="font-bold text-green-700 dark:text-green-300 mb-1">sessionStorage</div>
+                                <div className="space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
+                                    {cookieReport.sessionStorage.length === 0 ? <div className="text-green-500 text-xs italic">{t.tools.none}</div> : cookieReport.sessionStorage.map((c,i)=>(<div key={i} className="bg-white/70 dark:bg-black/20 p-2 rounded-lg border border-green-100 dark:border-green-800 text-green-700 dark:text-green-200">{c}</div>))}
+                                </div>
+                            </div>
+                        </div>
+                    </ToolCard>
+
+                    {/* Social Privacy Analyzer */}
+                    <ToolCard title={t.tools.socialTitle} icon={<Smartphone size={24} />} color="indigo">
+                        <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.socialDesc}</p>
+                        <div className="flex flex-wrap gap-2 mb-6">
+                            {[{id:'facebook',label:'Facebook'},{id:'instagram',label:'Instagram'},{id:'twitter',label:'X/Twitter'},{id:'tiktok',label:'TikTok'}].map(opt => (
+                                <button key={opt.id} onClick={()=>analyzeSocialPrivacy(opt.id as any)} className={`px-4 py-2 rounded-xl border text-sm font-bold ${socialPlatform===opt.id ? 'bg-indigo-600 text-white border-indigo-700 shadow' : 'border-slate-200 dark:border-slate-700 text-slate-500 hover:border-indigo-300'}`}>{opt.label}</button>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="text-3xl font-black text-indigo-600 dark:text-indigo-300">{socialScore}/100</div>
+                            <div className="text-xs uppercase tracking-widest text-slate-400">{t.tools.socialScore}</div>
+                        </div>
+                        <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                            {socialFindings.length === 0 ? <li className="italic text-slate-400">{t.tools.socialHint}</li> : socialFindings.map((f,i)=>(
+                                <li key={i} className="flex items-center gap-2"><ClipboardCheck size={14} className="text-indigo-500"/> {f}</li>
+                            ))}
+                        </ul>
+                    </ToolCard>
+
+                    {/* Metadata Inspector */}
+                    <ToolCard title={t.tools.metadataTitle} icon={<FileSearch size={24} />} color="teal">
+                        <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.metadataDesc}</p>
+                        <Input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" onChange={(e)=> e.target.files && inspectMetadata(e.target.files[0])} />
+                        {metadataFileName && (
+                            <div className="mt-4 space-y-3">
+                                <div className="text-sm font-bold">{metadataFileName}</div>
+                                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300 max-h-32 overflow-y-auto scrollbar-thin">
+                                    {metadataFindings.map((f,i)=>(<li key={i} className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-xl border border-slate-200 dark:border-slate-700"><ShieldCheck size={14} className="text-teal-500"/> {f}</li>))}
+                                </ul>
+                                {metadataCleaned && <Button size="sm" onClick={()=>downloadBlob(metadataCleaned!, `scrubbed-${metadataFileName}`)} className="rounded-xl">{t.tools.downloadClean}</Button>}
+                            </div>
+                        )}
+                    </ToolCard>
+
+                    {/* Alias Generator */}
+                    <ToolCard title={t.tools.aliasTitle} icon={<Mail size={24} />} color="purple">
+                        <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.aliasDesc}</p>
+                        <div className="flex gap-3 mb-4">
+                            <select value={aliasDomain} onChange={e=>setAliasDomain(e.target.value)} className="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-2 bg-white dark:bg-slate-800">
+                                <option value="privacy-mail.io">privacy-mail.io</option>
+                                <option value="safealias.net">safealias.net</option>
+                                <option value="burnerbox.email">burnerbox.email</option>
+                            </select>
+                            <Button onClick={generateAlias} size="sm" className="rounded-xl">{t.tools.generate}</Button>
+                        </div>
+                        {aliasValue && (
+                            <div className="flex items-center gap-3 p-3 rounded-2xl bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800">
+                                <div className="font-mono text-lg font-black text-purple-700 dark:text-purple-200">{aliasValue}</div>
+                                <span className="text-xs text-slate-400">{aliasCopied ? t.tools.copied : t.tools.autoCopied}</span>
+                            </div>
+                        )}
+                    </ToolCard>
+
+                    {/* Phone Exposure Monitor */}
+                    <ToolCard title={t.tools.smsTitle} icon={<Smartphone size={24} />} color="rose">
+                        <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.smsDesc}</p>
+                        <Input type="tel" placeholder="+1 555 123 4567" value={otpNumber} onChange={(e)=>setOtpNumber(e.target.value)} className="mb-3" />
+                        <Button onClick={runOtpSimulation} size="sm" className="rounded-xl mb-4">{t.tools.smsSend}</Button>
+                        {otpSent && (
+                            <div className="space-y-3">
+                                <div className="text-xs uppercase tracking-widest text-slate-400">OTP</div>
+                                <div className="text-3xl font-black text-rose-600 dark:text-rose-300 font-mono">{otpCode}</div>
+                                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                                    {otpFindings.map((f,i)=>(<li key={i} className="flex items-center gap-2"><ShieldAlert size={14} className="text-rose-500"/> {f}</li>))}
+                                </ul>
+                            </div>
+                        )}
+                    </ToolCard>
+
+                    {/* Consent Banner Assistant */}
+                    <ToolCard title={t.tools.consentTitle} icon={<ClipboardCheck size={24} />} color="slate">
+                        <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.consentDesc}</p>
+                        <div className="flex flex-wrap gap-3 mb-4 text-sm">
+                            <label className="flex items-center gap-2"><input type="checkbox" checked disabled /> {t.tools.consentRequired}</label>
+                            <label className="flex items-center gap-2"><input type="checkbox" checked={allowAnalytics} onChange={e=>setAllowAnalytics(e.target.checked)} /> {t.tools.consentAnalytics}</label>
+                            <label className="flex items-center gap-2"><input type="checkbox" checked={allowPerformance} onChange={e=>setAllowPerformance(e.target.checked)} /> {t.tools.consentPerformance}</label>
+                            <label className="flex items-center gap-2"><input type="checkbox" checked={allowMarketing} onChange={e=>setAllowMarketing(e.target.checked)} /> {t.tools.consentMarketing}</label>
+                        </div>
+                        <div className="bg-slate-900 text-white rounded-2xl p-4 font-mono text-xs max-h-48 overflow-y-auto border border-slate-800">
+                            <pre className="whitespace-pre-wrap">{consentSnippet}</pre>
+                        </div>
+                    </ToolCard>
+
+                    {/* Messaging Encryption Comparator */}
+                    <div className="md:col-span-2 bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-slate-200 dark:border-slate-800">
+                        <div className="flex items-center gap-2 mb-4"><Lock size={18} className="text-emerald-500"/> <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t.tools.messagingTitle}</h3></div>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
+                                <thead className="uppercase text-[11px] tracking-widest text-slate-400">
+                                    <tr><th className="py-2">App</th><th>Encryption</th><th>Backups</th><th>Metadata</th><th>Notes</th></tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                                    {[{app:'Signal',enc:'End-to-end by default',backup:'Encrypted local',meta:'Minimal',note:t.tools.messagingSignal},{app:'WhatsApp',enc:'End-to-end chats',backup:'Cloud (may be unencrypted)',meta:'Contacts + metadata',note:t.tools.messagingWhatsapp},{app:'Telegram',enc:'Optional secret chats',backup:'Cloud',meta:'Server-side metadata',note:t.tools.messagingTelegram},{app:'iMessage',enc:'End-to-end Apple devices',backup:'iCloud (keys may be stored)',meta:'Apple metadata',note:t.tools.messagingImessage},{app:'RCS',enc:'Depends on carrier/client',backup:'Carrier',meta:'Carrier + Google metadata',note:t.tools.messagingRcs}].map((row,i)=>(
+                                        <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                            <td className="py-3 font-bold">{row.app}</td>
+                                            <td>{row.enc}</td>
+                                            <td>{row.backup}</td>
+                                            <td>{row.meta}</td>
+                                            <td className="text-slate-500 dark:text-slate-400">{row.note}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             )}

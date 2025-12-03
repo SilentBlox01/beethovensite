@@ -146,6 +146,32 @@ const es: Translation = {
     trustLocalDesc: "Tus datos se procesan en tu dispositivo, no en nuestros servidores.",
     trustOpen: "Código Abierto",
     trustOpenDesc: "Nuestro código es público y auditable por cualquier persona.",
+    improvements: {
+      title: "Cómo hacemos que el sitio destaque",
+      subtitle: "Cuatro mejoras concretas para que Beethoven sea más útil, rápido y confiable.",
+      items: [
+        {
+          title: "Rendimiento ultrarrápido",
+          desc: "Optimizar imágenes, dividir el bundle y precargar rutas críticas para brillar en Core Web Vitals.",
+          icon: "zap"
+        },
+        {
+          title: "Narrativa guiada",
+          desc: "Microcopys claros, CTA visibles y recorridos interactivos de 90 segundos que expliquen el valor al instante.",
+          icon: "mouse"
+        },
+        {
+          title: "Señales de confianza",
+          desc: "Historias reales, políticas resumidas, changelog público y métricas de disponibilidad para transmitir seguridad.",
+          icon: "shield"
+        },
+        {
+          title: "Presencia y accesibilidad",
+          desc: "Metadatos SEO, schema.org, traducciones adicionales y contrastes AA para llegar a más personas.",
+          icon: "globe"
+        }
+      ]
+    },
     openSourceSectionTitle: "100% Open Source",
     openSourceSectionDesc: "La transparencia es clave para la confianza. Explora nuestro código en GitHub.",
     openSourceSectionBtn: "Ver en GitHub",
@@ -366,8 +392,6 @@ const es: Translation = {
     stegDownload: "Descargar Imagen",
     stegHidden: "Mensaje Oculto:",
     stegNoHidden: "No se encontró ningún mensaje oculto.",
-    socialTitle: "Privacidad en Redes",
-    socialDesc: "Accesos directos a la configuración de privacidad.",
     entropyBits: "bits de entropía",
     crackTime: "Tiempo estimado de crackeo",
     instant: "Instantáneo",
@@ -431,6 +455,59 @@ const es: Translation = {
       location: "Ubicación"
     },
     radarLogs: "Registros del Sistema",
+    cookieTitle: "Escáner de Cookies y Almacenamiento",
+    cookieDesc: "Detecta cookies, localStorage y sessionStorage en este navegador.",
+    scan: "Escanear",
+    clear: "Limpiar",
+    lastScan: "Último escaneo:",
+    none: "Vacío",
+    socialTitle: "Revisión de Privacidad en Redes",
+    socialDesc: "Checklist rápido para Facebook, Instagram, X/Twitter y TikTok.",
+    socialScore: "Puntuación de endurecimiento",
+    socialHint: "Selecciona una red para ver qué debes revisar.",
+    socialChecks: {
+      twoFactor: "Activa 2FA/App de Autenticación",
+      visibility: "Perfil privado o solo amigos",
+      apps: "Revoca apps conectadas y juegos",
+      location: "Desactiva historial/etiquetado de ubicación",
+      face: "Desactiva reconocimiento facial",
+      messages: "Filtra mensajes de desconocidos",
+      tags: "Revisión manual de etiquetas",
+      access: "Revisa acceso de terceros",
+      dms: "Limita DM a seguidores",
+      data: "Descarga y borra historial de datos",
+      ads: "Desactiva personalización de anuncios"
+    },
+    metadataTitle: "Inspector de Metadatos",
+    metadataDesc: "Busca autores, fechas y otros rastros antes de compartir archivos.",
+    metadataNone: "No se hallaron metadatos reconocibles.",
+    downloadClean: "Descargar copia depurada",
+    aliasTitle: "Generador de Alias de Correo",
+    aliasDesc: "Crea buzones desechables para frenar el spam y los rastreos.",
+    generate: "Generar",
+    autoCopied: "Copiado automáticamente",
+    smsTitle: "Monitor de Exposición Telefónica",
+    smsDesc: "Simula un OTP y repasa riesgos de SIM swapping y reenvíos.",
+    smsSend: "Simular envío",
+    smsRisks: {
+      simSwap: "Protege tu línea contra SIM swapping en tu operador.",
+      intercept: "No compartas códigos por SMS/chat: podrían interceptarse.",
+      forward: "Desactiva reenvíos automáticos de SMS en la nube.",
+      carrierLock: "Agrega PIN de portabilidad con tu operador."
+    },
+    consentTitle: "Asistente de Consentimiento (GDPR/CCPA)",
+    consentDesc: "Configura un banner con categorías mínimas y script declarativo.",
+    consentCopy: "Controla qué cookies activas. Solo usamos lo esencial por defecto.",
+    consentRequired: "Esenciales",
+    consentAnalytics: "Analíticas anónimas",
+    consentPerformance: "Rendimiento",
+    consentMarketing: "Marketing",
+    messagingTitle: "Comparador de Cifrado de Mensajería",
+    messagingSignal: "Máxima privacidad: sin metadatos y E2E completo.",
+    messagingWhatsapp: "Usa E2E, pero las copias en la nube y metadatos exponen.",
+    messagingTelegram: "Los chats cloud no son E2E; usa Secret Chats.",
+    messagingImessage: "Seguro entre dispositivos Apple; atención a iCloud.",
+    messagingRcs: "Depende del cliente/operador: no siempre cifrado extremo a extremo.",
     spsTitle: "SPS (Shadow Profile Scrubber)",
     spsDesc: "Analiza huellas digitales y genera ruido para ofuscar el perfilado.",
     spsScanBtn: "Analizar Huella",
@@ -1039,6 +1116,32 @@ const en: Translation = {
     trustNoTrackers: "No Trackers", trustNoTrackersDesc: "We do not collect personal data or use third-party cookies.",
     trustLocal: "Local Processing", trustLocalDesc: "Your data is processed on your device, not on our servers.",
     trustOpen: "Open Source", trustOpenDesc: "Our code is public and auditable by anyone.",
+    improvements: {
+      title: "How we help the site stand out",
+      subtitle: "Four concrete upgrades to make Beethoven faster, clearer, and more trustworthy.",
+      items: [
+        {
+          title: "Lightning-fast performance",
+          desc: "Optimize images, split the bundle, and preload critical routes to shine on Core Web Vitals.",
+          icon: "zap"
+        },
+        {
+          title: "Guided storytelling",
+          desc: "Crisp microcopy, visible CTAs, and 90-second interactive tours that explain value instantly.",
+          icon: "mouse"
+        },
+        {
+          title: "Trust signals",
+          desc: "Real stories, summarized data practices, a public changelog, and uptime metrics to inspire confidence.",
+          icon: "shield"
+        },
+        {
+          title: "Reach and accessibility",
+          desc: "SEO metadata, schema.org, additional translations, and AA contrast to serve more people.",
+          icon: "globe"
+        }
+      ]
+    },
     openSourceSectionTitle: "100% Open Source", openSourceSectionDesc: "Transparency is key to trust. Explore our code on GitHub.",
     openSourceSectionBtn: "View on GitHub", mapLabel: "Global Threat Map (Simulated)"
   },
@@ -1131,7 +1234,7 @@ const en: Translation = {
     stegTitle: "Steganography", stegDesc: "Hide text messages inside images.", stegHideTab: "Hide", stegRevealTab: "Reveal",
     stegDrop: "Drop an image", stegMessage: "Secret message...", stegHideBtn: "Hide Message", stegRevealBtn: "Reveal Message",
     stegDownload: "Download Image", stegHidden: "Hidden Message:", stegNoHidden: "No hidden message found.",
-    socialTitle: "Social Privacy", socialDesc: "Shortcuts to privacy settings.",
+    
     entropyBits: "bits of entropy", crackTime: "Estimated crack time", instant: "Instant",
     crackScenarios: { laptop: "Common Laptop", rig: "GPU Farm", supercomputer: "Supercomputer" },
     patterns: { title: "Detected Patterns", sequence: "Common sequence", repeat: "Repeated chars", date: "Date or year", keyboard: "Keyboard pattern" },
@@ -1150,6 +1253,59 @@ const en: Translation = {
     radarStatus: { safe: "SAFE", warning: "WARNING", critical: "CRITICAL" },
     radarMetrics: { latency: "Latency", jitter: "Jitter", ssl: "SSL Score", server: "Server", dns: "DNS Health", network: "Network", ports: "Ports", location: "Location" },
     radarLogs: "System Logs",
+    cookieTitle: "Cookie & Storage Scanner",
+    cookieDesc: "Detect cookies, localStorage and sessionStorage in this browser.",
+    scan: "Scan",
+    clear: "Clear",
+    lastScan: "Last scan:",
+    none: "Empty",
+    socialTitle: "Social Privacy Review",
+    socialDesc: "Quick checklist for Facebook, Instagram, X/Twitter and TikTok.",
+    socialScore: "Hardening score",
+    socialHint: "Pick a network to see what to review.",
+    socialChecks: {
+      twoFactor: "Enable 2FA/Authenticator app",
+      visibility: "Private profile or friends only",
+      apps: "Revoke connected apps & games",
+      location: "Disable location history/tagging",
+      face: "Turn off facial recognition",
+      messages: "Filter messages from unknowns",
+      tags: "Manual review of tags",
+      access: "Review third-party access",
+      dms: "Limit DMs to followers",
+      data: "Download & delete data history",
+      ads: "Turn off ad personalization"
+    },
+    metadataTitle: "Metadata Inspector",
+    metadataDesc: "Surface authors, dates and other traces before sharing files.",
+    metadataNone: "No recognizable metadata found.",
+    downloadClean: "Download scrubbed copy",
+    aliasTitle: "Email Alias Generator",
+    aliasDesc: "Create disposable mailboxes to stop spam and tracking.",
+    generate: "Generate",
+    autoCopied: "Auto-copied",
+    smsTitle: "Phone Exposure Monitor",
+    smsDesc: "Simulate an OTP and review SIM swap and forwarding risks.",
+    smsSend: "Simulate send",
+    smsRisks: {
+      simSwap: "Add SIM swap protection with your carrier.",
+      intercept: "Never share codes over SMS/chat; they can be intercepted.",
+      forward: "Disable automatic SMS forwarding in the cloud.",
+      carrierLock: "Add a port-out PIN with your carrier."
+    },
+    consentTitle: "Consent Banner Assistant (GDPR/CCPA)",
+    consentDesc: "Configure a banner with minimal categories and declarative script.",
+    consentCopy: "Control which cookies you activate. We only run essentials by default.",
+    consentRequired: "Essential",
+    consentAnalytics: "Anonymous analytics",
+    consentPerformance: "Performance",
+    consentMarketing: "Marketing",
+    messagingTitle: "Messaging Encryption Comparator",
+    messagingSignal: "Maximum privacy: minimal metadata and full E2E.",
+    messagingWhatsapp: "Uses E2E, but cloud backups and metadata leak info.",
+    messagingTelegram: "Cloud chats are not E2E; use Secret Chats.",
+    messagingImessage: "Secure across Apple devices; watch iCloud keys.",
+    messagingRcs: "Depends on client/carrier: not always end-to-end encrypted.",
     spsTitle: "SPS (Shadow Profile Scrubber)", spsDesc: "Analyzes digital fingerprints and generates noise to obfuscate profiling.",
     spsScanBtn: "Analyze Fingerprint", spsRiskHigh: "HIGH RISK", spsRiskMod: "MODERATE RISK", spsRiskLow: "LOW RISK",
     spsExposedApis: "Exposed APIs", spsBrokers: "Potential Data Brokers", spsBrokersDesc: "Based on your location and settings:",

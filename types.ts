@@ -240,6 +240,15 @@ export interface Translation {
     trustLocalDesc: string;
     trustOpen: string;
     trustOpenDesc: string;
+    improvements: {
+      title: string;
+      subtitle: string;
+      items: {
+        title: string;
+        desc: string;
+        icon: 'zap' | 'mouse' | 'shield' | 'globe';
+      }[];
+    };
     openSourceSectionTitle: string;
     openSourceSectionDesc: string;
     openSourceSectionBtn: string;
@@ -539,6 +548,59 @@ export interface Translation {
         location: string;
     };
     radarLogs: string;
+    cookieTitle: string;
+    cookieDesc: string;
+    scan: string;
+    clear: string;
+    lastScan: string;
+    none: string;
+    socialTitle: string;
+    socialDesc: string;
+    socialScore: string;
+    socialHint: string;
+    socialChecks: {
+        twoFactor: string;
+        visibility: string;
+        apps: string;
+        location: string;
+        face: string;
+        messages: string;
+        tags: string;
+        access: string;
+        dms: string;
+        data: string;
+        ads: string;
+    };
+    metadataTitle: string;
+    metadataDesc: string;
+    metadataNone: string;
+    downloadClean: string;
+    aliasTitle: string;
+    aliasDesc: string;
+    generate: string;
+    autoCopied: string;
+    smsTitle: string;
+    smsDesc: string;
+    smsSend: string;
+    smsRisks: {
+        simSwap: string;
+        intercept: string;
+        forward: string;
+        carrierLock: string;
+    };
+    consentTitle: string;
+    consentDesc: string;
+    consentCopy: string;
+    consentRequired: string;
+    consentAnalytics: string;
+    consentPerformance: string;
+    consentMarketing: string;
+    messagingTitle: string;
+    messagingSignal: string;
+    messagingWhatsapp: string;
+    messagingTelegram: string;
+    messagingImessage: string;
+    messagingRcs: string;
 
     spsTitle: string;
     spsDesc: string;
