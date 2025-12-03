@@ -553,11 +553,18 @@ export interface Translation {
     scan: string;
     clear: string;
     lastScan: string;
+    cookieHint: string;
+    cookieTrackers: string;
     none: string;
+    entries: string;
+    file: string;
     socialTitle: string;
     socialDesc: string;
     socialScore: string;
     socialHint: string;
+    socialEmpty: string;
+    done: string;
+    todo: string;
     socialChecks: {
         twoFactor: string;
         visibility: string;
@@ -573,6 +580,9 @@ export interface Translation {
     };
     metadataTitle: string;
     metadataDesc: string;
+    metadataDrop: string;
+    metadataHint: string;
+    metadataCleaned: string;
     metadataNone: string;
     downloadClean: string;
     aliasTitle: string;
@@ -595,7 +605,11 @@ export interface Translation {
     consentAnalytics: string;
     consentPerformance: string;
     consentMarketing: string;
+    consentNote: string;
+    consentPreview: string;
     messagingTitle: string;
+    messagingColumns: { app: string; encryption: string; backups: string; metadata: string; notes: string };
+    messagingApps: { name: string; encryption: string; backups: string; metadata: string; note: string }[];
     messagingSignal: string;
     messagingWhatsapp: string;
     messagingTelegram: string;
@@ -622,7 +636,7 @@ export interface Translation {
     trackerFound: string;
     
     deviceInfo: {
-        browser: string;
+      browser: string;
         os: string;
         deviceType: string;
         screen: string;
@@ -649,9 +663,11 @@ export interface Translation {
         fontsLabel: string;
         hardwareLabel: string;
         cores: string;
-        touchPoints: string;
-        userAgent: string;
+      touchPoints: string;
+      userAgent: string;
     };
+    fingerprintHint: string;
+    fingerprintEmpty: string;
     perms: {
         mic: string;
         location: string;

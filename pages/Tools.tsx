@@ -350,7 +350,7 @@ const ToolCard = ({ children, title, icon, color = 'primary', className = '' }: 
 };
 
 export const Tools: React.FC = () => {
-  const { t } = useApp();
+  const { t, language } = useApp();
   const [activeTab, setActiveTab] = useState<'keys' | 'privacy' | 'files' | 'radar' | 'sps' | 'utils'>('keys');
 
   // --- Password Generator State ---
@@ -442,11 +442,11 @@ export const Tools: React.FC = () => {
   const [noiseActive, setNoiseActive] = useState(false);
 
   // --- Privacy Lab Additions ---
-  const [cookieReport, setCookieReport] = useState<{ cookies: string[]; localStorage: string[]; sessionStorage: string[] }>({ cookies: [], localStorage: [], sessionStorage: [] });
+  const [cookieReport, setCookieReport] = useState<{ cookies: { name: string; value: string; isTracker: boolean }[]; localStorage: { key: string; value: string }[]; sessionStorage: { key: string; value: string }[] }>({ cookies: [], localStorage: [], sessionStorage: [] });
   const [cookieScanTime, setCookieScanTime] = useState<string | null>(null);
   const [socialPlatform, setSocialPlatform] = useState<'facebook' | 'instagram' | 'twitter' | 'tiktok'>('facebook');
-  const [socialFindings, setSocialFindings] = useState<string[]>([]);
-  const [socialScore, setSocialScore] = useState(100);
+  const [socialFindings, setSocialFindings] = useState<{ id: string; label: string; done: boolean }[]>([]);
+  const [socialScore, setSocialScore] = useState(40);
   const [metadataFindings, setMetadataFindings] = useState<string[]>([]);
   const [metadataFileName, setMetadataFileName] = useState<string>('');
   const [metadataCleaned, setMetadataCleaned] = useState<Blob | null>(null);
@@ -1177,9 +1177,20 @@ export const Tools: React.FC = () => {
   };
 
   const runCookieAudit = () => {
-    const cookies = document.cookie ? document.cookie.split(';').map(c => c.trim()).filter(Boolean) : [];
-    const localEntries = Object.keys(localStorage || {}).map(key => `${key}: ${localStorage.getItem(key)}`);
-    const sessionEntries = Object.keys(sessionStorage || {}).map(key => `${key}: ${sessionStorage.getItem(key)}`);
+    const trackingPattern = /(ga_|_ga|_gid|_gcl|_fbp|fbclid|utm_|_hj|amplitude|mixpanel|segment)/i;
+    const cookies = document.cookie
+      ? document.cookie
+          .split(';')
+          .map(c => c.trim())
+          .filter(Boolean)
+          .map(entry => {
+              const [name, ...rest] = entry.split('=');
+              const value = rest.join('=');
+              return { name: name || 'cookie', value: value || '', isTracker: trackingPattern.test(name || '') };
+          })
+      : [];
+    const localEntries = Object.keys(localStorage || {}).map(key => ({ key, value: `${localStorage.getItem(key)}` }));
+    const sessionEntries = Object.keys(sessionStorage || {}).map(key => ({ key, value: `${sessionStorage.getItem(key)}` }));
     setCookieReport({ cookies, localStorage: localEntries, sessionStorage: sessionEntries });
     setCookieScanTime(new Date().toLocaleTimeString());
   };
@@ -1199,39 +1210,39 @@ export const Tools: React.FC = () => {
 
   const analyzeSocialPrivacy = (platform: 'facebook' | 'instagram' | 'twitter' | 'tiktok') => {
     setSocialPlatform(platform);
-    const checks: Record<typeof platform, string[]> = {
+    const checks: Record<typeof platform, { id: string; label: string }[]> = {
         facebook: [
-            t.tools.socialChecks.twoFactor,
-            t.tools.socialChecks.visibility,
-            t.tools.socialChecks.apps,
-            t.tools.socialChecks.location,
-            t.tools.socialChecks.face
+            { id: '2fa', label: t.tools.socialChecks.twoFactor },
+            { id: 'visibility', label: t.tools.socialChecks.visibility },
+            { id: 'apps', label: t.tools.socialChecks.apps },
+            { id: 'location', label: t.tools.socialChecks.location },
+            { id: 'face', label: t.tools.socialChecks.face }
         ],
         instagram: [
-            t.tools.socialChecks.twoFactor,
-            t.tools.socialChecks.messages,
-            t.tools.socialChecks.visibility,
-            t.tools.socialChecks.tags,
-            t.tools.socialChecks.access
+            { id: '2fa', label: t.tools.socialChecks.twoFactor },
+            { id: 'messages', label: t.tools.socialChecks.messages },
+            { id: 'visibility', label: t.tools.socialChecks.visibility },
+            { id: 'tags', label: t.tools.socialChecks.tags },
+            { id: 'access', label: t.tools.socialChecks.access }
         ],
         twitter: [
-            t.tools.socialChecks.twoFactor,
-            t.tools.socialChecks.visibility,
-            t.tools.socialChecks.dms,
-            t.tools.socialChecks.data,
-            t.tools.socialChecks.location
+            { id: '2fa', label: t.tools.socialChecks.twoFactor },
+            { id: 'visibility', label: t.tools.socialChecks.visibility },
+            { id: 'dms', label: t.tools.socialChecks.dms },
+            { id: 'data', label: t.tools.socialChecks.data },
+            { id: 'location', label: t.tools.socialChecks.location }
         ],
         tiktok: [
-            t.tools.socialChecks.twoFactor,
-            t.tools.socialChecks.visibility,
-            t.tools.socialChecks.messages,
-            t.tools.socialChecks.data,
-            t.tools.socialChecks.ads
+            { id: '2fa', label: t.tools.socialChecks.twoFactor },
+            { id: 'visibility', label: t.tools.socialChecks.visibility },
+            { id: 'messages', label: t.tools.socialChecks.messages },
+            { id: 'data', label: t.tools.socialChecks.data },
+            { id: 'ads', label: t.tools.socialChecks.ads }
         ]
     };
-    const score = Math.max(40, 100 - checks[platform].length * 6);
-    setSocialScore(score);
-    setSocialFindings(checks[platform]);
+    const checklist = checks[platform].map(item => ({ ...item, done: false }));
+    setSocialFindings(checklist);
+    setSocialScore(40);
   };
 
   const inspectMetadata = async (file: File) => {
@@ -1282,6 +1293,16 @@ export const Tools: React.FC = () => {
     setOtpFindings(notes);
   };
 
+  const toggleSocialCheck = (id: string) => {
+    setSocialFindings(prev => {
+        const updated = prev.map(item => item.id === id ? { ...item, done: !item.done } : item);
+        const completed = updated.filter(i => i.done).length;
+        const score = 40 + Math.round((completed / (updated.length || 1)) * 60);
+        setSocialScore(score);
+        return updated;
+    });
+  };
+
   const buildConsentSnippet = () => {
     const consentText = `consent = { required: true, analytics: ${allowAnalytics}, performance: ${allowPerformance}, marketing: ${allowMarketing} };`;
     const snippet = `<!-- ${t.tools.consentTitle} -->\n<div class="consent-banner">\n  <p>${t.tools.consentCopy}</p>\n  <ul>\n    <li>${t.tools.consentRequired}</li>\n    ${allowAnalytics ? '<li>'+t.tools.consentAnalytics+'</li>' : ''}\n    ${allowPerformance ? '<li>'+t.tools.consentPerformance+'</li>' : ''}\n    ${allowMarketing ? '<li>'+t.tools.consentMarketing+'</li>' : ''}\n  </ul>\n  <script>${consentText}</script>\n</div>`;
@@ -1289,10 +1310,19 @@ export const Tools: React.FC = () => {
   };
 
   useEffect(() => {
-      if (activeTab === 'privacy' && !deviceInfo) {
-          // Optional: Auto load or wait for user action
+      if (activeTab === 'privacy' && !deviceInfo && !loadingFingerprint) {
+          loadDeviceInfo();
       }
-  }, [activeTab]);
+  }, [activeTab, deviceInfo, loadingFingerprint]);
+
+  useEffect(() => {
+      runCookieAudit();
+  }, []);
+
+  useEffect(() => {
+      analyzeSocialPrivacy('facebook');
+  // eslint-disable-next-line react-hooks-exhaustive-deps
+  }, [language]);
 
   useEffect(() => {
       buildConsentSnippet();
@@ -1536,15 +1566,16 @@ export const Tools: React.FC = () => {
                     </ToolCard>
 
                     <ToolCard title={t.tools.fingerprintTitle} icon={<Fingerprint size={24} />} color="purple">
-                        <div className="flex justify-end mb-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <p className="text-sm text-slate-500 dark:text-slate-400 max-w-2xl">{t.tools.fingerprintHint}</p>
                             <Button size="sm" onClick={loadDeviceInfo} variant="outline" className="rounded-xl border-slate-200 dark:border-slate-700 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400">
-                                {t.tools.analyze}
+                                {loadingFingerprint ? t.common.loading : t.tools.analyze}
                             </Button>
                         </div>
-                        
+
                         {!deviceInfo ? (
                             <div className="p-16 text-center text-slate-400 italic bg-slate-50 dark:bg-slate-950/50 rounded-[2rem] border-2 border-slate-200 dark:border-slate-800 border-dashed">
-                                Click analyze to view your browser fingerprint.
+                                {t.tools.fingerprintEmpty}
                             </div>
                         ) : loadingFingerprint ? (
                             <div className="p-16 text-center text-slate-400 font-medium animate-pulse">{t.common.loading}</div>
@@ -2118,28 +2149,67 @@ export const Tools: React.FC = () => {
                     {/* Cookie and Storage Scanner */}
                     <ToolCard title={t.tools.cookieTitle} icon={<Cookie size={24} />} color="amber">
                         <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.cookieDesc}</p>
-                        <div className="flex gap-3 mb-4">
+                        <div className="flex flex-wrap gap-3 mb-6 items-center">
                             <Button onClick={runCookieAudit} size="sm" className="rounded-xl">{t.tools.scan}</Button>
                             <Button onClick={clearTracking} size="sm" variant="outline" className="rounded-xl">{t.tools.clear}</Button>
+                            {cookieScanTime && <div className="text-xs text-slate-400 flex items-center gap-2">{t.tools.lastScan} {cookieScanTime}</div>}
+                            <span className="text-xs text-slate-400">{t.tools.cookieHint}</span>
                         </div>
-                        {cookieScanTime && <div className="text-xs text-slate-400 mb-3">{t.tools.lastScan} {cookieScanTime}</div>}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-800 shadow-inner flex justify-between items-center">
+                                <div>
+                                    <div className="text-xs uppercase tracking-widest text-amber-500 font-bold">Cookies</div>
+                                    <div className="text-3xl font-black text-amber-700 dark:text-amber-300">{cookieReport.cookies.length}</div>
+                                </div>
+                                <div className="text-xs text-amber-600 dark:text-amber-300 font-bold px-3 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full">{t.tools.cookieTrackers.replace('{n}', `${cookieReport.cookies.filter(c=>c.isTracker).length}`)}</div>
+                            </div>
+                            <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-800 shadow-inner flex justify-between items-center">
+                                <div>
+                                    <div className="text-xs uppercase tracking-widest text-indigo-500 font-bold">localStorage</div>
+                                    <div className="text-3xl font-black text-indigo-700 dark:text-indigo-300">{cookieReport.localStorage.length}</div>
+                                </div>
+                                <div className="text-xs text-indigo-500 dark:text-indigo-200 font-medium">{t.tools.entries}</div>
+                            </div>
+                            <div className="p-4 rounded-2xl bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-800 shadow-inner flex justify-between items-center">
+                                <div>
+                                    <div className="text-xs uppercase tracking-widest text-green-500 font-bold">sessionStorage</div>
+                                    <div className="text-3xl font-black text-green-700 dark:text-green-300">{cookieReport.sessionStorage.length}</div>
+                                </div>
+                                <div className="text-xs text-green-500 dark:text-green-200 font-medium">{t.tools.entries}</div>
+                            </div>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800">
-                                <div className="font-bold text-amber-700 dark:text-amber-400 mb-1">Cookies</div>
-                                <div className="space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
-                                    {cookieReport.cookies.length === 0 ? <div className="text-amber-500 text-xs italic">{t.tools.none}</div> : cookieReport.cookies.map((c,i)=>(<div key={i} className="bg-white/70 dark:bg-black/20 p-2 rounded-lg border border-amber-100 dark:border-amber-800 text-amber-700 dark:text-amber-200">{c}</div>))}
+                            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <div className="font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2"><Cookie size={16} className="text-amber-500"/> Cookies</div>
+                                <div className="space-y-2 max-h-44 overflow-y-auto scrollbar-thin">
+                                    {cookieReport.cookies.length === 0 ? <div className="text-amber-500 text-xs italic">{t.tools.none}</div> : cookieReport.cookies.map((c,i)=>(
+                                        <div key={i} className={`p-3 rounded-xl border text-sm ${c.isTracker ? 'border-amber-300/70 bg-amber-50/80 dark:bg-amber-900/20 text-amber-700 dark:text-amber-200' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/40'}`}>
+                                            <div className="font-bold flex items-center gap-2">{c.name} {c.isTracker && <ShieldAlert size={14} className="text-amber-500" />}</div>
+                                            <div className="font-mono text-xs break-all text-slate-500 dark:text-slate-400">{c.value || t.tools.none}</div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                            <div className="p-3 rounded-2xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-                                <div className="font-bold text-blue-700 dark:text-blue-300 mb-1">localStorage</div>
-                                <div className="space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
-                                    {cookieReport.localStorage.length === 0 ? <div className="text-blue-500 text-xs italic">{t.tools.none}</div> : cookieReport.localStorage.map((c,i)=>(<div key={i} className="bg-white/70 dark:bg-black/20 p-2 rounded-lg border border-blue-100 dark:border-blue-800 text-blue-700 dark:text-blue-200">{c}</div>))}
+                            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <div className="font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2"><HardDrive size={16} className="text-indigo-500"/> localStorage</div>
+                                <div className="space-y-2 max-h-44 overflow-y-auto scrollbar-thin">
+                                    {cookieReport.localStorage.length === 0 ? <div className="text-indigo-500 text-xs italic">{t.tools.none}</div> : cookieReport.localStorage.map((c,i)=>(
+                                        <div key={i} className="p-3 rounded-xl border border-indigo-100 dark:border-indigo-800 text-sm bg-indigo-50/50 dark:bg-indigo-900/10">
+                                            <div className="font-bold text-indigo-700 dark:text-indigo-200">{c.key}</div>
+                                            <div className="font-mono text-xs break-all text-indigo-600 dark:text-indigo-300">{c.value}</div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                            <div className="p-3 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800">
-                                <div className="font-bold text-green-700 dark:text-green-300 mb-1">sessionStorage</div>
-                                <div className="space-y-1 max-h-32 overflow-y-auto scrollbar-thin">
-                                    {cookieReport.sessionStorage.length === 0 ? <div className="text-green-500 text-xs italic">{t.tools.none}</div> : cookieReport.sessionStorage.map((c,i)=>(<div key={i} className="bg-white/70 dark:bg-black/20 p-2 rounded-lg border border-green-100 dark:border-green-800 text-green-700 dark:text-green-200">{c}</div>))}
+                            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+                                <div className="font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center gap-2"><Server size={16} className="text-green-500"/> sessionStorage</div>
+                                <div className="space-y-2 max-h-44 overflow-y-auto scrollbar-thin">
+                                    {cookieReport.sessionStorage.length === 0 ? <div className="text-green-500 text-xs italic">{t.tools.none}</div> : cookieReport.sessionStorage.map((c,i)=>(
+                                        <div key={i} className="p-3 rounded-xl border border-green-100 dark:border-green-800 text-sm bg-green-50/50 dark:bg-green-900/10">
+                                            <div className="font-bold text-green-700 dark:text-green-200">{c.key}</div>
+                                            <div className="font-mono text-xs break-all text-green-600 dark:text-green-300">{c.value}</div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -2153,28 +2223,57 @@ export const Tools: React.FC = () => {
                                 <button key={opt.id} onClick={()=>analyzeSocialPrivacy(opt.id as any)} className={`px-4 py-2 rounded-xl border text-sm font-bold ${socialPlatform===opt.id ? 'bg-indigo-600 text-white border-indigo-700 shadow' : 'border-slate-200 dark:border-slate-700 text-slate-500 hover:border-indigo-300'}`}>{opt.label}</button>
                             ))}
                         </div>
-                        <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center gap-4 mb-2">
                             <div className="text-3xl font-black text-indigo-600 dark:text-indigo-300">{socialScore}/100</div>
                             <div className="text-xs uppercase tracking-widest text-slate-400">{t.tools.socialScore}</div>
                         </div>
-                        <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                            {socialFindings.length === 0 ? <li className="italic text-slate-400">{t.tools.socialHint}</li> : socialFindings.map((f,i)=>(
-                                <li key={i} className="flex items-center gap-2"><ClipboardCheck size={14} className="text-indigo-500"/> {f}</li>
+                        <p className="text-xs text-slate-400 mb-3">{t.tools.socialHint}</p>
+                        <div className="space-y-3">
+                            {socialFindings.length === 0 ? (
+                                <div className="italic text-slate-400">{t.tools.socialEmpty}</div>
+                            ) : socialFindings.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => toggleSocialCheck(item.id)}
+                                    className={`w-full text-left p-3 rounded-2xl border flex items-center justify-between transition-all ${item.done ? 'bg-indigo-600 text-white border-indigo-700 shadow-md shadow-indigo-500/20' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-indigo-300 dark:hover:border-indigo-500'}`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <ClipboardCheck size={16} className={item.done ? 'text-white' : 'text-indigo-500'} />
+                                        <span className="font-semibold">{item.label}</span>
+                                    </div>
+                                    <div className={`text-xs font-bold uppercase tracking-widest ${item.done ? 'text-white/80' : 'text-indigo-500'}`}>{item.done ? t.tools.done : t.tools.todo}</div>
+                                </button>
                             ))}
-                        </ul>
+                        </div>
                     </ToolCard>
 
                     {/* Metadata Inspector */}
                     <ToolCard title={t.tools.metadataTitle} icon={<FileSearch size={24} />} color="teal">
                         <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.metadataDesc}</p>
-                        <Input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" onChange={(e)=> e.target.files && inspectMetadata(e.target.files[0])} />
+                        <label className="block border-2 border-dashed border-teal-200 dark:border-teal-800 rounded-2xl p-6 text-center bg-teal-50/50 dark:bg-teal-900/10 cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-colors">
+                            <input type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" onChange={(e)=> e.target.files && inspectMetadata(e.target.files[0])} className="hidden" />
+                            <Upload size={32} className="mx-auto mb-3 text-teal-500" />
+                            <div className="font-bold text-teal-700 dark:text-teal-200">{t.tools.metadataDrop}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{t.tools.metadataHint}</div>
+                        </label>
                         {metadataFileName && (
-                            <div className="mt-4 space-y-3">
-                                <div className="text-sm font-bold">{metadataFileName}</div>
-                                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300 max-h-32 overflow-y-auto scrollbar-thin">
-                                    {metadataFindings.map((f,i)=>(<li key={i} className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-xl border border-slate-200 dark:border-slate-700"><ShieldCheck size={14} className="text-teal-500"/> {f}</li>))}
+                            <div className="mt-5 space-y-4">
+                                <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+                                    <div>
+                                        <div className="text-xs uppercase tracking-widest text-slate-400">{t.tools.file}</div>
+                                        <div className="font-bold text-slate-800 dark:text-slate-100">{metadataFileName}</div>
+                                    </div>
+                                    <div className="text-xs font-bold px-3 py-1 rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-200">{metadataFindings.length} {t.tools.entries}</div>
+                                </div>
+                                <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300 max-h-40 overflow-y-auto scrollbar-thin">
+                                    {metadataFindings.map((f,i)=>(<li key={i} className="flex items-center gap-2 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"><ShieldCheck size={14} className="text-teal-500"/> {f}</li>))}
                                 </ul>
-                                {metadataCleaned && <Button size="sm" onClick={()=>downloadBlob(metadataCleaned!, `scrubbed-${metadataFileName}`)} className="rounded-xl">{t.tools.downloadClean}</Button>}
+                                {metadataCleaned && (
+                                    <div className="flex flex-wrap gap-3 items-center">
+                                        <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2"><FileText size={14}/> {t.tools.metadataCleaned}</div>
+                                        <Button size="sm" onClick={()=>downloadBlob(metadataCleaned!, `scrubbed-${metadataFileName}`)} className="rounded-xl">{t.tools.downloadClean}</Button>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </ToolCard>
@@ -2217,14 +2316,33 @@ export const Tools: React.FC = () => {
                     {/* Consent Banner Assistant */}
                     <ToolCard title={t.tools.consentTitle} icon={<ClipboardCheck size={24} />} color="slate">
                         <p className="text-slate-500 dark:text-slate-400 mb-4">{t.tools.consentDesc}</p>
-                        <div className="flex flex-wrap gap-3 mb-4 text-sm">
-                            <label className="flex items-center gap-2"><input type="checkbox" checked disabled /> {t.tools.consentRequired}</label>
-                            <label className="flex items-center gap-2"><input type="checkbox" checked={allowAnalytics} onChange={e=>setAllowAnalytics(e.target.checked)} /> {t.tools.consentAnalytics}</label>
-                            <label className="flex items-center gap-2"><input type="checkbox" checked={allowPerformance} onChange={e=>setAllowPerformance(e.target.checked)} /> {t.tools.consentPerformance}</label>
-                            <label className="flex items-center gap-2"><input type="checkbox" checked={allowMarketing} onChange={e=>setAllowMarketing(e.target.checked)} /> {t.tools.consentMarketing}</label>
-                        </div>
-                        <div className="bg-slate-900 text-white rounded-2xl p-4 font-mono text-xs max-h-48 overflow-y-auto border border-slate-800">
-                            <pre className="whitespace-pre-wrap">{consentSnippet}</pre>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                            <div className="space-y-3 text-sm">
+                                <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
+                                    <span className="font-bold text-slate-700 dark:text-slate-200">{t.tools.consentRequired}</span>
+                                    <input type="checkbox" checked disabled className="h-4 w-4" />
+                                </div>
+                                <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
+                                    <span className="font-bold text-slate-700 dark:text-slate-200">{t.tools.consentAnalytics}</span>
+                                    <input type="checkbox" checked={allowAnalytics} onChange={e=>setAllowAnalytics(e.target.checked)} className="h-4 w-4" />
+                                </div>
+                                <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
+                                    <span className="font-bold text-slate-700 dark:text-slate-200">{t.tools.consentPerformance}</span>
+                                    <input type="checkbox" checked={allowPerformance} onChange={e=>setAllowPerformance(e.target.checked)} className="h-4 w-4" />
+                                </div>
+                                <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
+                                    <span className="font-bold text-slate-700 dark:text-slate-200">{t.tools.consentMarketing}</span>
+                                    <input type="checkbox" checked={allowMarketing} onChange={e=>setAllowMarketing(e.target.checked)} className="h-4 w-4" />
+                                </div>
+                                <p className="text-xs text-slate-400">{t.tools.consentNote}</p>
+                            </div>
+                            <div className="bg-slate-900 text-white rounded-2xl p-4 font-mono text-xs max-h-64 overflow-y-auto border border-slate-800 relative">
+                                <div className="flex items-center justify-between mb-3 text-slate-400 font-semibold">
+                                    <span>{t.tools.consentPreview}</span>
+                                    <button onClick={()=>navigator.clipboard.writeText(consentSnippet)} className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"><Copy size={14}/> {t.tools.copy}</button>
+                                </div>
+                                <pre className="whitespace-pre-wrap leading-relaxed">{consentSnippet}</pre>
+                            </div>
                         </div>
                     </ToolCard>
 
@@ -2234,15 +2352,21 @@ export const Tools: React.FC = () => {
                         <div className="overflow-x-auto">
                             <table className="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
                                 <thead className="uppercase text-[11px] tracking-widest text-slate-400">
-                                    <tr><th className="py-2">App</th><th>Encryption</th><th>Backups</th><th>Metadata</th><th>Notes</th></tr>
+                                    <tr>
+                                        <th className="py-2">{t.tools.messagingColumns.app}</th>
+                                        <th>{t.tools.messagingColumns.encryption}</th>
+                                        <th>{t.tools.messagingColumns.backups}</th>
+                                        <th>{t.tools.messagingColumns.metadata}</th>
+                                        <th>{t.tools.messagingColumns.notes}</th>
+                                    </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                                    {[{app:'Signal',enc:'End-to-end by default',backup:'Encrypted local',meta:'Minimal',note:t.tools.messagingSignal},{app:'WhatsApp',enc:'End-to-end chats',backup:'Cloud (may be unencrypted)',meta:'Contacts + metadata',note:t.tools.messagingWhatsapp},{app:'Telegram',enc:'Optional secret chats',backup:'Cloud',meta:'Server-side metadata',note:t.tools.messagingTelegram},{app:'iMessage',enc:'End-to-end Apple devices',backup:'iCloud (keys may be stored)',meta:'Apple metadata',note:t.tools.messagingImessage},{app:'RCS',enc:'Depends on carrier/client',backup:'Carrier',meta:'Carrier + Google metadata',note:t.tools.messagingRcs}].map((row,i)=>(
+                                    {t.tools.messagingApps.map((row,i)=>(
                                         <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                                            <td className="py-3 font-bold">{row.app}</td>
-                                            <td>{row.enc}</td>
-                                            <td>{row.backup}</td>
-                                            <td>{row.meta}</td>
+                                            <td className="py-3 font-bold">{row.name}</td>
+                                            <td>{row.encryption}</td>
+                                            <td>{row.backups}</td>
+                                            <td>{row.metadata}</td>
                                             <td className="text-slate-500 dark:text-slate-400">{row.note}</td>
                                         </tr>
                                     ))}
