@@ -10,6 +10,13 @@ export const Home: React.FC = () => {
   const { t, theme } = useApp();
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
+
+  const improvementIcons = {
+    zap: Zap,
+    mouse: MousePointer2,
+    shield: ShieldCheck,
+    globe: Globe
+  };
   
   // Interactive State
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -303,6 +310,38 @@ export const Home: React.FC = () => {
                 </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Improvement Section */}
+      <section className="py-24 bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto mb-16">
+            <p className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-200 font-semibold text-sm mb-6 border border-primary-100 dark:border-primary-800">
+              {t.home.improvements.title}
+            </p>
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">
+              {t.home.improvements.subtitle}
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {t.home.improvements.items.map((item, idx) => {
+              const Icon = improvementIcons[item.icon] || Zap;
+              return (
+                <div
+                  key={idx}
+                  className="group relative bg-slate-50 dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 hover:border-primary-400/50 dark:hover:border-primary-400/50 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-primary-500/10"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-primary-600 dark:text-primary-300 mb-5 shadow group-hover:scale-110 transition-transform">
+                    <Icon size={26} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">{item.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
