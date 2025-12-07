@@ -1,0 +1,4 @@
+/* Main CSS entry point */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
