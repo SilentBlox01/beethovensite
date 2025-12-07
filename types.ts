@@ -5,36 +5,6 @@ export type Browser = 'chrome' | 'firefox' | 'safari' | 'edge' | 'brave' | 'tor'
 export type SearchEngine = 'google' | 'bing' | 'duckduckgo' | 'startpage' | 'kagi';
 export type EmailProvider = 'gmail' | 'outlook' | 'yahoo' | 'proton' | 'tutanota' | 'icloud' | 'other';
 export type Social = 'facebook' | 'instagram' | 'tiktok' | 'twitter' | 'linkedin' | 'reddit' | 'none';
-
-export interface JourneyNode {
-  id: string;
-  title: string;
-  desc: string;
-  icon: string;
-  action?: string;
-  toolAction?: string;
-  difficulty: 'easy' | 'medium' | 'hard' | 'expert';
-}
-
-export interface JourneyLevel {
-  id: string;
-  title: string;
-  desc: string;
-  color: string;
-  nodes: JourneyNode[];
-}
-
-export interface JourneyLayout {
-  title: string;
-  subtitle: string;
-  resetBtn: string;
-  levels: JourneyLevel[];
-  status: {
-    locked: string;
-    available: string;
-    completed: string;
-  };
-}
 export type Risk = 'wifi' | 'password-reuse' | 'location' | 'bluetooth' | 'public-charging' | 'none';
 export type MessagingApp = 'whatsapp' | 'telegram' | 'signal' | 'messenger' | 'sms' | 'imessage' | 'none';
 export type CloudService = 'google-drive' | 'icloud' | 'onedrive' | 'dropbox' | 'nextcloud' | 'none';
@@ -89,32 +59,32 @@ export interface DocSection {
 }
 
 export interface HubApp {
-  id: string;
-  name: string;
-  description: string;
-  replaces: string;
-  category: 'browser' | 'email' | 'messaging' | 'cloud' | 'search' | 'os' | 'vpn' | 'password-manager' | 'dns' | 'store' | 'productivity' | 'utilities';
-  icon: string;
-  url: string;
-  badge?: 'Open Source' | 'Encrypted' | 'Decentralized' | 'P2P' | 'Self-Hosted' | 'Privacy' | 'Offline' | 'No Logs' | 'Free Tier' | 'Hardened' | 'Security' | 'Amnesic' | 'User Friendly' | 'Filter' | 'FOSS' | 'Anonymous' | 'Encryption' | 'Network' | 'Anonymity' | 'Fast' | 'Aliasing' | 'Local' | 'OS' | 'No-Logs';
-  pricing: 'Free' | 'Freemium' | 'Paid';
+    id: string;
+    name: string;
+    description: string;
+    replaces: string;
+    category: 'browser' | 'email' | 'messaging' | 'cloud' | 'search' | 'os' | 'vpn' | 'password-manager' | 'dns' | 'store' | 'productivity' | 'utilities';
+    icon: string;
+    url: string;
+    badge?: 'Open Source' | 'Encrypted' | 'Decentralized' | 'P2P' | 'Self-Hosted' | 'Privacy' | 'Offline' | 'No Logs' | 'Free Tier' | 'Hardened' | 'Security' | 'Amnesic' | 'User Friendly' | 'Filter' | 'FOSS' | 'Anonymous' | 'Encryption' | 'Network';
+    pricing: 'Free' | 'Freemium' | 'Paid';
 }
 
 export interface PhishingScenario {
-  id: number;
-  type: 'email' | 'wifi' | 'password' | 'sms';
-  isSafe: boolean;
-  // Email/SMS specific
-  subject?: string;
-  sender?: string;
-  body?: string;
-  // Wifi specific
-  networkName?: string;
-  security?: string;
-  // Password specific
-  url?: string;
-
-  explanation: string;
+    id: number;
+    type: 'email' | 'wifi' | 'password' | 'sms';
+    isSafe: boolean;
+    // Email/SMS specific
+    subject?: string;
+    sender?: string;
+    body?: string;
+    // Wifi specific
+    networkName?: string;
+    security?: string;
+    // Password specific
+    url?: string;
+    
+    explanation: string;
 }
 
 export interface LegalContent {
@@ -145,7 +115,6 @@ export interface Translation {
     assessment: string;
     hub: string;
     docs: string;
-    journey: string;
     faq: string;
     about: string;
     theme: string;
@@ -156,94 +125,94 @@ export interface Translation {
     ai?: string;
   };
   inspector: {
-    enable: string;
-    disable: string;
-    title: string;
-    select: string;
-    props: string;
-    computed: string;
-    tag: string;
-    class: string;
-    dimensions: string;
-    color: string;
-    font: string;
-    spacing: string;
+      enable: string;
+      disable: string;
+      title: string;
+      select: string;
+      props: string;
+      computed: string;
+      tag: string;
+      class: string;
+      dimensions: string;
+      color: string;
+      font: string;
+      spacing: string;
   };
   analyzer: {
-    title: string;
-    subtitle: string;
-    analyzing: string;
-    score: string;
-    grade: {
-      a: string;
-      b: string;
-      c: string;
-      d: string;
-      f: string;
-    };
-    metrics: {
-      https: string;
-      httpsDesc: string;
-      tracking: string;
-      trackingDesc: string;
-      fingerprint: string;
-      fingerprintDesc: string;
-      webrtc: string;
-      webrtcDesc: string;
-      adblock: string;
-      adblockDesc: string;
-      battery: string;
-      batteryDesc: string;
-      hardware: string;
-      hardwareDesc: string;
-      memory: string;
-      memoryDesc: string;
-    };
-    status: {
-      protected: string;
-      vulnerable: string;
-      warning: string;
-      detected: string;
-      hidden: string;
-    };
-    cta: string;
+      title: string;
+      subtitle: string;
+      analyzing: string;
+      score: string;
+      grade: {
+          a: string;
+          b: string;
+          c: string;
+          d: string;
+          f: string;
+      };
+      metrics: {
+          https: string;
+          httpsDesc: string;
+          tracking: string;
+          trackingDesc: string;
+          fingerprint: string;
+          fingerprintDesc: string;
+          webrtc: string;
+          webrtcDesc: string;
+          adblock: string;
+          adblockDesc: string;
+          battery: string;
+          batteryDesc: string;
+          hardware: string;
+          hardwareDesc: string;
+          memory: string;
+          memoryDesc: string;
+      };
+      status: {
+          protected: string;
+          vulnerable: string;
+          warning: string;
+          detected: string;
+          hidden: string;
+      };
+      cta: string;
   };
   stories: {
-    heroTitle: string;
-    heroSubtitle: string;
-    nameTitle: string;
-    nameDesc: string;
-    stormTitle: string;
-    stormDesc: string;
-    missionTitle: string;
-    missionDesc: string;
-    visionTitle: string;
-    visionDesc: string;
-    values: {
-      title: string;
-      items: {
-        title: string;
-        desc: string;
-        icon: 'heart' | 'shield' | 'code';
-      }[];
-    };
+      heroTitle: string;
+      heroSubtitle: string;
+      nameTitle: string;
+      nameDesc: string;
+      stormTitle: string;
+      stormDesc: string;
+      missionTitle: string;
+      missionDesc: string;
+      visionTitle: string;
+      visionDesc: string;
+      values: {
+          title: string;
+          items: {
+              title: string;
+              desc: string;
+              icon: 'heart' | 'shield' | 'code';
+          }[];
+      };
   };
   about: {
-    title: string;
-    subtitle: string;
-    missionTitle: string;
-    missionP1: string;
-    missionP2: string;
-    pillars: {
-      privacy: { title: string, desc: string };
-      opensource: { title: string, desc: string };
-      free: { title: string, desc: string };
-      education: { title: string, desc: string };
-    };
-    ctaTitle: string;
-    ctaDesc: string;
-    ctaHome: string;
-    ctaGit: string;
+      title: string;
+      subtitle: string;
+      missionTitle: string;
+      missionP1: string;
+      missionP2: string;
+      pillars: {
+          privacy: { title: string, desc: string };
+          opensource: { title: string, desc: string };
+          free: { title: string, desc: string };
+          education: { title: string, desc: string };
+      };
+      ctaTitle: string;
+      ctaDesc: string;
+      ctaHome: string;
+      ctaGit: string;
   };
   home: {
     heroTitle: string;
@@ -275,8 +244,6 @@ export interface Translation {
     openSourceSectionDesc: string;
     openSourceSectionBtn: string;
     mapLabel: string;
-    securityTipTitle: string;
-    securityTips: string[];
   };
   assessment: {
     title: string;
@@ -333,57 +300,57 @@ export interface Translation {
       no: string;
     };
     choices: {
-      linuxOther: string;
-      manualLate: string;
-      backupBoth: string;
-      backupCloud: string;
-      backupDisk: string;
-      browserOther: string;
-      searchBing: string;
-      emailGmail: string;
-      emailOutlook: string;
-      emailIcloud: string;
-      emailProton: string;
-      emailYahoo: string;
-      msgSms: string;
-      cloudDrive: string;
-      iotAlexa: string;
-      iotGoogle: string;
-      iotRing: string;
-      iotTv: string;
-      passUnique: string;
-      passUniqueDesc: string;
-      passMostly: string;
-      passMostlyDesc: string;
-      passReused: string;
-      passReusedDesc: string;
-      twoFaApp: string;
-      twoFaAppDesc: string;
-      twoFaKey: string;
-      twoFaKeyDesc: string;
-      twoFaSms: string;
-      twoFaSmsDesc: string;
-      twoFaNone: string;
-      twoFaNoneDesc: string;
-      phishCheck: string;
-      phishCheckDesc: string;
-      phishLook: string;
-      phishLookDesc: string;
-      phishOpen: string;
-      phishOpenDesc: string;
-      riskWifi: string;
-      riskWifiDesc: string;
-      riskBlue: string;
-      riskBlueDesc: string;
-      riskLoc: string;
-      riskLocDesc: string;
-      riskUsb: string;
-      riskUsbDesc: string;
-      defPass: string;
-      def2fa: string;
-      defVpn: string;
-      defAd: string;
-      defScreen: string;
+        linuxOther: string;
+        manualLate: string;
+        backupBoth: string;
+        backupCloud: string;
+        backupDisk: string;
+        browserOther: string;
+        searchBing: string;
+        emailGmail: string;
+        emailOutlook: string;
+        emailIcloud: string;
+        emailProton: string;
+        emailYahoo: string;
+        msgSms: string;
+        cloudDrive: string;
+        iotAlexa: string;
+        iotGoogle: string;
+        iotRing: string;
+        iotTv: string;
+        passUnique: string;
+        passUniqueDesc: string;
+        passMostly: string;
+        passMostlyDesc: string;
+        passReused: string;
+        passReusedDesc: string;
+        twoFaApp: string;
+        twoFaAppDesc: string;
+        twoFaKey: string;
+        twoFaKeyDesc: string;
+        twoFaSms: string;
+        twoFaSmsDesc: string;
+        twoFaNone: string;
+        twoFaNoneDesc: string;
+        phishCheck: string;
+        phishCheckDesc: string;
+        phishLook: string;
+        phishLookDesc: string;
+        phishOpen: string;
+        phishOpenDesc: string;
+        riskWifi: string;
+        riskWifiDesc: string;
+        riskBlue: string;
+        riskBlueDesc: string;
+        riskLoc: string;
+        riskLocDesc: string;
+        riskUsb: string;
+        riskUsbDesc: string;
+        defPass: string;
+        def2fa: string;
+        defVpn: string;
+        defAd: string;
+        defScreen: string;
     }
   };
   results: {
@@ -409,9 +376,9 @@ export interface Translation {
     categoryPasswords: string;
     assessmentCompleted: string;
     labels: {
-      excellent: string;
-      improvable: string;
-      vulnerable: string;
+        excellent: string;
+        improvable: string;
+        vulnerable: string;
     }
   };
   tools: {
@@ -420,7 +387,7 @@ export interface Translation {
     tabKeys: string;
     tabPrivacy: string;
     tabUtils: string;
-    tabFiles: string;
+    tabFiles: string; 
     tabRadar: string;
     tabSPS: string;
     genTitle: string;
@@ -439,7 +406,7 @@ export interface Translation {
     tokenDesc: string;
     permissionsTitle: string;
     permissionsDesc: string;
-
+    
     // UI Elements
     auditPlaceholder: string;
     genLength: string;
@@ -470,14 +437,14 @@ export interface Translation {
     analysis: string;
     unknown: string;
     time: {
-      seconds: string;
-      minutes: string;
-      hours: string;
-      days: string;
-      years: string;
-      centuries: string;
+        seconds: string;
+        minutes: string;
+        hours: string;
+        days: string;
+        years: string;
+        centuries: string;
     };
-
+    
     vaultTitle: string;
     vaultDesc: string;
     vaultDrop: string;
@@ -505,19 +472,19 @@ export interface Translation {
     entropyBits: string;
     crackTime: string;
     instant: string;
-
+    
     crackScenarios: {
-      laptop: string;
-      rig: string;
-      supercomputer: string;
+        laptop: string;
+        rig: string;
+        supercomputer: string;
     };
-
+    
     patterns: {
-      title: string;
-      sequence: string;
-      repeat: string;
-      date: string;
-      keyboard: string;
+        title: string;
+        sequence: string;
+        repeat: string;
+        date: string;
+        keyboard: string;
     };
 
     gdprTitle: string;
@@ -550,26 +517,26 @@ export interface Translation {
     checksumCompare: string;
     checksumMatch: string;
     checksumMismatch: string;
-
+    
     radarTitle: string;
     radarDesc: string;
     radarPlaceholder: string;
     radarButton: string;
     radarScanning: string;
     radarStatus: {
-      safe: string;
-      warning: string;
-      critical: string;
+        safe: string;
+        warning: string;
+        critical: string;
     };
     radarMetrics: {
-      latency: string;
-      jitter: string;
-      ssl: string;
-      server: string;
-      dns: string;
-      network: string;
-      ports: string;
-      location: string;
+        latency: string;
+        jitter: string;
+        ssl: string;
+        server: string;
+        dns: string;
+        network: string;
+        ports: string;
+        location: string;
     };
     radarLogs: string;
 
@@ -591,43 +558,43 @@ export interface Translation {
     cleanerRecursive: string;
     paramsRemoved: string;
     trackerFound: string;
-
+    
     deviceInfo: {
-      browser: string;
-      os: string;
-      deviceType: string;
-      screen: string;
-      battery: string;
-      connection: string;
-      mobile: string;
-      desktop: string;
-      uniqueId: string;
-      gpu: string;
-      timezone: string;
-      canvas: string;
-      audio: string;
-      pixelRatio: string;
-      bot: string;
-      incognito: string;
-      ip: string;
-      location: string;
-      isp: string;
-      hdr: string;
-      gamut: string;
-      contrast: string;
-
-      // New labels for detailed stats
-      fontsLabel: string;
-      hardwareLabel: string;
-      cores: string;
-      touchPoints: string;
-      userAgent: string;
+        browser: string;
+        os: string;
+        deviceType: string;
+        screen: string;
+        battery: string;
+        connection: string;
+        mobile: string;
+        desktop: string;
+        uniqueId: string;
+        gpu: string;
+        timezone: string;
+        canvas: string;
+        audio: string;
+        pixelRatio: string;
+        bot: string;
+        incognito: string;
+        ip: string;
+        location: string;
+        isp: string;
+        hdr: string;
+        gamut: string;
+        contrast: string;
+        
+        // New labels for detailed stats
+        fontsLabel: string;
+        hardwareLabel: string;
+        cores: string;
+        touchPoints: string;
+        userAgent: string;
     };
     perms: {
-      mic: string;
-      location: string;
-      notifications: string;
-      camera: string;
+        mic: string;
+        location: string;
+        notifications: string;
+        camera: string;
     };
     msgPlaceholderEnc: string;
     msgPlaceholderDec: string;
@@ -637,90 +604,89 @@ export interface Translation {
     msgErrorInvalid: string;
   };
   hub: {
-    title: string;
-    subtitle: string;
-    searchPlaceholder: string;
-    replacesLabel: string;
-    noAppsFound: string;
-    clearFilters: string;
-    cats: {
-      browser: string;
-      email: string;
-      messaging: string;
-      cloud: string;
-      search: string;
-      os: string;
-      vpn: string;
-      pass: string;
-      dns: string;
-      store: string;
-      productivity: string;
-      utilities: string;
-    };
-    apps: HubApp[];
+      title: string;
+      subtitle: string;
+      searchPlaceholder: string;
+      replacesLabel: string;
+      noAppsFound: string;
+      clearFilters: string;
+      cats: {
+          browser: string;
+          email: string;
+          messaging: string;
+          cloud: string;
+          search: string;
+          os: string;
+          vpn: string;
+          pass: string;
+          dns: string;
+          store: string;
+          productivity: string;
+          utilities: string;
+      };
+      apps: HubApp[];
   };
-  journey: JourneyLayout;
   lab: {
-    title: string;
-    subtitle: string;
-    dropzone: string;
-    noMeta: string;
-    metaFound: string;
-    gpsFound: string;
-    cleanBtn: string;
-    downloadBtn: string;
-    warning: string;
-    analyzing: string;
-    analyzeAnother: string;
-    cleanGenerated: string;
-    cleanDesc: string;
-    original: string;
-    meta: {
-      camera: string;
-      software: string;
-      date: string;
-    }
+      title: string;
+      subtitle: string;
+      dropzone: string;
+      noMeta: string;
+      metaFound: string;
+      gpsFound: string;
+      cleanBtn: string;
+      downloadBtn: string;
+      warning: string;
+      analyzing: string;
+      analyzeAnother: string;
+      cleanGenerated: string;
+      cleanDesc: string;
+      original: string;
+      meta: {
+          camera: string;
+          software: string;
+          date: string;
+      }
   };
   phishing: {
-    title: string;
-    subtitle: string;
-    startGame: string;
-    safe: string;
-    unsafe: string;
-    correct: string;
-    wrong: string;
-    completed: string;
-    score: string;
-    case: string;
-    of: string;
-    ui: {
-      messages: string;
-      networks: string;
-      unsecured: string;
-      encrypted: string;
-      signin: string;
-      username: string;
-      password: string;
-      login: string;
-      today: string;
-      viewDetails: string;
-    };
-    scenarios: PhishingScenario[];
+      title: string;
+      subtitle: string;
+      startGame: string;
+      safe: string;
+      unsafe: string;
+      correct: string;
+      wrong: string;
+      completed: string;
+      score: string;
+      case: string;
+      of: string;
+      ui: {
+          messages: string;
+          networks: string;
+          unsecured: string;
+          encrypted: string;
+          signin: string;
+          username: string;
+          password: string;
+          login: string;
+          today: string;
+          viewDetails: string;
+      };
+      scenarios: PhishingScenario[];
   };
   legal: {
-    terms: LegalContent;
-    privacy: LegalContent;
+      terms: LegalContent;
+      privacy: LegalContent;
   };
   docs: {
-    title: string;
-    subtitle: string;
-    sections: DocSection[];
+      title: string;
+      subtitle: string;
+      sections: DocSection[];
   };
   recs: {
-    android: { title: string, desc: string };
-    updates: { title: string };
-    passwords: { title: string };
-    generic: { title: string, desc: string };
+      android: { title: string, desc: string };
+      updates: { title: string };
+      passwords: { title: string };
+      generic: { title: string, desc: string };
   };
   faq: {
     title: string;
