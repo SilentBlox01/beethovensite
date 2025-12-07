@@ -63,8 +63,8 @@ export const FAQ: React.FC = () => {
             <div
               key={index}
               className={`bg-white dark:bg-slate-900 rounded-2xl transition-all duration-300 border ${isOpen
-                  ? 'border-primary-200 dark:border-primary-800 shadow-lg shadow-primary-900/5'
-                  : 'border-slate-100 dark:border-slate-800 shadow-sm hover:border-primary-100 dark:hover:border-primary-900/50'
+                ? 'border-primary-200 dark:border-primary-800 shadow-lg shadow-primary-900/5'
+                : 'border-slate-100 dark:border-slate-800 shadow-sm hover:border-primary-100 dark:hover:border-primary-900/50'
                 }`}
             >
               <button
