@@ -14,7 +14,8 @@ import { Terms, Privacy } from './pages/Legal';
 import { About } from './pages/About';
 import { Docs } from './pages/Docs';
 import { Analyzer } from './pages/Analyzer';
-import { Stories } from './pages/Stories';
+import { Stories } from './pages/Stories'; // Keep existing imports
+import { Journey } from './pages/Journey';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/docs" element={<Docs />} />
             <Route path="/analyzer" element={<Analyzer />} />
             <Route path="/stories" element={<Stories />} />
+            <Route path="/journey" element={<Journey />} />
           </Routes>
         </Layout>
       </Router>
