@@ -21,6 +21,7 @@ const es: Translation = {
     tools: 'Herramientas',
     assessment: 'Diagnóstico',
     hub: 'Apps',
+    journey: 'Viaje',
     docs: 'Guías',
     faq: 'FAQ',
     about: 'Nosotros',
@@ -577,6 +578,116 @@ const es: Translation = {
         url: "https://nextcloud.com/",
         badge: "Self-Hosted",
         pricing: "Free"
+      },
+      {
+        id: "tor",
+        name: "Tor Browser",
+        description: "Navegación anónima real. Enruta tu tráfico por tres capas.",
+        replaces: "Chrome/Edge",
+        category: "browser",
+        icon: "globe",
+        url: "https://www.torproject.org/",
+        badge: "Anonymity",
+        pricing: "Free"
+      },
+      {
+        id: "brave",
+        name: "Brave",
+        description: "Privacidad por defecto. Bloquea anuncios y rastreadores.",
+        replaces: "Chrome",
+        category: "browser",
+        icon: "shield",
+        url: "https://brave.com/",
+        badge: "Fast",
+        pricing: "Free"
+      },
+      {
+        id: "tutanota",
+        name: "Tutanota",
+        description: "Email encriptado de extremo a extremo (Alemania).",
+        replaces: "Gmail",
+        category: "email",
+        icon: "mail",
+        url: "https://tutanota.com/",
+        badge: "Encrypted",
+        pricing: "Freemium"
+      },
+      {
+        id: "simplelogin",
+        name: "SimpleLogin",
+        description: "Alias de correo para proteger tu email real.",
+        replaces: "Direct Email",
+        category: "email",
+        icon: "at-sign",
+        url: "https://simplelogin.io/",
+        badge: "Aliasing",
+        pricing: "Freemium"
+      },
+      {
+        id: "element",
+        name: "Element",
+        description: "Chat descentralizado y seguro (Matrix).",
+        replaces: "WhatsApp/Discord",
+        category: "messaging",
+        icon: "message-square",
+        url: "https://element.io/",
+        badge: "Decentralized",
+        pricing: "Free"
+      },
+      {
+        id: "keepassxc",
+        name: "KeePassXC",
+        description: "Gestor de contraseñas local y seguro.",
+        replaces: "LastPass",
+        category: "password-manager",
+        icon: "lock",
+        url: "https://keepassxc.org/",
+        badge: "Local",
+        pricing: "Free"
+      },
+      {
+        id: "veracrypt",
+        name: "VeraCrypt",
+        description: "Cifrado de disco y archivos de grado militar.",
+        replaces: "BitLocker",
+        category: "utilities",
+        icon: "hard-drive",
+        url: "https://www.veracrypt.fr/",
+        badge: "Encryption",
+        pricing: "Free"
+      },
+      {
+        id: "mullvad",
+        name: "Mullvad VPN",
+        description: "VPN que no pide ni tu email. Privacidad total.",
+        replaces: "Free VPNs",
+        category: "utilities",
+        icon: "wifi",
+        url: "https://mullvad.net/",
+        badge: "No-Logs",
+        pricing: "Paid"
+      },
+      {
+        id: "newpipe",
+        name: "NewPipe",
+        description: "Cliente de YouTube ligero y sin anuncios para Android.",
+        replaces: "YouTube App",
+        category: "utilities",
+        icon: "play-circle",
+        url: "https://newpipe.net/",
+        badge: "FOSS",
+        pricing: "Free"
+      },
+      {
+        id: "grapheneos",
+        name: "GrapheneOS",
+        description: "Sistema operativo móvil enfocado en privacidad y seguridad.",
+        replaces: "Stock Android",
+        category: "utilities",
+        icon: "smartphone",
+        url: "https://grapheneos.org/",
+        badge: "OS",
+        pricing: "Free"
       }
     ]
   },
@@ -743,43 +854,43 @@ const es: Translation = {
       sections: [
         {
           heading: "1. Aceptación de Términos",
-          content: "Al usar Beethoven, aceptas estos términos. Si no estás de acuerdo, no uses la aplicación. Beethoven es provisto 'AS IS' sin garantías de ningún tipo."
+          content: "Al usar Beethoven ('la Aplicación'), aceptas incondicionalmente estos términos. Si no estás de acuerdo con alguno, por favor detén el uso inmediatamente. El uso continuado constituye aceptación plena."
         },
         {
-          heading: "2. Naturaleza Educativa",
-          content: "Beethoven es una herramienta EDUCATIVA sobre privacidad digital. No es un sustituto para auditorías profesionales de seguridad. Los resultados son indicativos, no definitivos. Beethoven te educa, no reemplaza expertos."
+          heading: "2. Naturaleza Educativa y No Vinculante",
+          content: "Beethoven es una herramienta estrictamente EDUCATIVA e INFORMATIVA. No constituye consejo legal, médico, o de ciberseguridad profesional. Los resultados de los escaneos (brechas, contraseñas, privacidad) son indicativos y pueden contener falsos positivos o negativos. No nos hacemos responsables de decisiones tomadas basadas en esta información."
         },
         {
-          heading: "3. Uso Aceptable",
-          content: "Prometes usar Beethoven para: educarte sobre privacidad, proteger tu información personal, compartir con amigos y familia. NO prometes: usar para ataques cibernéticos, hacking, fraude, spamming, o cualquier actividad ilegal."
+          heading: "3. Uso Aceptable y Ético",
+          content: "Te comprometes a usar Beethoven solo con fines defensivos y educativos. PROHIBIDO: Usar las herramientas para escanear sistemas que no te pertenecen, intentar explotar vulnerabilidades encontradas, ingeniería inversa maliciosa, o cualquier acto que viole leyes locales o internacionales. El usuario asume toda responsabilidad civil y penal derivada del mal uso."
         },
         {
-          heading: "4. Descargo de Responsabilidad",
-          content: "Beethoven es gratis y open source. No somos responsables por: pérdida de datos, daños indirectos, problemas técnicos, uso indebido de herramientas. El 100% de la responsabilidad es tuya. Si algo sale mal, revisa el GitHub issues primero."
+          heading: "4. Licencia de Código Abierto",
+          content: "Beethoven se distribuye bajo la licencia MIT. Eres libre de usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del Software, sujeto a las condiciones de la licencia (atribución). No hay lock-in; el código es tuyo para auditar."
         },
         {
-          heading: "5. No hay Garantías",
-          content: "Beethoven se proporciona sin garantías, implícitas o explícitas. No garantizamos: disponibilidad, precisión, seguridad. Usas Beethoven bajo tu propio riesgo. Si no puedes aceptar riesgo, no lo uses."
+          heading: "5. Descargo de Garantías (Disclaimer)",
+          content: "LA APLICACIÓN SE PROPORCIONA 'TAL CUAL' (AS IS), SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIABILIDAD, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES SERÁN RESPONSABLES DE RECLAMACIONES, DAÑOS U OTRAS RESPONSABILIDADES."
         },
         {
-          heading: "6. Límite de Responsabilidad",
-          content: "EN NINGÚN CASO Beethoven será responsable por daños incidentales, especiales, indirectos o punitivos. Esto aplica incluso si hemos sido advertidos de la posibilidad de tales daños."
+          heading: "6. Limitación de Responsabilidad",
+          content: "Bajo ninguna circunstancia Beethoven o sus contribuidores serán responsables por daños directos, indirectos, incidentales, especiales, ejemplares o consecuentes (incluyendo pérdida de datos, beneficios o interrupción de negocios) causados por el uso o la imposibilidad de uso de la aplicación."
         },
         {
-          heading: "7. Cambios a los Términos",
-          content: "Podemos cambiar estos términos en cualquier momento. Los cambios entran en vigor inmediatamente. Tu uso continuado de Beethoven significa aceptación de cambios. Revisaremos GitHub para cambios."
+          heading: "7. Herramientas de Terceros",
+          content: "Algunas funciones utilizan APIs o recursos de terceros (ej: Have I Been Pwned vía k-anonymity). No controlamos ni garantizamos la disponibilidad o precisión de estos servicios externos. El uso de enlaces externos es bajo tu propio riesgo."
         },
         {
-          heading: "8. Propiedad Intelectual",
-          content: "Beethoven es open source bajo licencia MIT. Puedes: usar libremente, modificar, distribuir, vender versiones modificadas. Solo debes dar atribución. El código es tuyo."
+          heading: "8. Modificaciones",
+          content: "Nos reservamos el derecho de modificar estos términos en cualquier momento. Al ser un proyecto open source, los cambios se reflejarán en el repositorio. Es tu responsabilidad revisar periódicamente. El uso continuo implica aceptación."
         },
         {
           heading: "9. Terminación",
-          content: "Podemos terminar acceso a Beethoven si violas estos términos. Sin embargo, como es open source, puedes hacer fork del repo en GitHub y seguir usando tu propia versión."
+          content: "Podemos suspender el acceso a versiones alojadas de la aplicación si detectamos abuso (ej: ataques DDoS). Sin embargo, al ser software libre, no podemos revocar tu derecho a usar versiones locales o forks bajo la licencia MIT."
         },
         {
-          heading: "10. Ley Aplicable",
-          content: "Estos términos se rigen por las leyes del país/jurisdicción donde reside el contributor principal. Para disputas, primero intenta resolver vía GitHub issues o email."
+          heading: "10. Jurisdicción y Ley Aplicable",
+          content: "Estos términos se rigen por las leyes generales de software libre y, subsidiariamente, por las leyes del lugar de residencia de los mantenedores principales si aplica disputa legal."
         }
       ]
     },
@@ -788,67 +899,80 @@ const es: Translation = {
       lastUpdated: "Última actualización: Diciembre 2025",
       sections: [
         {
-          heading: "1. Privacidad Garantizada",
-          content: "Tu privacidad es sagrada. CERO datos personales son recolectados, CERO son enviados a servidores externos, CERO son compartidos con terceros. Es simple: si no hay servidor, no hay tracking."
+          heading: "1. Arquitectura de Conocimiento Culo (Zero Knowledge)",
+          content: "Beethoven está diseñado fundamentalmente para NO saber nada de ti. No es que 'no queremos' ver tus datos, es que arquitectónicamente 'no podemos'. No tenemos base de datos de usuarios, ni logs de acceso, ni dashboard de admin."
         },
         {
-          heading: "2. Qué Procesamos Localmente",
-          content: "TODO se procesa en TU navegador: cuestionarios, generadores de contraseñas, analizadores de privacidad, limpiadores de imágenes, detectores de phishing. El procesamiento ocurre 100% en tu máquina.",
+          heading: "2. Procesamiento Estrictamenente Local",
+          content: "Todas las operaciones sensibles ocurren dentro de tu dispositivo (Client-Side). Cuando generas una contraseña, analizas una imagen o verificas tu navegador, los cálculos los hace tu CPU/GPU. Ningún dato bruto sale de tu red.",
           list: [
-            "Assessment responses: En localStorage de tu navegador",
-            "Generated passwords: En memoria RAM, nunca guardadas",
-            "Image metadata analysis: En tu GPU vía Canvas API",
-            "Browser fingerprinting check: En tuMemory",
-            "Phishing analysis: En JavaScript ejecutado localmente"
+            "Contraseñas: Generadas en RAM usando 'crypto.getRandomValues()'.",
+            "Imágenes: Procesadas en Canvas HTML5, nunca subidas.",
+            "Diagnóstico: Lógica de evaluación ejecutada en JavaScript local."
           ]
         },
         {
-          heading: "3. LocalStorage",
-          content: "Los únicos datos guardados en tu dispositivo (localStorage) son: Theme preference (dark/light), Color palette choice, Language (ES/EN), Your assessment responses (si eliges guardar), Assessment history (timestamps locales). Tú controlas todo esto."
-        },
-        {
-          heading: "4. Qué NO Recolectamos",
-          content: "Beethoven NO colecta: IP address, Ubicación, Cookies de tracking, Device fingerprint, Browser history, Personal information, Analytics, User behavior tracking. NADA.",
+          heading: "3. Interacciones con APIs Externas (K-Anonymity)",
+          content: "Para verificar si una contraseña ha sido filtrada, usamos un método seguro llamado K-Anonymity con la API de 'Have I Been Pwned'.",
           list: [
-            "No Google Analytics",
-            "No Facebook Pixel",
-            "No Mixpanel o similar",
-            "No telemetría de ningún tipo",
-            "No tracking pixels",
-            "No external scripts que rastreamos"
+            "1. Tu navegador hace hash (SHA-1) de tu contraseña.",
+            "2. Solo se envían los primeros 5 caracteres del hash a la API.",
+            "3. La API devuelve cientos de hashes que coinciden con esos 5 caracteres.",
+            "4. Tu navegador busca localmente si el hash completo está en esa lista.",
+            "Resultado: El servicio externo NUNCA ve tu contraseña ni tu hash completo."
           ]
         },
         {
-          heading: "5. Cookies",
-          content: "Beethoven NO usa cookies de terceros. Las ÚNICAS cookies son: localStorage del navegador (tu máquina), session storage (temporal). Ninguna se envía a servidor remoto."
+          heading: "4. Almacenamiento (LocalStorage)",
+          content: "Usamos 'localStorage' del navegador para mejorar tu experiencia. Estos datos persisten en tu disco duro pero nunca se sincronizan con nosotros.",
+          list: [
+            "Preferencias: Tema (oscuro/claro), Idioma.",
+            "Progreso: Estado del 'Viaje de Desgooglización'.",
+            "Resultados: Último diagnóstico realizado (si eliges guardarlo/imprimirlo)."
+          ]
         },
         {
-          heading: "6. Cookies de Terceros",
-          content: "Beethoven NO usa Google Fonts desde CDN (si lo hiciera, Google vería IPs). Beethoven usa fonts desde archivos locales. Cero terceros con acceso a tu actividad."
+          heading: "5. Lo que NO Recolectamos (Lista Excluyente)",
+          content: "Para ser absolutamente claros, garantizamos que NO recolectamos ni tenemos acceso a:",
+          list: [
+            "Direcciones IP ni User Agents.",
+            "Identificadores de Publicidad (IDFA/GAID).",
+            "Historial de navegación.",
+            "Ubicación GPS (el 'Image Lab' la lee localmente para mostrarla, pero no la envía).",
+            "Teclas pulsadas o movimiento del ratón (Analytics)."
+          ]
         },
         {
-          heading: "7. Backup y Exportar",
-          content: "Puedes exportar tu assessment en JSON. Este archivo va directo a tu computadora. Ningún servidor lo ve. Puedes importarlo después para comparar progreso. Tu control total."
+          heading: "6. Cookies y Rastreadores",
+          content: "Beethoven es una zona libre de cookies de rastreo. No utilizamos Google Analytics, Facebook Pixel, Mixpanel, Hotjar ni ninguna herramienta de mercadotecnia. Nuestra única 'cookie' técnica es el almacenamiento local para que la app recuerde que prefieres el 'Modo Oscuro'."
         },
         {
-          heading: "8. Seguridad de Datos",
-          content: "Como no guardamos datos en servidor, no hay: database breaches, data leaks, hacking de servidores. Los datos solo existen en TU máquina. Tu responsabilidad = tu seguridad."
+          heading: "7. Fuentes y Recursos (CDN)",
+          content: "Para minimizar el riesgo de rastreo por terceros, intentamos alojar recursos localmente. Las fuentes (tipografías) se sirven desde el mismo dominio o se incrustan, evitando llamadas a Google Fonts que podrían filtrar tu IP."
         },
         {
-          heading: "9. Links Externos",
-          content: "Beethoven contiene links a Privacy Hub (aplicaciones externas). Cuando haces clic, sales de Beethoven. Esas apps tienen sus propias políticas de privacidad. No somos responsables por ellas."
+          heading: "8. Exportación y Propiedad de Datos",
+          content: "Los datos generados (reportes, JSONs de configuración) te pertenecen. Ofrecemos herramientas para EXPORTAR (DL) estos datos en formatos abiertos. No hay 'vendor lock-in' para tu información de seguridad."
         },
         {
-          heading: "10. Cambios a Privacidad",
-          content: "Si cambiamos esta política, actualizaremos GitHub. Revisas tú cuando quieras. No hay 'terms updated' forzado. Transparencia total."
+          heading: "9. Seguridad del Sitio",
+          content: "Aunque el sitio es estático, utilizamos cabeceras de seguridad modernas (HSTS, CSP donde sea posible) para prevenir ataques XSS o inyecciones que pudieran comprometer tu sesión local."
         },
         {
-          heading: "11. Derechos GDPR/CCPA",
-          content: "Como no procesamos datos personales, GDPR/CCPA no aplican completamente. Sin embargo: Derecho a acceso: Todos tus datos están en localStorage (accesibles vía DevTools). Derecho a eliminar: Borra localStorage cuando quieras. Derecho a portabilidad: Exporta JSON y listo."
+          heading: "10. Enlaces a Terceros",
+          content: "El 'Privacy Hub' contiene enlaces a sitios externos (Proton, Signal, etc.). Una vez abandonas Beethoven, rigen las políticas de privacidad de esos destinos. Recomendamos leerlas, aunque seleccionamos herramientas con buena reputación."
         },
         {
-          heading: "12. Contacto",
-          content: "Si tienes preguntas sobre privacidad, abre issue en GitHub o envía email. Responderemos en 48 horas."
+          heading: "11. Derechos GDPR / CCPA / LGPD",
+          content: "Dado que no somos 'Controladores de Datos' (porque no tenemos tus datos), la mayoría de las solicitudes de acceso/borrado son inoperantes (no tenemos nada que borrar). Sin embargo, cumples tu 'Derecho al Olvido' simplemente borrando el caché/datos de tu navegador."
+        },
+        {
+          heading: "12. Cambios en la Política",
+          content: "Cualquier cambio futuro será para MEJORAR la privacidad, nunca para reducirla. Los cambios se auditan públicamente en el historial de 'commits' de GitHub. Mantenemos transparencia total sobre la evolución del código."
+        },
+        {
+          heading: "13. Contacto y Responsable",
+          content: "Si tienes dudas técnicas sobre cómo protegemos los datos, por favor abre un 'Issue' en nuestro repositorio de GitHub. La comunidad y los mantenedores responderán públicamente para beneficio de todos."
         }
       ]
     }
@@ -931,6 +1055,26 @@ const es: Translation = {
             content: "### ¿Qué es phishing?\nEmails/sitios falsos que pretenden ser legítimos para robarte datos o dinero.\n\n**Estadísticas aterradoras**:\n- 3.4 BILLONES emails de phishing enviados ANUALMENTE\n- 1 de cada 4 usuarios clica en phishing\n- El 90% de brechas de datos comienzan con phishing\n- El CEO promedio es el objetivo más frecuente\n\n### Tipos de phishing\n\n**1. Email Phishing (El más común)**\n- \"Estimado cliente, tu cuenta fue comprometida. Haz clic AHORA\"\n- \"Amazon: Verifica tu cuenta o será cancelada\"\n- \"IRS: Debe impuestos atrasados\"\n\n**2. Spear Phishing (Dirigido)**\n- Atacante investiga sobre TI específicamente\n- Email parece de tu jefe: \"Juan, necesito que hagas esto urgentemente\"\n- **Estadística**: 66% de tasa de éxito\n\n**3. Smishing (SMS Phishing)**\n- \"Amazon: Confirma compra de $500 aquí: [link falso]\"\n- Teléfono SMS es MENOS seguro que email\n\n**4. Vishing (Voice Phishing)**\n- Llamada: \"Soy del banco, confirma tu PIN\"\n- Banco NUNCA te pide PIN por teléfono\n\n### Cómo identificar phishing\n\n**RED FLAG #1 - Urgencia artificial**:\n- ✗ \"ACTÚA AHORA o tu cuenta será cerrada\"\n- ✗ \"Autoriza esto en 24 horas o pierdes acceso\"\n- ✗ \"Pago rechazado, actualiza info INMEDIATAMENTE\"\n- Empresas reales NO usan presión temporal\n\n**RED FLAG #2 - Links sospechosos**:\n- Verifica: Pasa ratón sobre link (sin hacer clic)\n- Veras URL REAL en esquina inferior\n- ✗ paypa1-security.verify.com (NO es paypal.com)\n- ✗ amazon-signin.redirects.com (NO es amazon.com)\n- ✓ paypal.com (correcto)\n\n**RED FLAG #3 - Errores gramaticales**:\n- ✗ \"Dear costumer, your accout have been compromized\"\n- Empresas GRANDES revisan todo\n- Errores = Phishing 99% de probabilidad\n\n**RED FLAG #4 - Piden contraseña**:\n- ✗ \"Haz clic para ingresar tu contraseña\"\n- ✗ \"Confirma tu PIN de seguridad\"\n- **REGLA DE ORO**: Empresas legítimas NUNCA piden contraseña por email\n\n**RED FLAG #5 - Remitente raro**:\n- ✗ security@paypa1.com (typo: paypa1, no paypal)\n- ✗ support@amaz0n.com (cero en lugar de O)\n- ✗ noreply@bankofamerica.verify.secure.com (demasiados subdominios)\n- Verifica remitente COMPLETO (no solo nombre)\n\n**RED FLAG #6 - Genera archivo adjunto**:\n- ✗ .exe (ejecutable - NUNCA descargues)\n- ✗ .zip con .exe dentro\n- ✗ Macros de Word activadas\n- Empresas reales NO envían ejecutables\n\n### Ejemplo real - Phishing vs Legítimo\n\n**PHISHING** (Falso):\n```\nDe: security@amaz0n.verify.com\nAsunto: URGENT - Verify your Amazon Account\nCuerpo: Dear Customer,\nYour account will be closed in 24 hours.\nClick here: amazon-signin.redirects.com/verify\n```\n\n**LEGÍTIMO** (Real):\n```\nDe: account-notification@amazon.com\nAsunto: There was a change to your Amazon account\nCuerpo: Hi John,\nWe noticed a new device signed in.\nIf this wasn't you, visit Your Account > Login & security.\n```\n\n### Cómo protegerte\n\n**1. Verifica URLs escribiendo manualmente**:\n- NO hagas clic en links de emails\n- Abre tu navegador\n- Escribe la dirección (ej: amazon.com)\n- Inicia sesión\n- Si hay alerta, la ves aquí pero SEGURO\n\n**2. Llama directamente a la empresa**:\n- Email dice: \"Tu banco notó fraude\"\n- NO llames a número del email\n- Busca: \"Banco XXX número oficial\" en Google\n- Llama a ESE número\n- Empresa confirma si es real\n\n**3. Usa autenticador (2FA)**:\n- Incluso si atacante tiene contraseña\n- No puede entrar sin código 2FA\n- **ESTO SALVA TU CUENTA**\n\n**4. Verifica en múltiples canales**:\n- Email dice: \"Actúa urgentemente\"\n- Llama a empresa directamente\n- Si es real, confirman\n- Si es phishing, dicen \"no vimos ese email\"\n\n**5. Reporta phishing**:\n- Gmail: Reporta como phishing (flecha arriba → Phishing)\n- Empresa afectada: Forward email a security@empresa.com\n- Ayuda a otras personas\n\n### Test personal\n\n**¿Podrías identificar estos?**\n1. Email de \"Netflix\" con urgencia de confirmar pago → PHISHING\n2. Email de Amazon sin errores, de amazon.com, sin urgencia → LEGÍTIMO\n3. Pop-up de Facebook en email → PHISHING (Facebook NUNCA enva links así)\n4. SMS del banco pidiendo PIN → PHISHING (banco NUNCA pide PIN)"
           }
         ]
+      },
+      {
+        title: "Privacidad en Redes Sociales",
+        articles: [
+          {
+            id: "social-intro",
+            title: "Redes Sociales: Guía de Privacidad",
+            content: "### Facebook: La Fortaleza de Datos\n\n**1. Configuración de Privacidad**\n- Usa la comprobación rápida de privacidad.\n- Limita publicaciones pasadas.\n- Elimina permisos de apps antiguas.\n\n### Instagram: Menos es Más\n\n- Pon tu cuenta como **Privada**.\n- Usa 'Mejores Amigos' para historias personales.\n- Desactiva el Estado de Actividad.\n\n### TikTok: El Espía Divertido\n\n- No sincronices tus contactos.\n- Desactiva la personalización de anuncios.\n- Ten cuidado con lo que grabas de fondo."
+          }
+        ]
+      },
+      {
+        title: "Herramientas Avanzadas",
+        articles: [
+          {
+            id: "advanced-tools-guide",
+            title: "Herramientas para Expertos",
+            content: "### VeraCrypt\nCrea contenedores cifrados para tus archivos más sensibles. Es como una caja fuerte digital.\n\n### GrapheneOS\nSi tienes un Google Pixel, instala este sistema operativo. Elimina el rastreo de Google a nivel de sistema y endurece la seguridad.\n\n### Tor Browser\nPara anonimato real, usa Tor. Enruta tu tráfico por tres nodos voluntarios alrededor del mundo, ocultando tu IP y ubicación."
+          }
+        ]
       }
     ]
   },
@@ -944,38 +1088,121 @@ const es: Translation = {
     title: "Preguntas Frecuentes",
     subtitle: "Respuestas a tus dudas sobre seguridad y privacidad",
     items: [
-      { question: "¿Es esta app realmente gratuita?", answer: "Sí, Beethoven es 100% gratuito y de código abierto. Nunca cobraremos por funcionalidades básicas. Nuestro objetivo es democratizar la privacidad digital.", icon: "heart" },
+      { question: "¿Es esta app realmente gratuita?", answer: "Sí, Beethoven es 100% gratuito y de código abierto (FOSS). Nunca cobraremos por funcionalidades básicas. Nuestro objetivo es democratizar la privacidad digital.", icon: "heart" },
       { question: "¿Dónde se guardan mis datos?", answer: "En ningún lado. TODO se procesa localmente en tu dispositivo. No existe ningún servidor Beethoven. Puedes usar la app sin internet después de la primera carga. Tus datos de assessment se guardan solo en localStorage de tu navegador.", icon: "database" },
       { question: "¿Es seguro usar Beethoven?", answer: "Sí. El código es 100% abierto en GitHub, puedes auditarlo tú mismo. No hay backend, no hay APIs externas (excepto Google Fonts). La app es completamente transparente.", icon: "shield" },
       { question: "¿Beethoven es tan bueno como una auditoría profesional?", answer: "No. Beethoven es educativo y cubre 80% de los casos. Una auditoría profesional es mejor para empresas. Beethoven es perfecto para usuarios personales.", icon: "alert-triangle" },
       { question: "¿Funciona offline?", answer: "Sí, completamente. La primera vez necesitas internet para descargar assets. Después, todo funciona sin conexión. Incluso los generadores de contraseñas, analizadores, y herramientas de limpieza de imágenes funcionan offline.", icon: "wifi" },
       { question: "¿Puedo exportar mis resultados?", answer: "Sí. Desde la página de resultados puedes descargar tu assessment en JSON (para backup) o PDF (para compartir). Esto es 100% local, no se envía a ningún servidor.", icon: "download" },
       { question: "¿Qué significa el score?", answer: "Beethoven te da un score 0-100 basado en tu cuestionario. 80+ = Excelente (privacidad muy protegida). 50-79 = Mejorable (necesitas cambios). 0-49 = Vulnerable (tienes riesgos críticos). El score se recalcula cada vez que haces el assessment.", icon: "zap" },
-      { question: "¿Los generadores de contraseñas son realmente seguros?", answer: "Sí. Generamos contraseñas usando crypto.getRandomValues() de la API nativa del navegador. Es matemáticamente imposible predecirlas. La generación es 100% local, nunca se envía a servidor.", icon: "key" },
+      { question: "¿Los generadores de contraseñas son realmente seguros?", answer: "Sí. Generamos contraseñas usando crypto.getRandomValues() de la API nativa del navegador. Es matemáticamente imposible predecirlas (entropía criptográfica real). La generación es 100% local.", icon: "key" },
       { question: "¿Puedo usar Beethoven en mi teléfono?", answer: "Sí, funciona en navegadores móviles. Sin embargo, la experiencia es mejor en desktop para ciertas herramientas (como el analizador de imágenes). La app es responsive y mobile-friendly.", icon: "smartphone" },
       { question: "¿Beethoven reporta mis datos a terceros?", answer: "NUNCA. No recolectamos, no rastreamos, no compartimos. Cero telemetría. Cero analytics. Cero cookies de tracking. La única cookie que existe es localStorage con TUS preferencias locales.", icon: "lock" },
-      { question: "¿Qué es el Privacy Hub?", answer: "Una directorio curado de 100+ aplicaciones privacy-friendly. Alternativas a Google, Facebook, Microsoft, Apple. Cada app tiene badge (Open Source, Encrypted, etc) y enlace directo. Todo offline, todo verificado.", icon: "layers" },
+      { question: "¿Qué es el Privacy Hub?", answer: "Un directorio curado de 100+ aplicaciones privacy-friendly. Alternativas a Google, Facebook, Microsoft, Apple. Cada app tiene badge (Open Source, Encrypted, etc) y enlace directo. Todo offline, todo verificado.", icon: "layers" },
       { question: "¿El Phishing Simulator es realista?", answer: "Sí. Basado en ataques REALES que hemos documentado. Aprenderás patrones de phishing que después reconocerás en tu email. Excelente para entrenar a familiares.", icon: "alert-triangle" },
-      { question: "¿Beethoven funciona en navegadores viejos?", answer: "Requiere navegador moderno (2020+). Chrome, Firefox, Safari, Edge. IE NO funciona. El navegador debe soportar: Crypto API, Canvas API, Web Workers. Los navegadores modernos soportan todo.", icon: "code" },
+      { question: "¿Beethoven funciona en navegadores viejos?", answer: "Requiere navegador moderno (2020+). Chrome, Firefox, Safari, Edge. IE NO funciona. El navegador debe soportar: Crypto API, Canvas API, Web Workers.", icon: "code" },
       { question: "¿Cómo se llama Beethoven?", answer: "Es un tributo a nuestro querido Chihuahua que falleció. Su espíritu vive en esta app: protegiendo, cuidando, dando libertad. Beethoven el compositor también lucho contra la censura - es perfecto.", icon: "heart" },
-      { question: "¿Puedo contribuir code?", answer: "SÍ. GitHub abierto. Buscamos: traductores, diseñadores, devs. Si encuentras bug, abre issue. Si tienes feature idea, propónla. La comunidad es lo que da vida a Beethoven.", icon: "code" },
-      { question: "¿Beethoven tiene API?", answer: "No. Beethoven es puramente frontend. No existe API porque todo es client-side. Si necesitas integrar Beethoven en algo, duplica los componentes React. El código es tuyo.", icon: "database" },
-      { question: "¿Qué lenguaje usa Beethoven?", answer: "React + TypeScript + Vite. 100% JavaScript frontend. Sin backend Node/Python/etc. Arquitectura ultra-simple = menos bugs = más seguridad. El código total es <10k líneas.", icon: "code" },
-      { question: "¿Beethoven tiene publicidad?", answer: "NUNCA. Cero anuncios, cero sponsors, cero tracking. Beethoven existirá mientras haya gente que crea en privacidad. Si lo amas, considera donar o compartir.", icon: "heart" },
-      { question: "¿Cómo sé que Beethoven no hace tracking?", answer: "1) Abre Developer Tools (F12), ve Network tab. 2) Usa app. 3) Verás CERO requests a servidores externos. 4) Ve el código: github.com/tu-repo. 5) Usa Pi-hole DNS - ningún request de Beethoven.", icon: "shield" },
-      { question: "¿Puedo compartir Beethoven?", answer: "Por supuesto, comparte masivamente. Beethoven es open source (MIT license). Puedes fork, modificar, desplegar donde quieras. El código es tuyo. Si haces versión mejorada, comparte atrás a la comunidad.", icon: "heart" },
-      { question: "¿Beethoven tiene roadmap?", answer: "Sí: Hardware security keys support, Tor integration, mobile app nativa, browser extension, integración con have-i-been-pwned API, historial de assessments (pronto). Síguenos para actualizaciones.", icon: "zap" },
-      { question: "¿Por qué Beethoven si existen otras apps?", answer: "Porque la mayoría tienen: 1) Backend/tracking, 2) Paywall, 3) Datos incompletos, 4) Interfaz confusa. Beethoven: educativo, gratis, transparente, offline, simple. Hecha por gente que ama privacidad.", icon: "heart" }
+      { question: "¿Puedo instalar la app (PWA)?", answer: "Sí. Beethoven es una Progressive Web App (PWA). En Chrome/Edge haz clic en el icono de \'instalar\' en la barra de direcciones. En iOS usa Safari -> Compartir -> Agregar a Inicio. Funciona como app nativa.", icon: "smartphone" },
+      { question: "¿Qué pasa si Beethoven desaparece mañana?", answer: "Nada. Al ser código abierto, puedes clonar el repositorio y correrlo localmente para siempre. La comunidad puede mantener 'forks' del proyecto. Es software resiliente.", icon: "git-branch" },
+      { question: "¿Usan Inteligencia Artificial (IA)?", answer: "No. Beethoven usa algoritmos deterministas transparentes. No enviamos tus datos a OpenAI ni similares. Todo el análisis es lógica de código que puedes ver.", icon: "cpu" },
+      { question: "¿Por qué no tengo que crear una cuenta?", answer: "Porque las cuentas requieren email/password, lo cual crea un vector de ataque. Sin cuentas = sin base de datos que hackear = privacidad absoluta. Tus datos viven en TU navegador.", icon: "user-x" },
+      { question: "¿Cómo borro todos mis datos de la app?", answer: "Simplemente borra el caché/datos de tu navegador para este sitio, o usa el botón 'Reiniciar' en la configuración. No tenemos copia en ningun servidor para borrar.", icon: "trash" },
+      { question: "¿Es compatible con Tor Browser?", answer: "Sí, y recomendado. Beethoven no usa scripts que rompan el anonimato de Tor (como Canvas Fingerprinting agresivo para tracking).", icon: "globe" },
+      { question: "¿Tiene modo oscuro real?", answer: "Sí, detecta tu preferencia de sistema automáticamente o puedes forzarlo manualmente. Cuidamos tus ojos y tu batería OLED.", icon: "moon" },
+      { question: "¿Aceptan donaciones?", answer: "Actualmente no monetizamos. La mejor donación es compartir la app con alguien que necesite protegerse o contribuir código en GitHub.", icon: "gift" },
+      { question: "¿Puedo usarlo para mi empresa?", answer: "Sí, la licencia MIT permite uso comercial e interno. Puedes desplegarlo en tu intranet para entrenar empleados sin costo.", icon: "briefcase" },
+      { question: "¿Tienen extensión de navegador?", answer: "Está en nuestro roadmap. Queremos llevar la protección de phishing en tiempo real a una extensión liviana.", icon: "tool" },
+      { question: "¿Cómo reporto una vulnerabilidad?", answer: "Por favor abre un Security Advisory en GitHub o contáctanos privadamente si es crítico. Tomamos la seguridad muy en serio.", icon: "shield-alert" }
     ],
     contactTitle: "¿Tienes más preguntas?",
     contactBtn: "Abre issue en GitHub"
+  },
+  journey: {
+    title: "Viaje de Desgooglización",
+    subtitle: "Tu camino hacia la soberanía digital, paso a paso.",
+    resetBtn: "Reiniciar Progreso",
+    status: { locked: "Bloqueado", available: "Disponible", completed: "Completado" },
+    levels: [
+      {
+        id: "lvl1", title: "Nivel 1: Iniciado", desc: "Los fundamentos. Detén la hemorragia de datos inmediata.", color: "cyan",
+        nodes: [
+          { id: "browser", title: "Navegador", desc: "Instala Brave o Firefox (LibreWolf).", icon: "Globe", difficulty: "easy", action: "https://librewolf.net/" },
+          { id: "search", title: "Buscador", desc: "Cambia Google por DuckDuckGo o StartPage.", icon: "Search", difficulty: "easy", action: "https://duckduckgo.com/" },
+          { id: "dns", title: "DNS Seguro", desc: "Configura DNS cifrado (NextDNS/Quad9).", icon: "Server", difficulty: "medium", toolAction: "radar" }
+        ]
+      },
+      {
+        id: "lvl2", title: "Nivel 2: Guardián", desc: "Protege tu identidad y comunicaciones.", color: "emerald",
+        nodes: [
+          { id: "passwords", title: "Gestor de Contraseñas", desc: "Usa Bitwarden o KeePassXC. No memorices.", icon: "Key", difficulty: "easy", toolAction: "audit" },
+          { id: "2fa", title: "2FA Real", desc: "Usa Aegis o Raivo. Abandona los SMS.", icon: "Shield", difficulty: "medium" },
+          { id: "email", title: "Email Encriptado", desc: "Crea una cuenta en Proton o Tutanota.", icon: "Mail", difficulty: "medium", toolAction: "leaks" }
+        ]
+      },
+      {
+        id: "lvl3", title: "Nivel 3: Fantasma", desc: "Borra tu rastro y endurece tu entorno.", color: "purple",
+        nodes: [
+          { id: "messenger", title: "Mensajería Segura", desc: "Mueve a tus cercanos a Signal o Session.", icon: "MessageSquare", difficulty: "hard" },
+          { id: "vpn", title: "VPN Sin Registros", desc: "Usa Mullvad o IVPN siempre.", icon: "Globe", difficulty: "medium", toolAction: "radar" },
+          { id: "maps", title: "Mapas Libres", desc: "Usa Organic Maps o OsmAnd.", icon: "Map", difficulty: "medium" }
+        ]
+      },
+      {
+        id: "lvl4", title: "Nivel 4: Espectro", desc: "Soberanía total. Solo para expertos.", color: "rose",
+        nodes: [
+          { id: "os", title: "GrapheneOS", desc: "Instala GrapheneOS en un Pixel.", icon: "Smartphone", difficulty: "expert" },
+          { id: "linux", title: "Linux Desktop", desc: "Usa Linux Mint o Fedora diariamente.", icon: "Monitor", difficulty: "hard" },
+          { id: "selfhost", title: "Self-Hosting", desc: "Monta tu propia nube (Nextcloud).", icon: "Database", difficulty: "expert" }
+        ]
+      }
+    ]
   }
 };
 
 const en: Translation = {
   ...es,
   common: { ...es.common, appName: 'Beethoven', tagline: 'Privacy simplified for everyone', start: 'Start', next: 'Next', back: 'Back', close: 'Close', loading: 'Loading...', error: 'Error', viewGuide: 'View Guide', seeMore: 'See More', free: 'Free', openSource: 'Open Source', all: 'All' },
-  nav: { home: 'Home', tools: 'Tools', assessment: 'Assessment', hub: 'Hub', docs: 'Docs', faq: 'FAQ', about: 'About', theme: 'Theme', legal: 'Legal', terms: 'Terms', privacy: 'Privacy', stories: 'Stories' },
+  journey: {
+    title: "Desgooglization Journey",
+    subtitle: "Your path to digital sovereignty, step by step.",
+    resetBtn: "Reset Progress",
+    status: { locked: "Locked", available: "Available", completed: "Completed" },
+    levels: [
+      {
+        id: "lvl1", title: "Level 1: Initiate", desc: "The fundamentals. Stop the immediate data bleeding.", color: "cyan",
+        nodes: [
+          { id: "browser", title: "Browser", desc: "Install Brave or Firefox (LibreWolf).", icon: "Globe", difficulty: "easy", action: "https://librewolf.net/" },
+          { id: "search", title: "Search Engine", desc: "Swap Google for DuckDuckGo or Kagi.", icon: "Search", difficulty: "easy", action: "https://duckduckgo.com/" },
+          { id: "dns", title: "Secure DNS", desc: "Configure encrypted DNS (NextDNS/Quad9).", icon: "Server", difficulty: "medium", toolAction: "radar" }
+        ]
+      },
+      {
+        id: "lvl2", title: "Level 2: Guardian", desc: "Protect your identity and communications.", color: "emerald",
+        nodes: [
+          { id: "passwords", title: "Password Manager", desc: "Use Bitwarden or KeePassXC. Don't memorize.", icon: "Key", difficulty: "easy", toolAction: "audit" },
+          { id: "2fa", title: "Real 2FA", desc: "Use Aegis or Raivo. Abandon SMS.", icon: "Shield", difficulty: "medium" },
+          { id: "email", title: "Encrypted Email", desc: "Create an account on Proton or Tutanota.", icon: "Mail", difficulty: "medium", toolAction: "leaks" }
+        ]
+      },
+      {
+        id: "lvl3", title: "Level 3: Ghost", desc: "Erase your trail and harden your environment.", color: "purple",
+        nodes: [
+          { id: "messenger", title: "Secure Messaging", desc: "Move close contacts to Signal or Session.", icon: "MessageSquare", difficulty: "hard" },
+          { id: "vpn", title: "Log-free VPN", desc: "Use Mullvad or IVPN always.", icon: "Globe", difficulty: "medium", toolAction: "radar" },
+          { id: "maps", title: "Libre Maps", desc: "Use Organic Maps or OsmAnd.", icon: "Map", difficulty: "medium" }
+        ]
+      },
+      {
+        id: "lvl4", title: "Level 4: Phantom", desc: "Total sovereignty. Experts only.", color: "rose",
+        nodes: [
+          { id: "os", title: "GrapheneOS", desc: "Install GrapheneOS on a Pixel.", icon: "Smartphone", difficulty: "expert" },
+          { id: "linux", title: "Linux Desktop", desc: "Use Linux Mint or Fedora daily.", icon: "Monitor", difficulty: "hard" },
+          { id: "selfhost", title: "Self-Hosting", desc: "Host your own cloud (Nextcloud).", icon: "Database", difficulty: "expert" }
+        ]
+      }
+    ]
+  },
+  nav: { home: 'Home', tools: 'Tools', assessment: 'Assessment', hub: 'Hub', docs: 'Docs', journey: 'Journey', faq: 'FAQ', about: 'About', theme: 'Theme', legal: 'Legal', terms: 'Terms', privacy: 'Privacy', stories: 'Stories' },
   inspector: { ...es.inspector, enable: 'Inspector', disable: 'Close', title: 'Inspector UI', select: 'Select an element', props: 'Properties', computed: 'Computed', tag: 'Tag', class: 'Class', dimensions: 'Dimensions', color: 'Color', font: 'Font', spacing: 'Spacing' },
   analyzer: {
     title: "Privacy Analyzer",
@@ -1040,7 +1267,20 @@ const en: Translation = {
     trustLocal: "Local Processing", trustLocalDesc: "Your data is processed on your device, not on our servers.",
     trustOpen: "Open Source", trustOpenDesc: "Our code is public and auditable by anyone.",
     openSourceSectionTitle: "100% Open Source", openSourceSectionDesc: "Transparency is key to trust. Explore our code on GitHub.",
-    openSourceSectionBtn: "View on GitHub", mapLabel: "Global Threat Map (Simulated)"
+    openSourceSectionBtn: "View on GitHub", mapLabel: "Global Threat Map (Simulated)",
+    securityTipTitle: "Security Tip of the Day",
+    securityTips: [
+      "Use a passphrase (diceware) instead of a complex word. 'correct-horse-battery-staple' is better than 'Tr0ub4dor&3'.",
+      "Enable 2FA everywhere, preferably using an app (Aegis, Raivo) not SMS.",
+      "Never reuse passwords. A password manager is your best friend.",
+      "Cover your webcam when not in use. Hardware is the only failsafe.",
+      "Keep your software updated. Updates often patch critical vulnerabilities.",
+      "Don't click links in unexpected emails. Always verify the sender.",
+      "Use a VPN on public WiFi to encrypt your traffic.",
+      "Review your mobile app permissions periodically.",
+      "Backup regularly to disconnected drives (3-2-1 rule).",
+      "Consider using a privacy-focused browser like Firefox or Brave."
+    ]
   },
   assessment: {
     ...es.assessment,
@@ -1175,7 +1415,7 @@ const en: Translation = {
       browser: "Browsers", email: "Email", messaging: "Messaging", cloud: "Cloud", search: "Search Engines",
       os: "OS", vpn: "VPN", pass: "Passwords", dns: "DNS", store: "Stores", productivity: "Productivity", utilities: "Utilities"
     },
-    apps: es.hub.apps.map(app => ({...app})) // Clone apps structure
+    apps: es.hub.apps.map(app => ({ ...app })) // Clone apps structure
   },
   lab: {
     title: "Image Lab", subtitle: "Remove hidden metadata from your photos",
@@ -1307,28 +1547,31 @@ const en: Translation = {
     title: "Frequently Asked Questions",
     subtitle: "Answers to your privacy and security questions",
     items: [
-      { question: "Is this app really free?", answer: "Yes, Beethoven is 100% free and open source. We will never charge for basic features. Our goal is to democratize digital privacy.", icon: "heart" },
+      { question: "Is this app really free?", answer: "Yes, Beethoven is 100% free and open source (FOSS). We will never charge for basic features. Our goal is to democratize digital privacy.", icon: "heart" },
       { question: "Where is my data stored?", answer: "Nowhere. Everything is processed locally on your device. There is no Beethoven server. You can use the app without internet after the first load. Your assessment data is stored only in your browser's localStorage.", icon: "database" },
       { question: "Is it safe to use Beethoven?", answer: "Yes. The code is 100% open on GitHub, you can audit it yourself. No backend, no external APIs (except Google Fonts). The app is completely transparent.", icon: "shield" },
       { question: "Is Beethoven as good as a professional audit?", answer: "No. Beethoven is educational and covers 80% of cases. A professional audit is better for companies. Beethoven is perfect for personal users.", icon: "alert-triangle" },
       { question: "Does it work offline?", answer: "Yes, completely. The first time you need internet to download assets. After that, everything works without connection. Even password generators, analyzers, and image cleaning tools work offline.", icon: "wifi" },
-      { question: "Can I export my results?", answer: "Yes. From the results page you can download your assessment as JSON (for backup) or TXT (for sharing). This is 100% local, not sent to any server.", icon: "download" },
+      { question: "Can I export my results?", answer: "Yes. From the results page you can download your assessment as JSON (for backup) or PDF (for sharing). This is 100% local, not sent to any server.", icon: "download" },
       { question: "What does the score mean?", answer: "Beethoven gives you a score 0-100 based on your questionnaire. 80+ = Excellent (privacy well protected). 50-79 = Improvable (needs changes). 0-49 = Vulnerable (critical risks). Score recalculates each time you take the assessment.", icon: "zap" },
-      { question: "Are the password generators really secure?", answer: "Yes. We generate passwords using crypto.getRandomValues() from the browser's native API. It's mathematically impossible to predict them. Generation is 100% local, never sent to a server.", icon: "key" },
+      { question: "Are the password generators really secure?", answer: "Yes. We generate passwords using crypto.getRandomValues() from the browser's native API. It's mathematically impossible to predict them. Generation is 100% local.", icon: "key" },
       { question: "Can I use Beethoven on my phone?", answer: "Yes, it works on mobile browsers. However, the experience is better on desktop for certain tools (like the image analyzer). The app is responsive and mobile-friendly.", icon: "smartphone" },
       { question: "Does Beethoven report my data to third parties?", answer: "NEVER. We don't collect, don't track, don't share. Zero telemetry. Zero analytics. Zero tracking cookies. The only storage is localStorage with YOUR local preferences.", icon: "lock" },
       { question: "What is the Privacy Hub?", answer: "A curated directory of 100+ privacy-friendly apps. Alternatives to Google, Facebook, Microsoft, Apple. Each app has badges (Open Source, Encrypted, etc) and direct links. All offline, all verified.", icon: "layers" },
       { question: "Is the Phishing Simulator realistic?", answer: "Yes. Based on REAL attacks we've documented. You'll learn phishing patterns that you'll recognize in your email. Excellent for training family members.", icon: "alert-triangle" },
-      { question: "Does Beethoven work on old browsers?", answer: "Requires modern browser (2020+). Chrome, Firefox, Safari, Edge. IE does NOT work. Browser must support: Crypto API, Canvas API, Web Workers. Modern browsers support everything.", icon: "code" },
+      { question: "Does Beethoven work on old browsers?", answer: "Requires modern browser (2020+). Chrome, Firefox, Safari, Edge. IE does NOT work. Browser must support: Crypto API, Canvas API, Web Workers.", icon: "code" },
       { question: "Why is Beethoven named Beethoven?", answer: "It's a tribute to our beloved Chihuahua who passed away. His spirit lives in this app: protecting, caring, giving freedom. Beethoven the composer also fought against censorship - it's perfect.", icon: "heart" },
-      { question: "Can I contribute code?", answer: "YES. GitHub open. We're looking for: translators, designers, devs. If you find a bug, open an issue. If you have a feature idea, propose it. Community is what brings Beethoven to life.", icon: "code" },
-      { question: "Does Beethoven have an API?", answer: "No. Beethoven is purely frontend. No API exists because everything is client-side. If you need to integrate Beethoven into something, duplicate the React components. The code is yours.", icon: "database" },
-      { question: "What language does Beethoven use?", answer: "React + TypeScript + Vite. 100% JavaScript frontend. No backend Node/Python/etc. Ultra-simple architecture = fewer bugs = more security. Total code is <10k lines.", icon: "code" },
-      { question: "Does Beethoven have ads?", answer: "NEVER. Zero ads, zero sponsors, zero tracking. Beethoven will exist as long as people believe in privacy. If you love it, consider donating or sharing.", icon: "heart" },
-      { question: "How do I know Beethoven isn't tracking me?", answer: "1) Open Developer Tools (F12), go to Network tab. 2) Use app. 3) You'll see ZERO requests to external servers. 4) Check the code: github.com/repo. 5) Use Pi-hole DNS - no requests from Beethoven.", icon: "shield" },
-      { question: "Can I share Beethoven?", answer: "Of course, share widely. Beethoven is open source (MIT license). You can fork, modify, deploy anywhere. The code is yours. If you make an improved version, share it back to the community.", icon: "heart" },
-      { question: "Does Beethoven have a roadmap?", answer: "Yes: Hardware security keys support, Tor integration, native mobile app, browser extension, have-i-been-pwned API integration, assessment history (coming soon). Follow us for updates.", icon: "zap" },
-      { question: "Why Beethoven when other apps exist?", answer: "Because most have: 1) Backend/tracking, 2) Paywall, 3) Incomplete data, 4) Confusing interface. Beethoven: educational, free, transparent, offline, simple. Built by people who love privacy.", icon: "heart" }
+      { question: "Can I install the app (PWA)?", answer: "Yes. Beethoven is a Progressive Web App (PWA). In Chrome/Edge click the 'install' icon in the address bar. In iOS use Safari -> Share -> Add to Home Screen. Works like a native app.", icon: "smartphone" },
+      { question: "What if Beethoven disappears tomorrow?", answer: "Nothing. Being open source, you can clone the repository and run it locally forever. The community can maintain forks. It is resilient software.", icon: "git-branch" },
+      { question: "Do you use Artificial Intelligence (AI)?", answer: "No. Beethoven uses transparent deterministic algorithms. We don't send your data to OpenAI or similar. All analysis is code logic you can see.", icon: "cpu" },
+      { question: "Why don't I have to create an account?", answer: "Because accounts require email/password, creating an attack vector. No accounts = no database to hack = absolute privacy. Your data lives in YOUR browser.", icon: "user-x" },
+      { question: "How do I wipe my data from the app?", answer: "Simply clear your browser cache/data for this site, or use the 'Reset' button in settings. We have no copy on any server to delete.", icon: "trash" },
+      { question: "Is it compatible with Tor Browser?", answer: "Yes, and recommended. Beethoven receives no scripts that break Tor anonymity (like aggressive Canvas Fingerprinting for tracking).", icon: "globe" },
+      { question: "Does it have real dark mode?", answer: "Yes, it detects your system preference automatically or you can force it manually. We care about your eyes and OLED battery life.", icon: "moon" },
+      { question: "Do you accept donations?", answer: "We don't monetize. The best donation is sharing the app with someone who needs protection or contributing code on GitHub.", icon: "gift" },
+      { question: "Can I use it for my business?", answer: "Yes, the MIT license allows commercial and internal use. You can deploy it on your intranet to train employees at no cost.", icon: "briefcase" },
+      { question: "Do you have a browser extension?", answer: "It's on our roadmap. We want to bring real-time phishing protection to a lightweight extension.", icon: "tool" },
+      { question: "How do I report a vulnerability?", answer: "Please open a Security Advisory on GitHub or contact us privately if critical. We take security very seriously.", icon: "shield-alert" }
     ],
     contactTitle: "Have more questions?",
     contactBtn: "Open issue on GitHub"
@@ -1340,43 +1583,43 @@ const en: Translation = {
       sections: [
         {
           heading: "1. Acceptance of Terms",
-          content: "By using Beethoven, you accept these terms. If you disagree, do not use the application. Beethoven is provided 'AS IS' without any warranties of any kind."
+          content: "By using Beethoven ('the Application'), you unconditionally accept these terms. If you disagree with any of them, please stop using it immediately. Continued use constitutes full acceptance."
         },
         {
-          heading: "2. Educational Nature",
-          content: "Beethoven is an EDUCATIONAL tool about digital privacy. It is not a substitute for professional security audits. Results are indicative, not definitive. Beethoven educates you, it does not replace experts."
+          heading: "2. Educational and Non-Binding Nature",
+          content: "Beethoven is strictly an EDUCATIONAL and INFORMATIONAL tool. It does not constitute professional legal, medical, or cybersecurity advice. Scan results (breaches, passwords, privacy) are indicative and may contain false positives or negatives. We are not responsible for decisions made based on this information."
         },
         {
-          heading: "3. Acceptable Use",
-          content: "You promise to use Beethoven for: educating yourself about privacy, protecting your personal information, sharing with friends and family. You do NOT promise to: use for cyber attacks, hacking, fraud, spamming, or any illegal activity."
+          heading: "3. Acceptable and Ethical Use",
+          content: "You agree to use Beethoven only for defensive and educational purposes. PROHIBITED: Using the tools to scan systems you do not own, attempting to exploit found vulnerabilities, malicious reverse engineering, or any act violating local or international laws. The user assumes all civil and criminal liability derived from misuse."
         },
         {
-          heading: "4. Disclaimer",
-          content: "Beethoven is free and open source. We are not responsible for: data loss, indirect damages, technical issues, tool misuse. 100% responsibility is yours. If something goes wrong, check GitHub issues first."
+          heading: "4. Open Source License",
+          content: "Beethoven is distributed under the MIT license. You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, subject to license conditions (attribution). There is no lock-in; the code is yours to audit."
         },
         {
-          heading: "5. No Warranties",
-          content: "Beethoven is provided without warranties, implied or express. We do not guarantee: availability, accuracy, security. You use Beethoven at your own risk. If you cannot accept risk, do not use it."
+          heading: "5. Disclaimer of Warranties",
+          content: "THE APPLICATION IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY."
         },
         {
           heading: "6. Limitation of Liability",
-          content: "IN NO EVENT shall Beethoven be liable for incidental, special, indirect, or punitive damages. This applies even if we have been warned of the possibility of such damages."
+          content: "Under no circumstances shall Beethoven or its contributors be liable for direct, indirect, incidental, special, exemplary, or consequential damages (including loss of data, profits, or business interruption) caused by the use or inability to use the application."
         },
         {
-          heading: "7. Changes to Terms",
-          content: "We can change these terms at any time. Changes take effect immediately. Your continued use of Beethoven means acceptance of changes. Check GitHub for updates."
+          heading: "7. Third-Party Tools",
+          content: "Some features use third-party APIs or resources (e.g., Have I Been Pwned via k-anonymity). We do not control or guarantee the availability or accuracy of these external services. Use of external links is at your own risk."
         },
         {
-          heading: "8. Intellectual Property",
-          content: "Beethoven is open source under MIT license. You can: use freely, modify, distribute, sell modified versions. You only must give attribution. The code is yours."
+          heading: "8. Modifications",
+          content: "We reserve the right to modify these terms at any time. As an open-source project, changes will be reflected in the repository. It is your responsibility to review periodically. Continued use implies acceptance."
         },
         {
           heading: "9. Termination",
-          content: "We can terminate access to Beethoven if you violate these terms. However, since it is open source, you can fork the repo on GitHub and continue using your own version."
+          content: "We may suspend access to hosted versions of the application if abuse is detected (e.g., DDoS attacks). However, being free software, we cannot revoke your right to use local versions or forks under the MIT license."
         },
         {
-          heading: "10. Applicable Law",
-          content: "These terms are governed by the laws of the country/jurisdiction where the main contributor resides. For disputes, first try to resolve via GitHub issues or email."
+          heading: "10. Jurisdiction and Applicable Law",
+          content: "These terms are governed by general free software laws and, subsidiarily, by the laws of the place of residence of the main maintainers if a legal dispute applies."
         }
       ]
     },
@@ -1385,67 +1628,80 @@ const en: Translation = {
       lastUpdated: "Last Updated: December 2025",
       sections: [
         {
-          heading: "1. Privacy Guaranteed",
-          content: "Your privacy is sacred. ZERO personal data is collected, ZERO is sent to external servers, ZERO is shared with third parties. Simple: if there's no server, there's no tracking."
+          heading: "1. Zero Knowledge Architecture",
+          content: "Beethoven is fundamentally designed to NOT know anything about you. It's not that we 'don't want' to see your data, it's that architecturally we 'cannot'. We have no user database, no access logs, no admin dashboard."
         },
         {
-          heading: "2. What We Process Locally",
-          content: "EVERYTHING is processed on YOUR browser: questionnaires, password generators, privacy analyzers, image cleaners, phishing detectors. Processing happens 100% on your machine.",
+          heading: "2. Strictly Local Processing",
+          content: "All sensitive operations happen inside your device (Client-Side). When you generate a password, analyze an image, or verify your browser, the calculations are done by your CPU/GPU. No raw data leaves your network.",
           list: [
-            "Assessment responses: In your browser's localStorage",
-            "Generated passwords: In RAM memory, never saved",
-            "Image metadata analysis: On your GPU via Canvas API",
-            "Browser fingerprinting check: In memory",
-            "Phishing analysis: In JavaScript executed locally"
+            "Passwords: Generated in RAM using 'crypto.getRandomValues()'.",
+            "Images: Processed in HTML5 Canvas, never uploaded.",
+            "Diagnostics: Logic executed in local JavaScript."
           ]
         },
         {
-          heading: "3. LocalStorage",
-          content: "The only data saved on your device (localStorage) is: Theme preference (dark/light), Color palette choice, Language (ES/EN), Your assessment responses (if you choose to save), Assessment history (local timestamps). You control all of this."
-        },
-        {
-          heading: "4. What We Do NOT Collect",
-          content: "Beethoven does NOT collect: IP address, Location, Tracking cookies, Device fingerprint, Browser history, Personal information, Analytics, User behavior tracking. NOTHING.",
+          heading: "3. Externals API Interactions (K-Anonymity)",
+          content: "To verify if a password has been leaked, we use a secure method called K-Anonymity with the 'Have I Been Pwned' API.",
           list: [
-            "No Google Analytics",
-            "No Facebook Pixel",
-            "No Mixpanel or similar",
-            "No telemetry of any kind",
-            "No tracking pixels",
-            "No external scripts we track"
+            "1. Your browser hashes (SHA-1) your password.",
+            "2. Only the first 5 characters of the hash are sent to the API.",
+            "3. The API returns hundreds of hashes matching those 5 characters.",
+            "4. Your browser searches locally if the full hash is in that list.",
+            "Result: The external service NEVER sees your password or your full hash."
           ]
         },
         {
-          heading: "5. Cookies",
-          content: "Beethoven does NOT use third-party cookies. The ONLY cookies are: browser localStorage (your machine), session storage (temporary). None are sent to remote servers."
+          heading: "4. Storage (LocalStorage)",
+          content: "We use browser 'localStorage' to improve your experience. These data persist on your hard drive but never sync with us.",
+          list: [
+            "Preferences: Theme (dark/light), Language.",
+            "Progress: 'Desgooglization Journey' status.",
+            "Results: Last diagnosis performed (if you choose to save/print it)."
+          ]
         },
         {
-          heading: "6. Third-Party Cookies",
-          content: "Beethoven does NOT use Google Fonts from CDN (if we did, Google would see IPs). Beethoven uses fonts from local files. Zero third parties with access to your activity."
+          heading: "5. What We Do NOT Collect (Exclusion List)",
+          content: "To be absolutely clear, we guarantee that we do NOT collect or have access to:",
+          list: [
+            "IP Addresses or User Agents.",
+            "Advertising Identifiers (IDFA/GAID).",
+            "Browsing History.",
+            "GPS Location (Image Lab reads it locally to show you, but doesn't send it).",
+            "Keystrokes or mouse movement (Analytics)."
+          ]
         },
         {
-          heading: "7. Backup and Export",
-          content: "You can export your assessment as JSON. This file goes directly to your computer. No server sees it. You can import it later to compare progress. Complete your control."
+          heading: "6. Cookies and Trackers",
+          content: "Beethoven is a tracking-cookie-free zone. We do not use Google Analytics, Facebook Pixel, Mixpanel, Hotjar, or any marketing tools. Our only technical 'cookie' is local storage so the app remembers you prefer 'Dark Mode'."
         },
         {
-          heading: "8. Data Security",
-          content: "Since we don't store data on servers, there are no: database breaches, data leaks, server hacking. Data only exists on YOUR machine. Your responsibility = your security."
+          heading: "7. Sources and Resources (CDN)",
+          content: "To minimize tracking risk by third parties, we try to host resources locally. Fonts are served from the same domain or embedded, avoiding Google Fonts calls that could leak your IP."
         },
         {
-          heading: "9. External Links",
-          content: "Beethoven contains links to Privacy Hub (external applications). When you click, you leave Beethoven. Those apps have their own privacy policies. We are not responsible for them."
+          heading: "8. Export and Data Ownership",
+          content: "Generated data (reports, config JSONs) belongs to you. We offer tools to EXPORT (DL) this data in open formats. There is no 'vendor lock-in' for your security info."
         },
         {
-          heading: "10. Changes to Privacy",
-          content: "If we change this policy, we'll update GitHub. You review whenever you want. No forced 'terms updated'. Complete transparency."
+          heading: "9. Site Security",
+          content: "Although the site is static, we use modern security headers (HSTS, CSP where possible) to prevent XSS attacks or injections that could compromise your local session."
         },
         {
-          heading: "11. GDPR/CCPA Rights",
-          content: "Since we don't process personal data, GDPR/CCPA don't fully apply. However: Right to access: All your data is in localStorage (accessible via DevTools). Right to delete: Clear localStorage whenever you want. Right to portability: Export JSON and done."
+          heading: "10. Links to Third Parties",
+          content: "The 'Privacy Hub' contains links to external sites (Proton, Signal, etc.). Once you leave Beethoven, the privacy policies of those destinations apply. We recommend reading them, although we select tools with good reputations."
         },
         {
-          heading: "12. Contact",
-          content: "If you have privacy questions, open an issue on GitHub or send email. We'll respond within 48 hours."
+          heading: "11. GDPR / CCPA / LGPD Rights",
+          content: "Since we are not 'Data Controllers' (because we don't hold your data), most access/delete requests are inoperative (we have nothing to delete). However, you fulfill your 'Right to be Forgotten' simply by clearing your browser cache/data."
+        },
+        {
+          heading: "12. Policy Changes",
+          content: "Any future change will be to IMPROVE privacy, never to reduce it. Changes are publicly audited in the GitHub 'commits' history. We maintain full transparency about code evolution."
+        },
+        {
+          heading: "13. Contact and Responsible Party",
+          content: "If you have technical questions about how we protect data, please open an 'Issue' on our GitHub repository. The community and maintainers will respond publicly for everyone's benefit."
         }
       ]
     }
