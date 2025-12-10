@@ -651,88 +651,6 @@ const es: Translation = {
         networkName: "Free_Airport_WiFi",
         security: "Open",
         explanation: "Las redes Wi-Fi abiertas (sin candado) permiten que cualquiera intercepte tu tráfico. Usa siempre VPN en estas redes."
-      },
-      {
-        id: 4,
-        type: "sms",
-        isSafe: false,
-        sender: "DHL Express",
-        body: "Su paquete está retenido. Pague 1,99€ en http://dhl-entregas.link para liberarlo hoy.",
-        explanation: "Los estafadores usan dominios parecidos al servicio original y montos pequeños para que pagues rápido. No ingreses en enlaces acortados o dominios desconocidos."
-      },
-      {
-        id: 5,
-        type: "sms",
-        isSafe: true,
-        sender: "BancoSeguro",
-        body: "Tu código de verificación es 842199. No compartas este código con nadie.",
-        explanation: "Los bancos legítimos envían códigos de un solo uso sin enlaces. Mientras no haya solicitud de datos sensibles ni links, el mensaje es esperado y seguro."
-      },
-      {
-        id: 6,
-        type: "email",
-        isSafe: false,
-        subject: "Alerta de inicio de sesión de Microsoft",
-        sender: "security@microsoft-support.com",
-        body: "Detectamos un inicio de sesión sospechoso. Verifica tu cuenta aquí: https://microsoft-secure-login.com/reset",
-        explanation: "El dominio del remitente y el enlace no son microsoft.com. Los atacantes usan dominios largos con 'secure' para parecer oficiales."
-      },
-      {
-        id: 7,
-        type: "email",
-        isSafe: true,
-        subject: "Actualización de políticas internas",
-        sender: "rrhh@miempresa.com",
-        body: "Publicamos la nueva política de vacaciones. Consúltala en la intranet: https://intranet.miempresa.com/politicas",
-        explanation: "El dominio coincide con la empresa y no solicita credenciales fuera de la intranet corporativa. Los enlaces apuntan al dominio conocido."
-      },
-      {
-        id: 8,
-        type: "wifi",
-        isSafe: true,
-        networkName: "Airport_WiFi_SECURE",
-        security: "WPA3",
-        explanation: "La red muestra candado y usa WPA3. Sigue siendo mejor verificar el nombre en señalización oficial, pero el cifrado reduce riesgos."
-      },
-      {
-        id: 9,
-        type: "wifi",
-        isSafe: false,
-        networkName: "Cafe_Network-5G",
-        security: "Open",
-        explanation: "Las redes abiertas sin contraseña pueden ser 'evil twin'. Un atacante puede crear un hotspot con el mismo nombre para capturar tráfico."
-      },
-      {
-        id: 10,
-        type: "password",
-        isSafe: false,
-        url: "http://secure-paypal.com.login.verify-identity.ru",
-        explanation: "El sitio no usa HTTPS y el dominio incluye palabras como 'paypal' pero termina en un TLD desconocido (.ru). Es una página falsa para robar credenciales."
-      },
-      {
-        id: 11,
-        type: "password",
-        isSafe: true,
-        url: "https://accounts.google.com",
-        explanation: "El dominio exacto es de Google y utiliza HTTPS. Siempre verifica el candado y el dominio antes de ingresar credenciales."
-      },
-      {
-        id: 12,
-        type: "email",
-        isSafe: false,
-        subject: "Factura pendiente de la Agencia Tributaria",
-        sender: "notificaciones@aeat-gob.com",
-        body: "Tienes una factura atrasada. Descarga el comprobante aquí antes de 24h: https://aeat-gob.com/factura.pdf",
-        explanation: "Los dominios oficiales de la Agencia Tributaria terminan en .gob.es o .aeat.es. El dominio 'aeat-gob.com' es falso y usa urgencia para presionar."
-      },
-      {
-        id: 13,
-        type: "email",
-        isSafe: false,
-        subject: "Actualiza tu monedero Web3",
-        sender: "support@walletconnect-secure.io",
-        body: "Para seguir usando tu monedero, ingresa tu frase semilla en nuestro portal seguro: https://walletconnect-secure.io",
-        explanation: "Ningún servicio legítimo solicita tu frase semilla. Pedirla por correo es señal clara de phishing para vaciar el monedero."
       }
     ]
   },
@@ -1194,112 +1112,18 @@ const en: Translation = {
     ui: { messages: "Messages", networks: "Networks", unsecured: "Unsecured", encrypted: "Encrypted", signin: "Sign In", username: "Username", password: "Password", login: "Login", today: "Today", viewDetails: "View details" },
     scenarios: [
       {
-        id: 1,
-        type: "email",
-        isSafe: false,
-        subject: "URGENT: Action required on your account",
-        sender: "security@paypa1-support.com",
+        id: 1, type: "email", isSafe: false, subject: "URGENT: Action required on your account", sender: "security@paypa1-support.com",
         body: "We have detected unusual activity. Click here to verify your identity immediately or your account will be suspended.",
         explanation: "Check the sender: 'paypa1' is a common typosquatting error. Urgency is also a red flag."
       },
       {
-        id: 2,
-        type: "email",
-        isSafe: true,
-        subject: "Your purchase receipt",
-        sender: "noreply@amazon.com",
+        id: 2, type: "email", isSafe: true, subject: "Your purchase receipt", sender: "noreply@amazon.com",
         body: "Thanks for your order #123456. It has been shipped to your saved address. You can view details in your order history.",
         explanation: "The sender is correct (amazon.com) and does not ask you to click urgent links or enter sensitive data."
       },
       {
-        id: 3,
-        type: "wifi",
-        isSafe: false,
-        networkName: "Free_Airport_WiFi",
-        security: "Open",
+        id: 3, type: "wifi", isSafe: false, networkName: "Free_Airport_WiFi", security: "Open",
         explanation: "Open Wi-Fi networks (no lock) allow anyone to intercept your traffic. Always use VPN on these networks."
-      },
-      {
-        id: 4,
-        type: "sms",
-        isSafe: false,
-        sender: "DHL Express",
-        body: "Your package is on hold. Pay $1.99 at http://dhl-deliveries.link to release it today.",
-        explanation: "Scammers use lookalike domains and small amounts to make you pay quickly. Avoid shortened or unknown domains."
-      },
-      {
-        id: 5,
-        type: "sms",
-        isSafe: true,
-        sender: "SafeBank",
-        body: "Your verification code is 842199. Do not share this code with anyone.",
-        explanation: "Legitimate banks send one-time codes without links. As long as no sensitive data or links are requested, the message is expected and safe."
-      },
-      {
-        id: 6,
-        type: "email",
-        isSafe: false,
-        subject: "Microsoft sign-in alert",
-        sender: "security@microsoft-support.com",
-        body: "We detected a suspicious sign-in. Verify your account here: https://microsoft-secure-login.com/reset",
-        explanation: "The sender domain and link are not microsoft.com. Attackers use long domains with 'secure' to look official."
-      },
-      {
-        id: 7,
-        type: "email",
-        isSafe: true,
-        subject: "Internal policy update",
-        sender: "hr@mycompany.com",
-        body: "We published the new vacation policy. Read it on the intranet: https://intranet.mycompany.com/policies",
-        explanation: "The domain matches the company and does not ask for credentials outside the corporate intranet. Links point to the known domain."
-      },
-      {
-        id: 8,
-        type: "wifi",
-        isSafe: true,
-        networkName: "Airport_WiFi_SECURE",
-        security: "WPA3",
-        explanation: "The network shows a lock and uses WPA3. It is still best to verify the name on official signage, but encryption reduces risks."
-      },
-      {
-        id: 9,
-        type: "wifi",
-        isSafe: false,
-        networkName: "Cafe_Network-5G",
-        security: "Open",
-        explanation: "Open networks without passwords can be evil twins. An attacker can create a hotspot with the same name to capture traffic."
-      },
-      {
-        id: 10,
-        type: "password",
-        isSafe: false,
-        url: "http://secure-paypal.com.login.verify-identity.ru",
-        explanation: "The site lacks HTTPS and uses 'paypal' in a strange domain ending in .ru. It is a fake page to steal credentials."
-      },
-      {
-        id: 11,
-        type: "password",
-        isSafe: true,
-        url: "https://accounts.google.com",
-        explanation: "The exact domain belongs to Google and uses HTTPS. Always check the lock and domain before entering credentials."
-      },
-      {
-        id: 12,
-        type: "email",
-        isSafe: false,
-        subject: "Pending tax invoice",
-        sender: "notifications@tax-gov.com",
-        body: "You have an overdue invoice. Download the receipt here within 24h: https://tax-gov.com/invoice.pdf",
-        explanation: "Official tax agencies use .gov or country domains. The domain 'tax-gov.com' is fake and uses urgency to pressure you."
-      },
-      {
-        id: 13,
-        type: "email",
-        isSafe: false,
-        subject: "Update your Web3 wallet",
-        sender: "support@walletconnect-secure.io",
-        body: "To keep using your wallet, enter your seed phrase in our secure portal: https://walletconnect-secure.io",
-        explanation: "No legitimate service asks for your seed phrase. Requesting it by email is a clear phishing attempt to drain the wallet."
       }
     ]
   },

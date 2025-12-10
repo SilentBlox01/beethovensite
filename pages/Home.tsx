@@ -325,7 +325,7 @@ export const Home: React.FC = () => {
                     </p>
                     <div className="pt-4">
                         <a 
-                            href="https://github.com" 
+                            href="https://github.com/SilentBlox01/beethovensite" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all hover:scale-105 shadow-xl shadow-white/10 group"

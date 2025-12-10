@@ -95,7 +95,7 @@ export const FAQ: React.FC = () => {
       <div className="mt-16 text-center animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         <p className="text-slate-500 dark:text-slate-400 mb-4">{t.faq.contactTitle}</p>
         <a 
-            href="https://github.com" 
+            href="https://github.com/SilentBlox01/beethovensite" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
