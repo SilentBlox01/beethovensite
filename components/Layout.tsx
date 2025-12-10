@@ -50,7 +50,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let particles: { x: number; y: number; vx: number; vy: number; size: number }[] = [];
@@ -62,19 +62,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     // Mouse state
     const mouse = { x: -1000, y: -1000 };
 
-    // Configuration
-    const particleCount = window.innerWidth < 768 ? 40 : 80;
-    const connectionDistance = 150;
-    const mouseDistance = 200;
+    // Configuration - Reduced particle count for better performance
+    const particleCount = window.innerWidth < 768 ? 20 : 50;
+    const connectionDistance = 120;
+    const mouseDistance = 180;
 
     // Initialize particles
     for (let i = 0; i < particleCount; i++) {
         particles.push({
             x: Math.random() * w,
             y: Math.random() * h,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            size: Math.random() * 2 + 1
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            size: Math.random() * 1.5 + 0.5
         });
     }
 

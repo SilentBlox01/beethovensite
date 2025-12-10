@@ -15,6 +15,32 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      build: {
+        target: 'ES2020',
+        minify: 'terser',
+        terserOptions: {
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+          },
+        },
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'vendor': ['react', 'react-dom', 'react-router-dom'],
+              'icons': ['lucide-react'],
+            },
+            entryFileNames: 'js/[name]-[hash].js',
+            chunkFileNames: 'js/[name]-[hash].js',
+            assetFileNames: 'assets/[name]-[hash][extname]'
+          }
+        },
+        chunkSizeWarningLimit: 1000,
+        reportCompressedSize: false,
+      },
+      define: {
+        __DEV__: mode === 'development',
       }
     };
 });
