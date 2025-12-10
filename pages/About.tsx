@@ -87,7 +87,7 @@ export const About: React.FC = () => {
                   {t.about.ctaHome}
                </Button>
                <a 
-                 href="https://github.com" 
+                 href="https://github.com/SilentBlox01/beethovensite" 
                  target="_blank" 
                  rel="noopener noreferrer"
                  className="inline-flex items-center justify-center px-5 py-3 text-base font-medium rounded-xl text-white border border-slate-600 hover:bg-slate-800 transition-colors"

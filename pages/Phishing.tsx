@@ -16,7 +16,6 @@ export const Phishing: React.FC = () => {
 
   const scenarios = t.phishing.scenarios;
   const currentScenario: PhishingScenario = scenarios[currentIndex];
-  const ui = t.phishing.ui;
 
   const handleAnswer = (userSaysSafe: boolean) => {
       // Logic: User is correct if they say "Safe" and it IS safe, OR "Unsafe" and it IS unsafe.
@@ -77,20 +76,20 @@ export const Phishing: React.FC = () => {
              </div>
              <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800">
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold text-sm opacity-50 cursor-not-allowed">
-                    {ui.viewDetails}
+                    View Details
                 </button>
-            </div>
-        </div>
-   </div>
+             </div>
+         </div>
+    </div>
   );
 
   const SMSView = ({ scenario }: { scenario: PhishingScenario }) => (
     <div className="max-w-sm mx-auto bg-white dark:bg-slate-900 rounded-[3rem] border-8 border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden relative min-h-[500px]">
         <div className="bg-slate-100 dark:bg-slate-800 p-4 border-b border-slate-200 dark:border-slate-700 text-center font-bold text-slate-700 dark:text-slate-300">
-            {ui.messages}
+            Messages
         </div>
         <div className="p-4 flex flex-col gap-4">
-             <div className="text-center text-xs text-slate-400 font-medium my-2">{ui.today} 9:41 AM</div>
+             <div className="text-center text-xs text-slate-400 font-medium my-2">Today 9:41 AM</div>
              <div className="self-start bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%] text-sm leading-relaxed relative">
                  <div className="font-bold text-xs text-slate-500 mb-1">{scenario.sender}</div>
                  {scenario.body}
@@ -106,7 +105,7 @@ export const Phishing: React.FC = () => {
       <div className="max-w-sm mx-auto bg-slate-50 dark:bg-slate-900 rounded-[2rem] shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden min-h-[400px]">
           <div className="bg-blue-600 p-6 text-white">
               <div className="flex justify-between items-center">
-                  <span className="font-bold text-lg">{ui.networks}</span>
+                  <span className="font-bold text-lg">Wi-Fi Networks</span>
                   <Wifi size={24} />
               </div>
           </div>
@@ -114,7 +113,7 @@ export const Phishing: React.FC = () => {
               <div className="p-4 bg-blue-50 dark:bg-blue-900/10 flex justify-between items-center cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-colors">
                   <div className="flex flex-col">
                       <span className="font-bold text-slate-900 dark:text-white">{scenario.networkName}</span>
-                      <span className="text-xs text-slate-500">{scenario.security === 'Open' ? ui.unsecured : ui.encrypted}</span>
+                      <span className="text-xs text-slate-500">{scenario.security === 'Open' ? 'Unsecured Network' : 'Encrypted (WPA2)'}</span>
                   </div>
                   <div className="flex items-center gap-3">
                       {scenario.security !== 'Open' && <Lock size={16} className="text-slate-400" />}
@@ -150,10 +149,10 @@ export const Phishing: React.FC = () => {
               <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 mb-2">
                   <Globe size={32} />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{ui.signin}</h2>
-              <input type="text" disabled placeholder={ui.username} className="w-full max-w-xs px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 opacity-70" />
-              <input type="password" disabled placeholder={ui.password} className="w-full max-w-xs px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 opacity-70" />
-              <button className="w-full max-w-xs bg-blue-600 text-white py-3 rounded-lg font-bold opacity-80">{ui.login}</button>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Sign In</h2>
+              <input type="text" disabled placeholder="Username" className="w-full max-w-xs px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 opacity-70" />
+              <input type="password" disabled placeholder="Password" className="w-full max-w-xs px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 opacity-70" />
+              <button className="w-full max-w-xs bg-blue-600 text-white py-3 rounded-lg font-bold opacity-80">Log In</button>
           </div>
       </div>
   );
@@ -223,7 +222,7 @@ export const Phishing: React.FC = () => {
                 <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500">
                     {getScenarioIcon(currentScenario.type)}
                 </div>
-                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">{`${t.phishing.case} ${currentIndex + 1} ${t.phishing.of} ${scenarios.length}`}</span>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-widest">Case {currentIndex + 1} of {scenarios.length}</span>
             </div>
             <div className="flex gap-1">
                 {scenarios.map((_, i) => (
