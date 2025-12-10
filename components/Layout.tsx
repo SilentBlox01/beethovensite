@@ -628,7 +628,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           </div>
 
           <div className="border-t border-slate-100 dark:border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400 dark:text-slate-500">
-             <p>&copy; {new Date().getFullYear()} LibreShield. {t.common.openSource}. <span className="text-xs">v{APP_VERSION}</span></p>
+             <p>&copy; {new Date().getFullYear()} Beethoven. {t.common.openSource}. <span className="text-xs">v{APP_VERSION}</span></p>
              <div className="flex items-center gap-4">
                  <button 
                     onClick={() => {
