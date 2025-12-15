@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { hardeningGuides } from '../data/hardening';
 import { Shield, Check, RotateCcw, Smartphone, Monitor, Cpu, Laptop, CheckCircle2 } from 'lucide-react';
+import { HardeningItem } from '../types';
 
 export const Hardening: React.FC = () => {
     const { t } = useApp();
@@ -27,12 +27,13 @@ export const Hardening: React.FC = () => {
     const resetTab = () => {
         if (confirm("Reset progress for this section?")) {
             const newProgress = { ...progress };
-            hardeningGuides[activeTab].forEach(item => delete newProgress[item.id]);
+            currentItems.forEach(item => delete newProgress[item.id]);
             setProgress(newProgress);
         }
     };
 
-    const currentItems = hardeningGuides[activeTab] || [];
+    const checklist = t.hardening.checklist as unknown as Record<string, HardeningItem[]>;
+    const currentItems = checklist[activeTab] || [];
     const completedCount = currentItems.filter(i => progress[i.id]).length;
     const totalCount = currentItems.length;
     const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
@@ -44,6 +45,16 @@ export const Hardening: React.FC = () => {
         { id: 'android', icon: <Smartphone size={18} />, label: t.hardening.android },
         { id: 'ios', icon: <Smartphone size={18} />, label: t.hardening.ios }
     ];
+
+    const getImpactStyles = (impact: string) => {
+        if (['High', 'Alto'].includes(impact)) {
+            return 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30';
+        }
+        if (['Medium', 'Medio'].includes(impact)) {
+            return 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-900/30';
+        }
+        return 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/30';
+    };
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-12 md:py-16 animate-fade-in">
@@ -122,11 +133,7 @@ export const Hardening: React.FC = () => {
                                     <h3 className={`font-bold text-lg mb-1 transition-colors ${progress[item.id] ? 'text-emerald-700 dark:text-emerald-400 line-through decoration-2 decoration-emerald-500/30' : 'text-slate-800 dark:text-white'}`}>
                                         {item.title}
                                     </h3>
-                                    <span className={`text-[10px] uppercase font-bold px-2 py-1 rounded border ${
-                                        item.impact === 'High' ? 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30' :
-                                        item.impact === 'Medium' ? 'bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-900/30' :
-                                        'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-900/30'
-                                    }`}>
+                                    <span className={`text-[10px] uppercase font-bold px-2 py-1 rounded border ${getImpactStyles(item.impact)}`}>
                                         {item.impact}
                                     </span>
                                 </div>
