@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Layers, Globe, Mail, MessageCircle, Cloud, Search, Cpu, ArrowRight, ShieldCheck, Lock, Activity, Server, Smartphone, Key, HardDrive, FileText, Wrench } from 'lucide-react';
+import { Layers, Globe, Mail, MessageCircle, Cloud, Search, Cpu, ArrowRight, ShieldCheck, Lock, Activity, Server, Smartphone, Key, HardDrive, FileText, Wrench, Droplet, Moon, Chrome, Send, Wifi, Video, Users, UserX, RefreshCw, Box, Download } from 'lucide-react';
 
 export const PrivacyHub: React.FC = () => {
   const { t } = useApp();
@@ -29,6 +29,17 @@ export const PrivacyHub: React.FC = () => {
           case 'file-text': return <FileText size={32} className="text-teal-500" />;
           case 'trash': return <Wrench size={32} className="text-slate-500" />;
           case 'hash': return <span className="text-2xl font-bold text-slate-800 dark:text-white">#</span>;
+          case 'droplet': return <Droplet size={32} className="text-blue-400" />;
+          case 'moon': return <Moon size={32} className="text-slate-400" />;
+          case 'chrome': return <Chrome size={32} className="text-blue-500" />;
+          case 'send': return <Send size={32} className="text-sky-500" />;
+          case 'wifi': return <Wifi size={32} className="text-orange-500" />;
+          case 'video': return <Video size={32} className="text-pink-500" />;
+          case 'users': return <Users size={32} className="text-indigo-500" />;
+          case 'user-x': return <UserX size={32} className="text-rose-500" />;
+          case 'refresh-cw': return <RefreshCw size={32} className="text-green-500" />;
+          case 'box': return <Box size={32} className="text-slate-600" />;
+          case 'download': return <Download size={32} className="text-emerald-500" />;
           default: return <Layers size={32} />;
       }
   };

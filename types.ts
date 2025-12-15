@@ -176,6 +176,18 @@ export interface Translation {
           hidden: string;
       };
       cta: string;
+      details: {
+          title: string;
+          userAgent: string;
+          screen: string;
+          timezone: string;
+          language: string;
+          platform: string;
+          webgl: string;
+          canvas: string;
+          audio: string;
+          fonts: string;
+      };
   };
   stories: {
       heroTitle: string;
