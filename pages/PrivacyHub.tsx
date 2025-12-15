@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Layers, Globe, Mail, MessageCircle, Cloud, Search, Cpu, ArrowRight, ShieldCheck, Lock, Activity, Server, Smartphone, Key, HardDrive, FileText, Wrench } from 'lucide-react';
+import { Layers, Globe, Mail, MessageCircle, Cloud, Search, Cpu, ArrowRight, ShieldCheck, Lock, Activity, Server, Smartphone, Key, HardDrive, FileText, Wrench, Droplet, Moon, Chrome, Send, Wifi, Video, Users, UserX, RefreshCw, Box, Download, Map, Music, Image, List, Twitter, Instagram, Zap } from 'lucide-react';
 
 export const PrivacyHub: React.FC = () => {
   const { t } = useApp();
   // Updated state type to include 'password-manager' explicitly matching data types
-  const [activeFilter, setActiveFilter] = useState<'all' | 'browser' | 'email' | 'messaging' | 'cloud' | 'search' | 'os' | 'vpn' | 'password-manager' | 'dns' | 'store' | 'productivity' | 'utilities'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'browser' | 'email' | 'messaging' | 'cloud' | 'search' | 'os' | 'vpn' | 'password-manager' | 'dns' | 'store' | 'productivity' | 'utilities' | 'social' | 'maps' | 'media'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const getIcon = (iconName: string) => {
@@ -29,6 +29,27 @@ export const PrivacyHub: React.FC = () => {
           case 'file-text': return <FileText size={32} className="text-teal-500" />;
           case 'trash': return <Wrench size={32} className="text-slate-500" />;
           case 'hash': return <span className="text-2xl font-bold text-slate-800 dark:text-white">#</span>;
+          case 'droplet': return <Droplet size={32} className="text-blue-400" />;
+          case 'moon': return <Moon size={32} className="text-slate-400" />;
+          case 'chrome': return <Chrome size={32} className="text-blue-500" />;
+          case 'send': return <Send size={32} className="text-sky-500" />;
+          case 'wifi': return <Wifi size={32} className="text-orange-500" />;
+          case 'video': return <Video size={32} className="text-pink-500" />;
+          case 'users': return <Users size={32} className="text-indigo-500" />;
+          case 'user-x': return <UserX size={32} className="text-rose-500" />;
+          case 'refresh-cw': return <RefreshCw size={32} className="text-green-500" />;
+          case 'box': return <Box size={32} className="text-slate-600" />;
+          case 'download': return <Download size={32} className="text-emerald-500" />;
+          case 'map': return <Map size={32} className="text-emerald-500" />;
+          case 'navigation': return <Map size={32} className="text-emerald-600" />;
+          case 'music': return <Music size={32} className="text-rose-500" />;
+          case 'image': return <Image size={32} className="text-purple-500" />;
+          case 'list': return <List size={32} className="text-slate-500" />;
+          case 'twitter': return <Twitter size={32} className="text-sky-500" />;
+          case 'instagram': return <Instagram size={32} className="text-pink-500" />;
+          case 'zap': return <Zap size={32} className="text-yellow-500" />;
+          case 'mask': return <UserX size={32} className="text-slate-700" />;
+          case 'message-square': return <MessageCircle size={32} className="text-green-500" />;
           default: return <Layers size={32} />;
       }
   };
@@ -40,7 +61,10 @@ export const PrivacyHub: React.FC = () => {
       { id: 'search', label: t.hub.cats.search, icon: <Search size={18} /> },
       { id: 'email', label: t.hub.cats.email, icon: <Mail size={18} /> },
       { id: 'messaging', label: t.hub.cats.messaging, icon: <MessageCircle size={18} /> },
-      { id: 'password-manager', label: t.hub.cats.pass, icon: <Key size={18} /> }, // Changed from 'pass' to 'password-manager'
+      { id: 'social', label: t.hub.cats.social, icon: <Users size={18} /> },
+      { id: 'media', label: t.hub.cats.media, icon: <Video size={18} /> },
+      { id: 'maps', label: t.hub.cats.maps, icon: <Map size={18} /> },
+      { id: 'password-manager', label: t.hub.cats.pass, icon: <Key size={18} /> },
       { id: 'productivity', label: t.hub.cats.productivity, icon: <FileText size={18} /> },
       { id: 'vpn', label: t.hub.cats.vpn, icon: <ShieldCheck size={18} /> },
       { id: 'cloud', label: t.hub.cats.cloud, icon: <Cloud size={18} /> },

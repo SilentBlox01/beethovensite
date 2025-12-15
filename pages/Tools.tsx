@@ -940,22 +940,10 @@ export const Tools: React.FC = () => {
 
       logRadar(`Target locked: ${domain}`);
       logRadar(`Init Active Probes...`);
-      logRadar(`Querying breach databases...`);
+      // logRadar(`Querying breach databases...`);
       
-      try {
-          const breachRes = await fetch(`https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(domain.split('.')[0])}`, {
-              headers: { 'User-Agent': 'Beethoven-Scanner/1.0' }
-          });
-          if (breachRes.status === 200) {
-              const breaches = await breachRes.json();
-              logRadar(`⚠️  BREACHES FOUND: ${breaches.length} known breaches`);
-              breaches.slice(0, 3).forEach((b: any) => logRadar(`  - ${b.Name}: ${b.Title}`));
-          } else if (breachRes.status === 404) {
-              logRadar(`✓ No breaches found in HIBP database`);
-          }
-      } catch (e) {
-          logRadar(`Breach check unavailable (CORS)`);
-      }
+      // Removed HIBP dependency to ensure 100% functionality without external API keys/CORS issues.
+      // Focusing on active infrastructure reconnaissance.
 
       let dnsScoreLocal = 100;
       let serverIP = '';
@@ -985,7 +973,7 @@ export const Tools: React.FC = () => {
       const subdomains = ['www', 'mail', 'remote', 'blog', 'webmail', 'server', 'ns1', 'ns2', 'smtp', 'secure', 'vpn', 'api', 'dev', 'staging', 'mobile', 'test'];
       let foundSubs = 0;
       for (const sub of subdomains) {
-          if (Math.random() > 0.3) continue; 
+          // Removed random skip to ensure full coverage
           try {
               const subRes = await fetch(`https://cloudflare-dns.com/dns-query?name=${sub}.${domain}`, {
                   headers: { 'accept': 'application/dns-json' }
