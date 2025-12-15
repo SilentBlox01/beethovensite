@@ -93,6 +93,13 @@ export interface LegalContent {
   sections: { heading: string; content: string; list?: string[] }[];
 }
 
+export interface HardeningItem {
+    id: string;
+    title: string;
+    description: string;
+    impact: 'High' | 'Medium' | 'Low' | 'Alto' | 'Medio' | 'Bajo';
+}
+
 export interface Translation {
   common: {
     appName: string;
@@ -643,6 +650,13 @@ export interface Translation {
       progress: string;
       reset: string;
       completed: string;
+      checklist: {
+          windows: HardeningItem[];
+          linux: HardeningItem[];
+          macos: HardeningItem[];
+          android: HardeningItem[];
+          ios: HardeningItem[];
+      };
   };
   tempMail: {
       title: string;

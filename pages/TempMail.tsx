@@ -5,21 +5,23 @@ import { Mail, RefreshCw, Copy, Trash2, Inbox, ChevronRight, ArrowLeft, Loader2,
 import { Button } from '../components/ui/Button';
 
 interface Message {
-    id: number;
-    from: string;
+    id: string;
+    from: { address: string; name: string };
     subject: string;
-    date: string;
+    createdAt: string;
+    intro?: string;
+    seen: boolean;
 }
 
 interface FullMessage extends Message {
-    body: string;
-    textBody: string;
-    htmlBody: string;
+    text?: string;
+    html?: string;
 }
 
 export const TempMail: React.FC = () => {
     const { t } = useApp();
     const [email, setEmail] = useState<string>('');
+    const [token, setToken] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
     const [selectedMessage, setSelectedMessage] = useState<FullMessage | null>(null);
     const [loading, setLoading] = useState(false);
@@ -27,49 +29,103 @@ export const TempMail: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [autoRefresh, setAutoRefresh] = useState(true);
 
+    // Load from local storage on mount
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('temp_mail_address');
+        const savedToken = localStorage.getItem('temp_mail_token');
+        if (savedEmail && savedToken) {
+            setEmail(savedEmail);
+            setToken(savedToken);
+        } else {
+            generateEmail();
+        }
+    }, []);
+
     const generateEmail = async () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch('https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1');
-            if (!res.ok) throw new Error('API Error');
-            const data = await res.json();
-            setEmail(data[0]);
+            // 1. Get Domain
+            const domainsRes = await fetch('https://api.mail.tm/domains');
+            if (!domainsRes.ok) throw new Error('Domains API Error');
+            const domainsData = await domainsRes.json();
+            const domain = domainsData['hydra:member']?.[0]?.domain;
+            if (!domain) throw new Error('No domains available');
+
+            // 2. Create Account
+            const username = `user${Math.random().toString(36).substring(2, 10)}`;
+            const password = `pwd${Math.random().toString(36).substring(2, 12)}`;
+            const address = `${username}@${domain}`;
+
+            const accRes = await fetch('https://api.mail.tm/accounts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ address, password })
+            });
+            if (!accRes.ok) throw new Error('Account Creation Error');
+
+            // 3. Get Token
+            const tokenRes = await fetch('https://api.mail.tm/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ address, password })
+            });
+            if (!tokenRes.ok) throw new Error('Login Error');
+            const tokenData = await tokenRes.json();
+
+            setEmail(address);
+            setToken(tokenData.token);
             setMessages([]);
             setSelectedMessage(null);
-        } catch (e) {
-            setError(t.tempMail.error + " (API)");
+
+            // Persist
+            localStorage.setItem('temp_mail_address', address);
+            localStorage.setItem('temp_mail_token', tokenData.token);
+
+        } catch (e: any) {
+            console.error(e);
+            setError(t.tempMail.error + ` (${e.message || 'API'})`);
         } finally {
             setLoading(false);
         }
     };
 
     const fetchMessages = async () => {
-        if (!email) return;
-        const [login, domain] = email.split('@');
+        if (!token) return;
         try {
-            const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`);
+            const res = await fetch('https://api.mail.tm/messages?page=1', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             if (res.ok) {
                 const data = await res.json();
-                // Avoid infinite re-renders/flickers, check diff
-                if (JSON.stringify(data) !== JSON.stringify(messages)) {
-                    setMessages(data);
+                const msgs = data['hydra:member'] || [];
+                // Simple equality check by ID list
+                const currentIds = messages.map(m => m.id).join(',');
+                const newIds = msgs.map((m: Message) => m.id).join(',');
+                if (currentIds !== newIds) {
+                    setMessages(msgs);
                 }
+            } else if (res.status === 401) {
+                // Token expired
+                generateEmail();
             }
         } catch (e) {
-            // Silent fail on polling
+            // Silent fail
         }
     };
 
-    const fetchMessageBody = async (id: number) => {
-        if (!email) return;
+    const fetchMessageBody = async (id: string) => {
+        if (!token) return;
         setLoadingMsg(true);
-        const [login, domain] = email.split('@');
         try {
-            const res = await fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${id}`);
+            const res = await fetch(`https://api.mail.tm/messages/${id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             if (res.ok) {
                 const data = await res.json();
                 setSelectedMessage(data);
+
+                // Mark as seen (optional, API usually handles it)
             }
         } catch (e) {
             console.error(e);
@@ -79,15 +135,21 @@ export const TempMail: React.FC = () => {
     };
 
     useEffect(() => {
-        if (!email) generateEmail();
-    }, []);
-
-    useEffect(() => {
-        if (!email || !autoRefresh) return;
+        if (!token || !autoRefresh) return;
         fetchMessages();
         const interval = setInterval(fetchMessages, 5000);
         return () => clearInterval(interval);
-    }, [email, autoRefresh]);
+    }, [token, autoRefresh]);
+
+    const logout = () => {
+        localStorage.removeItem('temp_mail_address');
+        localStorage.removeItem('temp_mail_token');
+        setEmail('');
+        setToken('');
+        setMessages([]);
+        setSelectedMessage(null);
+        generateEmail();
+    }
 
     return (
         <div className="max-w-5xl mx-auto px-4 py-12 md:py-16 animate-fade-in h-[calc(100vh-80px)] flex flex-col">
@@ -115,7 +177,7 @@ export const TempMail: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
-                    <Button onClick={generateEmail} disabled={loading} variant="outline" className="flex-1 rounded-xl border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
+                    <Button onClick={logout} disabled={loading} variant="outline" className="flex-1 rounded-xl border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
                         {loading ? <Loader2 size={20} className="animate-spin" /> : <RefreshCw size={20} />} <span className="ml-2 hidden sm:inline">{t.tempMail.generate}</span>
                     </Button>
                     <Button onClick={fetchMessages} variant="outline" className="rounded-xl border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
@@ -161,8 +223,8 @@ export const TempMail: React.FC = () => {
                                         className={`p-5 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group ${selectedMessage?.id === msg.id ? 'bg-indigo-50 dark:bg-indigo-900/10' : ''}`}
                                     >
                                         <div className="flex justify-between mb-1">
-                                            <span className="font-bold text-slate-800 dark:text-slate-200 truncate pr-2 w-2/3">{msg.from}</span>
-                                            <span className="text-xs text-slate-400 whitespace-nowrap">{msg.date.split(' ')[1]}</span>
+                                            <span className="font-bold text-slate-800 dark:text-slate-200 truncate pr-2 w-2/3">{msg.from.name || msg.from.address}</span>
+                                            <span className="text-xs text-slate-400 whitespace-nowrap">{new Date(msg.createdAt).toLocaleTimeString()}</span>
                                         </div>
                                         <div className="text-sm text-slate-500 dark:text-slate-400 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                                             {msg.subject || '(No Subject)'}
@@ -186,11 +248,11 @@ export const TempMail: React.FC = () => {
                                 <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">{selectedMessage.subject}</h2>
                                 <div className="flex justify-between items-start text-sm text-slate-500">
                                     <div>
-                                        <span className="block font-bold text-slate-800 dark:text-slate-300 mb-1">{selectedMessage.from}</span>
+                                        <span className="block font-bold text-slate-800 dark:text-slate-300 mb-1">{selectedMessage.from.address}</span>
                                         <span className="text-xs opacity-70">to {email}</span>
                                     </div>
                                     <div className="text-right">
-                                        <span className="block">{selectedMessage.date}</span>
+                                        <span className="block">{new Date(selectedMessage.createdAt).toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +264,7 @@ export const TempMail: React.FC = () => {
                                 ) : (
                                     <div
                                         className="prose dark:prose-invert max-w-none font-sans text-slate-800 dark:text-slate-200"
-                                        dangerouslySetInnerHTML={{ __html: selectedMessage.htmlBody || selectedMessage.textBody }}
+                                        dangerouslySetInnerHTML={{ __html: selectedMessage.html ? selectedMessage.html : `<pre>${selectedMessage.text}</pre>` }}
                                     />
                                 )}
                             </div>
