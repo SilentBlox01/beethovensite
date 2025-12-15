@@ -63,7 +63,7 @@ export interface HubApp {
     name: string;
     description: string;
     replaces: string;
-    category: 'browser' | 'email' | 'messaging' | 'cloud' | 'search' | 'os' | 'vpn' | 'password-manager' | 'dns' | 'store' | 'productivity' | 'utilities';
+    category: 'browser' | 'email' | 'messaging' | 'cloud' | 'search' | 'os' | 'vpn' | 'password-manager' | 'dns' | 'store' | 'productivity' | 'utilities' | 'social' | 'maps' | 'media';
     icon: string;
     url: string;
     badge?: 'Open Source' | 'Encrypted' | 'Decentralized' | 'P2P' | 'Self-Hosted' | 'Privacy' | 'Offline' | 'No Logs' | 'Free Tier' | 'Hardened' | 'Security' | 'Amnesic' | 'User Friendly' | 'Filter' | 'FOSS' | 'Anonymous' | 'Encryption' | 'Network';
@@ -635,6 +635,9 @@ export interface Translation {
           store: string;
           productivity: string;
           utilities: string;
+          social: string;
+          maps: string;
+          media: string;
       };
       apps: HubApp[];
   };
