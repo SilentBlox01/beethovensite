@@ -53,9 +53,12 @@ import {
   Contrast,
   EyeOff,
   ChevronDown,
-  Wifi
+  Wifi,
+  UserCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { IdentityGenerator } from '../components/IdentityGenerator';
+import { TempMailTool } from '../components/TempMailTool';
 
 // --- HELPERS ---
 
@@ -1139,6 +1142,7 @@ export const Tools: React.FC = () => {
   const tabs = [
       { id: 'keys', label: t.tools.tabKeys, icon: <KeyRound size={18} /> },
       { id: 'privacy', label: t.tools.tabPrivacy, icon: <Shield size={18} /> },
+      { id: 'identity', label: t.tools.tabIdentity || 'Identity', icon: <UserCheck size={18} /> },
       { id: 'files', label: t.tools.tabFiles, icon: <FileLock size={18} /> },
       { id: 'radar', label: t.tools.tabRadar, icon: <Radar size={18} /> },
       { id: 'sps', label: t.tools.tabSPS, icon: <Ghost size={18} /> },
@@ -1306,6 +1310,14 @@ export const Tools: React.FC = () => {
                         )}
                     </ToolCard>
                 </div>
+            )}
+
+            {/* 2.5 IDENTITY */}
+            {activeTab === 'identity' && (
+              <div className="space-y-8 animate-fade-in-up">
+                <IdentityGenerator />
+                <TempMailTool />
+              </div>
             )}
 
             {/* 2. PRIVACY */}

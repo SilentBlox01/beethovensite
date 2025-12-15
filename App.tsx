@@ -15,6 +15,7 @@ import { About } from './pages/About';
 import { Docs } from './pages/Docs';
 import { Analyzer } from './pages/Analyzer';
 import { Stories } from './pages/Stories';
+import { Hardening } from './pages/Hardening';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/hub" element={<PrivacyHub />} />
             <Route path="/lab" element={<ImageLab />} />
             <Route path="/phishing" element={<Phishing />} />
+            <Route path="/hardening" element={<Hardening />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
