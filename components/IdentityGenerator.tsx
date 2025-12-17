@@ -58,9 +58,9 @@ Username: ${identity.username}
         <div>
           <h2 className="text-2xl font-bold text-white flex items-center gap-2 text-glow">
             <UserCheck className="text-primary-400" />
-            {t.idGenTitle}
+            {t.tools.idGenTitle}
           </h2>
-          <p className="text-slate-500 dark:text-slate-400">{t.idGenDesc}</p>
+          <p className="text-slate-500 dark:text-slate-400">{t.tools.idGenDesc}</p>
         </div>
         <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl">
           {(['random', 'male', 'female'] as const).map(g => (
@@ -73,7 +73,7 @@ Username: ${identity.username}
                 : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
             >
-              {g === 'random' ? t.idGenGenderRandom : g === 'male' ? t.idGenGenderMale : t.idGenGenderFemale}
+              {g === 'random' ? t.tools.idGenGenderRandom : g === 'male' ? t.tools.idGenGenderMale : t.tools.idGenGenderFemale}
             </button>
           ))}
         </div>
@@ -82,7 +82,7 @@ Username: ${identity.username}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="space-y-4">
           <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-            <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">{t.gdprName}</label>
+            <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">{t.tools.gdprName}</label>
             <div className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <User size={18} className="text-slate-400" />
               {identity.fullName}
@@ -106,7 +106,7 @@ Username: ${identity.username}
 
         <div className="space-y-4">
           <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-             <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">{t.deviceInfo.location}</label>
+             <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">{t.tools.deviceInfo.location}</label>
              <div className="text-lg text-slate-900 dark:text-white flex items-start gap-2">
                <MapPin size={18} className="text-slate-400 mt-1 shrink-0" />
                <div>
@@ -136,11 +136,11 @@ Username: ${identity.username}
       <div className="flex gap-4">
         <Button onClick={handleGenerate} className="flex-1 py-4 text-lg rounded-2xl bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-600/20">
           <RefreshCw className="mr-2" />
-          {t.idGenBtn}
+          {t.tools.idGenBtn}
         </Button>
         <Button onClick={copyToClipboard} variant="outline" className="px-8 rounded-2xl border-slate-200 dark:border-slate-700">
           <Copy className="mr-2" />
-          {t.idGenCopy}
+          {t.tools.idGenCopy}
         </Button>
       </div>
     </div>
