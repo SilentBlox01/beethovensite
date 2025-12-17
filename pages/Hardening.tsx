@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { hardeningGuides, HardeningItem } from '../data/hardening';
 import { Shield, CheckCircle, Circle, Monitor, Smartphone, Globe, Lock, Cpu, Command } from 'lucide-react';
 import { Language } from '../types';
+import { FadeIn, SlideUp } from '../components/ui/MotionWrappers';
 
 export const Hardening: React.FC = () => {
   const { t, language } = useApp();
@@ -48,17 +49,17 @@ export const Hardening: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-4">{t.hardeningTitle || "Hardening Guides"}</h1>
-        <p className="text-xl text-slate-500 dark:text-slate-400">{t.hardeningDesc || "Secure your environment"}</p>
-      </div>
+    <div className="max-w-4xl mx-auto px-4 py-12">
+      <FadeIn className="text-center mb-12">
+        <h1 className="text-4xl font-extrabold text-white mb-4 text-glow">{t.hardeningTitle || "Hardening Guides"}</h1>
+        <p className="text-xl text-slate-400">{t.hardeningDesc || "Secure your environment"}</p>
+      </FadeIn>
 
-      <div className="grid gap-8">
+      <SlideUp className="grid gap-8">
         {Object.entries(grouped).map(([platform, items]) => (
-          <div key={platform} className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-100 dark:border-slate-800 shadow-xl">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
-              <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300">
+          <div key={platform} className="glass-panel rounded-[2rem] p-8 hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.1)] transition-all duration-500">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+              <div className="p-2 bg-white/10 rounded-lg text-slate-300">
                 {getIcon(platform)}
               </div>
               {platform}
@@ -74,21 +75,21 @@ export const Hardening: React.FC = () => {
                    <div
                      key={item.id}
                      onClick={() => toggleItem(item.id)}
-                     className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 ${
+                     className={`flex items-start gap-4 p-4 rounded-xl border transition-all cursor-pointer group ${
                        isDone
-                       ? 'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-900/10'
-                       : 'border-slate-100 dark:border-slate-800'
+                       ? 'border-emerald-500/50 bg-emerald-500/10 shadow-[0_0_15px_-5px_rgba(16,185,129,0.3)]'
+                       : 'border-white/5 hover:border-white/20 hover:bg-white/5'
                      }`}
                    >
-                     <div className={`mt-1 ${isDone ? 'text-emerald-500' : 'text-slate-300'}`}>
+                     <div className={`mt-1 transition-colors ${isDone ? 'text-emerald-400' : 'text-slate-500 group-hover:text-slate-300'}`}>
                        {isDone ? <CheckCircle size={24} /> : <Circle size={24} />}
                      </div>
                      <div>
-                       <h3 className={`font-bold text-lg ${isDone ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-800 dark:text-slate-200'}`}>
+                       <h3 className={`font-bold text-lg transition-colors ${isDone ? 'text-emerald-400' : 'text-slate-200'}`}>
                          {title}
                        </h3>
-                       <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{desc}</p>
-                       <div className="mt-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-500">
+                       <p className="text-slate-400 text-sm mt-1">{desc}</p>
+                       <div className="mt-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-black/40 border border-white/10 text-slate-400">
                          {item.level}
                        </div>
                      </div>
@@ -98,7 +99,7 @@ export const Hardening: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+      </SlideUp>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
+import { ToastProvider } from './context/ToastContext';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Assessment } from './pages/Assessment';
@@ -20,10 +21,11 @@ import { Hardening } from './pages/Hardening';
 function App() {
   return (
     <AppProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
+      <ToastProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
             <Route path="/assessment" element={<Assessment />} />
             <Route path="/results" element={<Results />} />
             <Route path="/tools" element={<Tools />} />
@@ -37,10 +39,11 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/docs" element={<Docs />} />
             <Route path="/analyzer" element={<Analyzer />} />
-            <Route path="/stories" element={<Stories />} />
-          </Routes>
-        </Layout>
-      </Router>
+              <Route path="/stories" element={<Stories />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </ToastProvider>
     </AppProvider>
   );
 }

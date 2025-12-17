@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
+import { useToast } from '../context/ToastContext';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import {
@@ -20,6 +21,7 @@ import { generateIdentity } from '../utils/generators';
 
 export const IdentityGenerator: React.FC = () => {
   const { t } = useApp();
+  const { toast } = useToast();
   const [identity, setIdentity] = useState<any>(null);
   const [gender, setGender] = useState<'random' | 'male' | 'female'>('random');
 
@@ -29,6 +31,7 @@ export const IdentityGenerator: React.FC = () => {
 
   const handleGenerate = () => {
     setIdentity(generateIdentity(gender));
+    if (identity) toast.success("New identity generated");
   };
 
   const copyToClipboard = () => {
@@ -44,16 +47,17 @@ DOB: ${identity.birthDate}
 Username: ${identity.username}
     `.trim();
     navigator.clipboard.writeText(text);
+    toast.success("Identity copied to clipboard");
   };
 
   if (!identity) return null;
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden p-8">
+    <div className="glass-panel rounded-[2rem] overflow-hidden p-8 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.2)] transition-shadow duration-500">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <UserCheck className="text-primary-500" />
+          <h2 className="text-2xl font-bold text-white flex items-center gap-2 text-glow">
+            <UserCheck className="text-primary-400" />
             {t.idGenTitle}
           </h2>
           <p className="text-slate-500 dark:text-slate-400">{t.idGenDesc}</p>
