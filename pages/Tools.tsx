@@ -54,10 +54,14 @@ import {
   EyeOff,
   ChevronDown,
   Wifi,
-  User, Briefcase, Calendar, Phone, CreditCard, AtSign, UserCircle
+  UserCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { generateIdentity } from '../utils/generators';
+import { useToast } from '../context/ToastContext';
+import { IdentityGenerator } from '../components/IdentityGenerator';
+import { FadeIn, SlideUp, ScaleIn } from '../components/ui/MotionWrappers';
+import { CountUp } from '../components/ui/CountUp';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // --- HELPERS ---
 
@@ -288,21 +292,6 @@ const RadarMetricRow = ({ label, value, score, color }: { label: string, value: 
     </div>
 );
 
-const IdentityField = ({ label, value, icon, mono }: any) => (
-    <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center gap-4 group">
-        <div className="p-2 bg-white dark:bg-slate-800 rounded-xl text-slate-400 group-hover:text-teal-500 transition-colors shadow-sm">
-            {icon}
-        </div>
-        <div className="flex-1 min-w-0">
-            <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5">{label}</div>
-            <div className={`font-bold text-slate-800 dark:text-slate-200 truncate ${mono ? 'font-mono' : ''}`}>{value}</div>
-        </div>
-        <button onClick={() => navigator.clipboard.writeText(value)} className="p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-teal-500 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
-            <Copy size={16} />
-        </button>
-    </div>
-);
-
 // New Input Style
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement> & { icon?: React.ReactNode }>(
     ({ className, icon, ...props }, ref) => (
@@ -320,53 +309,53 @@ const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLI
     </div>
 ));
 
-// Tool Card Wrapper
+// Tool Card Wrapper (Updated with Glassmorphism)
 const ToolCard = ({ children, title, icon, color = 'primary', className = '' }: { children: React.ReactNode, title: string, icon: React.ReactNode, color?: string, className?: string }) => {
     const colorClasses = {
-        primary: 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400',
-        rose: 'bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400',
-        blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-        purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-        amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400',
-        teal: 'bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400',
-        indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400',
-        slate: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
+        primary: 'bg-primary-500/10 text-primary-400 border-primary-500/20',
+        rose: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+        blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+        purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+        amber: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+        teal: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
+        indigo: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+        slate: 'bg-slate-500/10 text-slate-400 border-slate-500/20'
     };
 
-    const borderClasses = {
-        primary: 'hover:border-primary-500/50',
-        rose: 'hover:border-rose-500/50',
-        blue: 'hover:border-blue-500/50',
-        purple: 'hover:border-purple-500/50',
-        amber: 'hover:border-amber-500/50',
-        teal: 'hover:border-teal-500/50',
-        indigo: 'hover:border-indigo-500/50',
-        slate: 'hover:border-slate-500/50'
-    }
+    const glowClasses = {
+        primary: 'group-hover:shadow-[0_0_30px_-5px_rgba(59,130,246,0.3)] group-hover:border-primary-500/40',
+        rose: 'group-hover:shadow-[0_0_30px_-5px_rgba(244,63,94,0.3)] group-hover:border-rose-500/40',
+        blue: 'group-hover:shadow-[0_0_30px_-5px_rgba(59,130,246,0.3)] group-hover:border-blue-500/40',
+        purple: 'group-hover:shadow-[0_0_30px_-5px_rgba(168,85,247,0.3)] group-hover:border-purple-500/40',
+        amber: 'group-hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.3)] group-hover:border-amber-500/40',
+        teal: 'group-hover:shadow-[0_0_30px_-5px_rgba(20,184,166,0.3)] group-hover:border-teal-500/40',
+        indigo: 'group-hover:shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)] group-hover:border-indigo-500/40',
+        slate: 'group-hover:shadow-[0_0_30px_-5px_rgba(148,163,184,0.3)] group-hover:border-slate-500/40'
+    };
 
     return (
-        <div className={`bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-black/20 overflow-hidden group transition-all duration-300 ${borderClasses[color as keyof typeof borderClasses]} hover:shadow-2xl ${className}`}>
-            <div className="px-8 pt-8 pb-6 border-b border-slate-100 dark:border-slate-800/50">
-                <div className="flex items-center gap-4 mb-2">
-                    <div className={`p-3 rounded-2xl ${colorClasses[color as keyof typeof colorClasses]} shadow-sm transition-transform group-hover:scale-110 duration-300`}>
-                        {icon}
+        <ScaleIn>
+            <div className={`glass-panel rounded-[2rem] overflow-hidden group transition-all duration-300 ${glowClasses[color as keyof typeof glowClasses]} ${className}`}>
+                <div className="px-8 pt-8 pb-6 border-b border-white/5 bg-white/5">
+                    <div className="flex items-center gap-4 mb-2">
+                        <div className={`p-3 rounded-2xl border backdrop-blur-sm ${colorClasses[color as keyof typeof colorClasses]} shadow-lg transition-transform group-hover:scale-110 duration-300`}>
+                            {icon}
+                        </div>
+                        <h2 className="text-2xl font-bold text-white tracking-tight">{title}</h2>
                     </div>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{title}</h2>
+                </div>
+                <div className="p-8">
+                    {children}
                 </div>
             </div>
-            <div className="p-8">
-                {children}
-            </div>
-        </div>
+        </ScaleIn>
     );
 };
 
 export const Tools: React.FC = () => {
   const { t } = useApp();
-  const [activeTab, setActiveTab] = useState<'keys' | 'privacy' | 'files' | 'radar' | 'sps' | 'utils' | 'id'>('keys');
-
-  // --- Identity State ---
-  const [identity, setIdentity] = useState<any>(null);
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<'keys' | 'privacy' | 'files' | 'radar' | 'sps' | 'utils'>('keys');
 
   // --- Password Generator State ---
   const [genLength, setGenLength] = useState(16);
@@ -493,6 +482,7 @@ export const Tools: React.FC = () => {
     }
     setGeneratedPass(secureShuffle(result).join(''));
     setPassCopied(false);
+    toast.success(t.common?.generated || "Generated new password");
   };
 
   const formatTime = (seconds: number) => {
@@ -814,7 +804,7 @@ export const Tools: React.FC = () => {
               if (stegMode === 'hide') {
                   const binaryText = textToBinary(stegMessage + '\0'); 
                   if (binaryText.length > data.length / 4) {
-                      alert('Message too long for this image!');
+                      toast.error('Message too long for this image!');
                       return;
                   }
                   let dataIndex = 0;
@@ -859,7 +849,7 @@ export const Tools: React.FC = () => {
       if (!checksumFile) return;
       // CRITICAL FIX: Ensure secure context for crypto.subtle
       if (!window.isSecureContext) {
-          alert("Error: Cryptography API requires a Secure Context (HTTPS or Localhost).");
+          toast.error("Error: Cryptography API requires a Secure Context (HTTPS or Localhost).");
           return;
       }
       setChecksumLoading(true);
@@ -1154,15 +1144,12 @@ export const Tools: React.FC = () => {
       if (activeTab === 'privacy' && !deviceInfo) {
           // Optional: Auto load or wait for user action
       }
-      if (activeTab === 'id' && !identity) {
-          setIdentity(generateIdentity());
-      }
   }, [activeTab]);
 
   const tabs = [
       { id: 'keys', label: t.tools.tabKeys, icon: <KeyRound size={18} /> },
-      { id: 'id', label: t.tools.tabIdentity, icon: <User size={18} /> },
       { id: 'privacy', label: t.tools.tabPrivacy, icon: <Shield size={18} /> },
+      { id: 'identity', label: t.tools.tabIdentity || 'Identity', icon: <UserCheck size={18} /> },
       { id: 'files', label: t.tools.tabFiles, icon: <FileLock size={18} /> },
       { id: 'radar', label: t.tools.tabRadar, icon: <Radar size={18} /> },
       { id: 'sps', label: t.tools.tabSPS, icon: <Ghost size={18} /> },
@@ -1170,25 +1157,30 @@ export const Tools: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 animate-fade-in relative min-h-screen">
-        <div className="text-center mb-12 space-y-4">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">{t.tools.title}</h1>
-            <p className="text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-light">
+    <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 relative min-h-screen">
+        <FadeIn className="text-center mb-12 space-y-4">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight text-glow">{t.tools.title}</h1>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light">
                 {t.tools.subtitle}
             </p>
-        </div>
+        </FadeIn>
 
         {/* Enhanced Dock-like Navigation */}
-        <div className="sticky top-24 z-40 flex justify-center mb-12 animate-fade-in-up">
-            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/60 p-2 rounded-[1.5rem] flex gap-2 shadow-2xl shadow-slate-200/50 dark:shadow-black/50 overflow-x-auto max-w-full">
+        <div className="sticky top-24 z-40 flex justify-center mb-12">
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="glass-panel p-2 rounded-[1.5rem] flex gap-2 overflow-x-auto max-w-full"
+            >
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
                         className={`flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all duration-300 whitespace-nowrap relative group ${
                             activeTab === tab.id
-                            ? 'bg-gradient-to-tr from-slate-900 to-slate-800 dark:from-white dark:to-slate-200 text-white dark:text-slate-900 shadow-lg shadow-slate-900/20 dark:shadow-white/10 scale-105'
-                            : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
+                            ? 'bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.2)] border border-white/20'
+                            : 'text-slate-400 hover:bg-white/5 hover:text-white'
                         }`}
                     >
                         <span className="relative z-10 flex items-center gap-2">
@@ -1196,19 +1188,25 @@ export const Tools: React.FC = () => {
                         </span>
                     </button>
                 ))}
-            </div>
+            </motion.div>
         </div>
 
+        <AnimatePresence mode="wait">
         <div className="min-h-[500px]">
             {/* 1. KEYS & PASSWORDS */}
             {activeTab === 'keys' && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in-up">
+                <SlideUp key="keys" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <ToolCard title={t.tools.genTitle} icon={<Terminal size={24} />} color="primary">
                         <div className="bg-slate-900 dark:bg-black rounded-2xl p-8 mb-8 flex items-center justify-between font-mono text-xl tracking-wider text-green-400 border border-slate-800 shadow-inner break-all relative min-h-[6rem] group/pass">
                             <span className="drop-shadow-[0_0_8px_rgba(74,222,128,0.3)]">{generatedPass || '...'}</span>
                             {generatedPass && (
                                 <button 
-                                    onClick={() => { navigator.clipboard.writeText(generatedPass); setPassCopied(true); setTimeout(() => setPassCopied(false), 2000); }}
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(generatedPass);
+                                        setPassCopied(true);
+                                        toast.success("Password copied to clipboard");
+                                        setTimeout(() => setPassCopied(false), 2000);
+                                    }}
                                     className="ml-4 p-3 hover:bg-white/10 rounded-xl transition-all text-slate-400 hover:text-white active:scale-95"
                                 >
                                     {passCopied ? <Check size={24} className="text-green-500" /> : <Copy size={24} />}
@@ -1329,12 +1327,19 @@ export const Tools: React.FC = () => {
                             </div>
                         )}
                     </ToolCard>
-                </div>
+                </SlideUp>
+            )}
+
+            {/* 2.5 IDENTITY */}
+            {activeTab === 'identity' && (
+              <SlideUp key="identity" className="space-y-8">
+                <IdentityGenerator />
+              </SlideUp>
             )}
 
             {/* 2. PRIVACY */}
             {activeTab === 'privacy' && (
-                <div className="space-y-8 animate-fade-in-up">
+                <SlideUp key="privacy" className="space-y-8">
                     <ToolCard title={t.tools.cleanerTitle} icon={<Scissors size={24} />} color="blue">
                         <div className="flex flex-col md:flex-row gap-4 mb-8">
                             <Input 
@@ -1385,7 +1390,12 @@ export const Tools: React.FC = () => {
                                     <div className="relative z-10 flex flex-col items-center">
                                         {linkAnalysis ? (
                                             <>
-                                                <ScoreRing score={linkAnalysis.score} colorClass={linkAnalysis.ringColor} />
+                                                <div className="relative flex items-center justify-center w-24 h-24">
+                                                    <ScoreRing score={linkAnalysis.score} colorClass={linkAnalysis.ringColor} />
+                                                    <div className="absolute text-2xl font-black">
+                                                        <CountUp end={linkAnalysis.score} />
+                                                    </div>
+                                                </div>
                                                 <div className={`mt-4 font-black text-lg px-4 py-1 rounded-full bg-slate-100 dark:bg-slate-800 ${linkAnalysis.color}`}>{linkAnalysis.label}</div>
                                             </>
                                         ) : (
@@ -1454,7 +1464,7 @@ export const Tools: React.FC = () => {
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-950/50 rounded-3xl p-6 border border-slate-200 dark:border-slate-800">
                                         <h4 className="flex items-center gap-2 font-bold mb-4 text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-3">
-                                            <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600"><Activity size={16} /></div> 
+                                            <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600"><Cpu size={16} /></div>
                                             {t.tools.deviceInfo.hardwareLabel}
                                         </h4>
                                         <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-3">
@@ -1484,12 +1494,12 @@ export const Tools: React.FC = () => {
                             ))}
                         </div>
                     </ToolCard>
-                </div>
+                </SlideUp>
             )}
 
             {/* 3. FILES */}
             {activeTab === 'files' && (
-                <div className="space-y-8 animate-fade-in-up">
+                <SlideUp key="files" className="space-y-8">
                     {/* Vault */}
                     <ToolCard title={t.tools.vaultTitle} icon={<FileLock size={24} />} color="amber">
                         <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-xl text-lg leading-relaxed">{t.tools.vaultDesc}</p>
@@ -1690,12 +1700,12 @@ export const Tools: React.FC = () => {
                             </div>
                         )}
                     </ToolCard>
-                </div>
+                </SlideUp>
             )}
 
             {/* 4. RADAR */}
             {activeTab === 'radar' && (
-                <div className="max-w-4xl mx-auto bg-slate-950 rounded-[3rem] p-8 md:p-12 border border-slate-800 shadow-2xl relative overflow-hidden text-white font-mono animate-fade-in-up">
+                <SlideUp key="radar" className="max-w-4xl mx-auto bg-black/80 backdrop-blur-xl rounded-[3rem] p-8 md:p-12 border border-red-500/20 shadow-[0_0_50px_-10px_rgba(220,38,38,0.2)] relative overflow-hidden text-white font-mono">
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoNTAsIDUwLCA1MCwgMC4xKSIvPjwvc3ZnPg==')] opacity-20 pointer-events-none"></div>
                     <div className="absolute top-0 right-0 p-12 opacity-10 text-red-500 pointer-events-none">
                         <Radar size={300} className={radarScanning ? "animate-spin-slow" : ""} />
@@ -1789,14 +1799,14 @@ export const Tools: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </SlideUp>
             )}
 
             {/* 5. SPS */}
             {activeTab === 'sps' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in-up">
+                <SlideUp key="sps" className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Scanner Card */}
-                    <div className="bg-slate-900 rounded-[3rem] p-10 border border-slate-800 shadow-2xl relative overflow-hidden group text-white">
+                    <div className="glass-panel bg-slate-900/80 rounded-[3rem] p-10 relative overflow-hidden group text-white">
                         <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:scale-110 transition-transform text-cyan-400 duration-500">
                             <Ghost size={150} />
                         </div>
@@ -1885,45 +1895,12 @@ export const Tools: React.FC = () => {
                             </div>
                         )}
                     </ToolCard>
-                </div>
-            )}
-
-            {/* 7. IDENTITY */}
-            {activeTab === 'id' && (
-                <div className="animate-fade-in-up">
-                    <ToolCard title={t.tools.idTitle} icon={<User size={24} />} color="teal">
-                        <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-xl text-lg">{t.tools.idDesc}</p>
-
-                        {identity && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div className="space-y-4">
-                                    <IdentityField label={t.tools.idName} value={identity.fullName} icon={<UserCircle size={18} />} />
-                                    <IdentityField label={t.tools.idAddress} value={identity.address} icon={<MapPin size={18} />} />
-                                    <IdentityField label={t.tools.idPhone} value={identity.phone} icon={<Phone size={18} />} />
-                                    <IdentityField label={t.tools.idEmail} value={identity.email} icon={<AtSign size={18} />} />
-                                </div>
-                                <div className="space-y-4">
-                                    <IdentityField label={t.tools.idJob} value={identity.job} icon={<Briefcase size={18} />} />
-                                    <IdentityField label={t.tools.idBirth} value={identity.birthdate} icon={<Calendar size={18} />} />
-                                    <IdentityField label={t.tools.idUsername} value={identity.username} icon={<User size={18} />} />
-                                    <IdentityField label={t.tools.idPassword} value={identity.password} icon={<Lock size={18} />} />
-                                </div>
-                                <div className="md:col-span-2">
-                                     <IdentityField label={t.tools.idCC} value={identity.cc} icon={<CreditCard size={18} />} mono />
-                                </div>
-                            </div>
-                        )}
-
-                        <Button size="lg" fullWidth onClick={() => setIdentity(generateIdentity())} className="bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-600/20 py-4 rounded-2xl text-lg">
-                            <RefreshCw className="mr-2" size={20} /> {t.tools.idGenerate}
-                        </Button>
-                    </ToolCard>
-                </div>
+                </SlideUp>
             )}
 
             {/* 6. UTILITIES */}
             {activeTab === 'utils' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in-up">
+                <SlideUp key="utils" className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* QR Generator */}
                     <ToolCard title={t.tools.qrTitle} icon={<QrCode size={24} />} color="slate">
                         <div className="bg-slate-100 dark:bg-slate-950/50 p-1.5 rounded-2xl flex gap-2 mb-8 border border-slate-200 dark:border-slate-800">
@@ -1969,13 +1946,13 @@ export const Tools: React.FC = () => {
                         {gdprResult && (
                             <div className="bg-slate-50 dark:bg-slate-950/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 relative shadow-inner animate-fade-in group/gdpr">
                                 <pre className="whitespace-pre-wrap font-sans text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{gdprResult}</pre>
-                                <button onClick={() => navigator.clipboard.writeText(gdprResult)} className="absolute top-4 right-4 p-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:text-blue-500 transition-colors opacity-0 group-hover/gdpr:opacity-100"><Copy size={18} /></button>
+                                <button onClick={() => { navigator.clipboard.writeText(gdprResult); toast.success("Copied to clipboard"); }} className="absolute top-4 right-4 p-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:text-blue-500 transition-colors opacity-0 group-hover/gdpr:opacity-100"><Copy size={18} /></button>
                             </div>
                         )}
                     </ToolCard>
 
                     {/* WebRTC Leak */}
-                    <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-black/20 md:col-span-2 flex flex-col items-center text-center relative overflow-hidden group">
+                    <div className="glass-panel rounded-[2.5rem] p-8 md:p-10 md:col-span-2 flex flex-col items-center text-center relative overflow-hidden group">
                         <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="absolute top-0 right-0 p-8 opacity-5 text-red-500 group-hover:scale-110 transition-transform duration-700">
                             <Network size={150} />
@@ -2009,9 +1986,10 @@ export const Tools: React.FC = () => {
                             </div>
                         )}
                     </div>
-                </div>
+                </SlideUp>
             )}
         </div>
+        </AnimatePresence>
     </div>
   );
 };

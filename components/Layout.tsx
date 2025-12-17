@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Dog, Menu, X, Wrench, Home, Heart, Moon, Sun, Palette, Globe, Layers, Book, Eye, EyeOff, Hash, Type, Maximize, Palette as ColorIcon, Shield, Mail } from 'lucide-react';
+import { Dog, Menu, X, Wrench, Home, Heart, Moon, Sun, Palette, Globe, Layers, Book, Eye, EyeOff, Hash, Type, Maximize, Palette as ColorIcon } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ThemeColor } from '../types';
 import { LANGUAGES } from '../data/locales';
@@ -365,8 +365,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <Link to="/tools" className={`px-5 py-2.5 rounded-xl transition-all duration-300 ${isActive('/tools')}`}>{t.nav.tools}</Link>
               <Link to="/hub" className={`px-5 py-2.5 rounded-xl transition-all duration-300 ${isActive('/hub')}`}>{t.nav.hub}</Link>
               <Link to="/docs" className={`px-5 py-2.5 rounded-xl transition-all duration-300 ${isActive('/docs')}`}>{t.nav.docs}</Link>
-              <Link to="/hardening" className={`px-5 py-2.5 rounded-xl transition-all duration-300 ${isActive('/hardening')}`}>{t.nav.hardening}</Link>
-              <Link to="/temp-mail" className={`px-5 py-2.5 rounded-xl transition-all duration-300 ${isActive('/temp-mail')}`}>{t.nav.tempMail}</Link>
               <Link to="/stories" className={`px-5 py-2.5 rounded-xl transition-all duration-300 ${isActive('/stories')}`}>{t.nav.stories}</Link>
               
               <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-2"></div>
@@ -473,12 +471,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     </Link>
                     <Link to="/docs" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-4 px-4 py-3 text-lg ${isMobileActive('/docs')}`}>
                         <Book size={24} className="opacity-70" /> {t.nav.docs}
-                    </Link>
-                    <Link to="/hardening" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-4 px-4 py-3 text-lg ${isMobileActive('/hardening')}`}>
-                        <Shield size={24} className="opacity-70" /> {t.nav.hardening}
-                    </Link>
-                    <Link to="/temp-mail" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-4 px-4 py-3 text-lg ${isMobileActive('/temp-mail')}`}>
-                        <Mail size={24} className="opacity-70" /> {t.nav.tempMail}
                     </Link>
                     <Link to="/stories" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-4 px-4 py-3 text-lg ${isMobileActive('/stories')}`}>
                         <Dog size={24} className="opacity-70" /> {t.nav.stories}
