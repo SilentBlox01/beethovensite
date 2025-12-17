@@ -1,9 +1,8 @@
 
 import React, { useState, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { Image as ImageIcon, MapPin, Download, Trash2, Shield, Upload, Info, AlertTriangle, FileImage, ShieldCheck, Map as MapIcon } from 'lucide-react';
+import { Image as ImageIcon, MapPin, Download, Trash2, Shield, Upload, Info, AlertTriangle, FileImage, ShieldCheck } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { readExif } from '../utils/exif';
 
 export const ImageLab: React.FC = () => {
   const { t } = useApp();
@@ -26,30 +25,43 @@ export const ImageLab: React.FC = () => {
     setMetaData(null);
 
     const reader = new FileReader();
-    reader.onload = async (e) => {
+    reader.onload = (e) => {
       if (e.target?.result) {
         const result = e.target.result as string;
         setImageSrc(result);
         
-        // Use our custom EXIF parser
-        try {
-            const tags = await readExif(file);
-            if (tags && (tags.make || tags.model || tags.date || tags.gps || tags.software)) {
-                setMetaData({
-                    camera: tags.make || tags.model ? `${tags.make || ''} ${tags.model || ''}`.trim() : null,
-                    software: tags.software || null,
-                    date: tags.date || null,
-                    gps: tags.gps
+        const img = new Image();
+        img.src = result;
+        img.onload = () => {
+            // @ts-ignore - EXIF is loaded globally via script tag in index.html
+            if (typeof window.EXIF !== 'undefined') {
+                // @ts-ignore
+                window.EXIF.getData(img, function() {
+                    // @ts-ignore
+                    const allTags = window.EXIF.getAllTags(this);
+
+                    const hasData = allTags && Object.keys(allTags).length > 0;
+
+                    if (hasData) {
+                        const relevant = {
+                            camera: allTags.Model || allTags.Make ? `${allTags.Make || ''} ${allTags.Model || ''}`.trim() : null,
+                            software: allTags.Software || null,
+                            date: allTags.DateTime || allTags.DateTimeOriginal || null,
+                            // @ts-ignore
+                            gps: window.EXIF.getTag(this, "GPSLatitude") ? true : false
+                        };
+                        setMetaData(relevant);
+                    } else {
+                        setMetaData(null);
+                    }
+                    setLoading(false);
                 });
             } else {
+                setLoading(false);
+                // Fallback if script didn't load
                 setMetaData(null);
             }
-        } catch (err) {
-            console.error("EXIF Error", err);
-            setMetaData(null);
-        } finally {
-            setLoading(false);
-        }
+        };
       }
     };
     reader.readAsDataURL(file);
@@ -112,37 +124,22 @@ export const ImageLab: React.FC = () => {
                 {/* Analysis Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Original Image Card */}
-                    <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl relative overflow-hidden flex flex-col">
+                    <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl relative overflow-hidden">
                         <span className="absolute top-4 left-4 bg-slate-900/80 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-md z-10">{t.lab.original}</span>
-                        <div className="w-full h-64 bg-slate-100 dark:bg-slate-950 rounded-xl mb-6 overflow-hidden">
-                            <img src={imageSrc} alt="Original" className="w-full h-full object-contain" />
-                        </div>
+                        <img src={imageSrc} alt="Original" className="w-full h-64 object-cover rounded-xl mb-6" />
                         
                         {loading ? (
-                            <div className="text-center py-8 text-slate-500 animate-pulse">{t.lab.analyzing}</div>
+                            <div className="text-center py-8 text-slate-500">{t.lab.analyzing}</div>
                         ) : metaData ? (
-                            <div className="space-y-4 flex-1">
+                            <div className="space-y-4">
                                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 p-4 rounded-xl flex items-center gap-3 text-red-700 dark:text-red-400">
                                     <AlertTriangle className="shrink-0" />
                                     <span className="font-bold">{t.lab.metaFound}</span>
                                 </div>
                                 
                                 {metaData.gps && (
-                                    <div className="bg-rose-50 dark:bg-rose-900/20 p-4 rounded-xl border border-rose-100 dark:border-rose-800">
-                                        <div className="flex items-center gap-3 text-rose-700 dark:text-rose-400 font-bold mb-2">
-                                            <MapPin size={18} /> {t.lab.gpsFound}
-                                        </div>
-                                        <div className="text-sm font-mono text-slate-600 dark:text-slate-300 mb-3 ml-7">
-                                            {metaData.gps.lat.toFixed(5)}, {metaData.gps.lng.toFixed(5)}
-                                        </div>
-                                        <a
-                                            href={`https://www.openstreetmap.org/?mlat=${metaData.gps.lat}&mlon=${metaData.gps.lng}#map=16/${metaData.gps.lat}/${metaData.gps.lng}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="ml-7 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-rose-600 hover:text-rose-800 dark:hover:text-rose-300 hover:underline"
-                                        >
-                                            {t.lab.report.viewMap} <MapIcon size={12} />
-                                        </a>
+                                    <div className="flex items-center gap-3 text-rose-600 font-bold bg-rose-50 dark:bg-rose-900/20 p-3 rounded-lg">
+                                        <MapPin size={18} /> {t.lab.gpsFound}
                                     </div>
                                 )}
                                 
@@ -168,28 +165,18 @@ export const ImageLab: React.FC = () => {
                                 </div>
 
                                 {!cleanSrc && (
-                                    <div className="pt-4">
-                                        <div className="text-xs text-center text-slate-400 mb-2">{t.lab.report.cleanFirst}</div>
-                                        <Button onClick={cleanImage} fullWidth variant="primary" className="bg-rose-600 hover:bg-rose-700 shadow-lg shadow-rose-600/20 rounded-2xl py-4">
-                                            <Shield className="mr-2" size={18} /> {t.lab.cleanBtn}
-                                        </Button>
-                                    </div>
+                                    <Button onClick={cleanImage} fullWidth variant="primary" className="bg-rose-600 hover:bg-rose-700 mt-4">
+                                        <Shield className="mr-2" size={18} /> {t.lab.cleanBtn}
+                                    </Button>
                                 )}
                             </div>
                         ) : (
-                            <div className="text-center py-8 flex-1 flex flex-col justify-center">
+                            <div className="text-center py-8">
                                 <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <ShieldCheck size={32} />
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.lab.noMeta}</h3>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-xs mx-auto">{t.lab.cleanDesc}</p>
-
-                                {/* Even if clean, allow "cleaning" (re-encoding) just in case user wants to be sure */}
-                                {!cleanSrc && (
-                                    <Button onClick={cleanImage} variant="outline" className="mx-auto rounded-xl">
-                                        {t.lab.cleanBtn} (Force)
-                                    </Button>
-                                )}
+                                <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">{t.lab.cleanDesc}</p>
                             </div>
                         )}
                     </div>
@@ -198,9 +185,7 @@ export const ImageLab: React.FC = () => {
                     {cleanSrc && (
                         <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl relative overflow-hidden animate-scale-in">
                             <span className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10">{t.lab.cleanGenerated}</span>
-                            <div className="w-full h-64 bg-slate-100 dark:bg-slate-950 rounded-xl mb-6 overflow-hidden">
-                                <img src={cleanSrc} alt="Clean" className="w-full h-full object-contain" />
-                            </div>
+                            <img src={cleanSrc} alt="Clean" className="w-full h-64 object-cover rounded-xl mb-6" />
                             
                             <div className="bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 p-6 rounded-2xl mb-6">
                                 <p className="text-green-800 dark:text-green-300 font-medium leading-relaxed flex gap-3">
@@ -210,7 +195,7 @@ export const ImageLab: React.FC = () => {
                             </div>
 
                             <a href={cleanSrc} download="libreshield-safe-image.jpg" className="block">
-                                <Button fullWidth variant="primary" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-black dark:hover:bg-slate-200 rounded-2xl py-4 shadow-xl">
+                                <Button fullWidth variant="primary" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-black dark:hover:bg-slate-200">
                                     <Download className="mr-2" size={18} /> {t.lab.downloadBtn}
                                 </Button>
                             </a>

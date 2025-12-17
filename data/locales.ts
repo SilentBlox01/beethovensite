@@ -151,35 +151,7 @@ const es: Translation = {
     legal: 'Legal',
     terms: 'Términos',
     privacy: 'Privacidad',
-    stories: 'Historias',
-    hardening: 'Hardening',
-    tempMail: 'Email Temporal'
-  },
-  hardening: {
-    title: "Guías de Hardening",
-    subtitle: "Asegura tus dispositivos paso a paso.",
-    windows: "Windows",
-    linux: "Linux",
-    macos: "macOS",
-    android: "Android",
-    ios: "iOS",
-    progress: "Progreso",
-    reset: "Reiniciar",
-    completed: "Completado"
-  },
-  tempMail: {
-    title: "Email Temporal",
-    subtitle: "Bandeja de entrada desechable y anónima.",
-    generate: "Generar Dirección",
-    copy: "Copiar",
-    refresh: "Actualizar",
-    empty: "Bandeja vacía",
-    inbox: "Bandeja de Entrada",
-    sender: "Remitente",
-    subject: "Asunto",
-    date: "Fecha",
-    loading: "Cargando...",
-    error: "Error al obtener correos"
+    stories: 'Historias'
   },
   inspector: {
     enable: 'Inspector',
@@ -459,7 +431,6 @@ const es: Translation = {
     tabFiles: "Archivos",
     tabRadar: "Radar",
     tabSPS: "SPS",
-    tabIdentity: "Identidad",
     genTitle: "Generador de Contraseñas",
     genDesc: "Crea contraseñas robustas y aleatorias localmente.",
     auditTitle: "Auditor de Contraseñas",
@@ -676,19 +647,7 @@ const es: Translation = {
     msgKeyPlaceholder: "Clave secreta...",
     msgProcess: "Procesar",
     msgErrorKey: "La clave es necesaria",
-    msgErrorInvalid: "Mensaje inválido",
-    idTitle: "Generador de Identidad",
-    idDesc: "Crea identidades falsas completas y consistentes para pruebas o registros.",
-    idGenerate: "Generar Nueva",
-    idName: "Nombre Completo",
-    idAddress: "Dirección",
-    idPhone: "Teléfono",
-    idEmail: "Email",
-    idJob: "Ocupación",
-    idBirth: "Fecha de Nacimiento",
-    idUsername: "Usuario",
-    idPassword: "Password",
-    idCC: "Tarjeta de Crédito (Falsa)"
+    msgErrorInvalid: "Mensaje inválido"
   },
   hub: {
     title: "Centro de Privacidad",
@@ -735,14 +694,6 @@ const es: Translation = {
       camera: "Cámara",
       software: "Software",
       date: "Fecha"
-    },
-    report: {
-      title: "Reporte de Inteligencia",
-      location: "Ubicación Detectada",
-      device: "Dispositivo",
-      date: "Fecha Original",
-      cleanFirst: "Recomendación: Limpiar antes de compartir.",
-      viewMap: "Ver en Mapa"
     }
   },
   phishing: {
@@ -978,33 +929,7 @@ const es: Translation = {
 const en: Translation = {
   ...es,
   common: { ...es.common, appName: 'Beethoven', tagline: 'Privacy simplified for everyone', start: 'Start', next: 'Next', back: 'Back', close: 'Close', loading: 'Loading...', error: 'Error', viewGuide: 'View Guide', seeMore: 'See More', free: 'Free', openSource: 'Open Source', all: 'All' },
-  nav: { home: 'Home', tools: 'Tools', assessment: 'Assessment', hub: 'Hub', docs: 'Docs', faq: 'FAQ', about: 'About', theme: 'Theme', legal: 'Legal', terms: 'Terms', privacy: 'Privacy', stories: 'Stories', hardening: 'Hardening', tempMail: 'Temp Email' },
-  hardening: {
-    title: "Hardening Guides",
-    subtitle: "Secure your devices step-by-step.",
-    windows: "Windows",
-    linux: "Linux",
-    macos: "macOS",
-    android: "Android",
-    ios: "iOS",
-    progress: "Progress",
-    reset: "Reset",
-    completed: "Completed"
-  },
-  tempMail: {
-    title: "Temp Email",
-    subtitle: "Disposable anonymous inbox.",
-    generate: "Generate Address",
-    copy: "Copy",
-    refresh: "Refresh",
-    empty: "Inbox empty",
-    inbox: "Inbox",
-    sender: "Sender",
-    subject: "Subject",
-    date: "Date",
-    loading: "Loading...",
-    error: "Error fetching emails"
-  },
+  nav: { home: 'Home', tools: 'Tools', assessment: 'Assessment', hub: 'Hub', docs: 'Docs', faq: 'FAQ', about: 'About', theme: 'Theme', legal: 'Legal', terms: 'Terms', privacy: 'Privacy', stories: 'Stories' },
   inspector: { ...es.inspector, enable: 'Inspector', disable: 'Close', title: 'Inspector UI', select: 'Select an element', props: 'Properties', computed: 'Computed', tag: 'Tag', class: 'Class', dimensions: 'Dimensions', color: 'Color', font: 'Font', spacing: 'Spacing' },
   analyzer: {
     title: "Privacy Analyzer",
@@ -1207,20 +1132,7 @@ const en: Translation = {
     },
     perms: { mic: "Microphone", location: "Location", notifications: "Notifications", camera: "Camera" },
     msgPlaceholderEnc: "Message to encrypt...", msgPlaceholderDec: "Encrypted message...", msgKeyPlaceholder: "Secret key...",
-    msgProcess: "Process", msgErrorKey: "Key is required", msgErrorInvalid: "Invalid message",
-    tabIdentity: "Identity",
-    idTitle: "Identity Generator",
-    idDesc: "Create complete fake identities for testing or signups.",
-    idGenerate: "Generate New",
-    idName: "Full Name",
-    idAddress: "Address",
-    idPhone: "Phone",
-    idEmail: "Email",
-    idJob: "Occupation",
-    idBirth: "Birthdate",
-    idUsername: "Username",
-    idPassword: "Password",
-    idCC: "Credit Card (Fake)"
+    msgProcess: "Process", msgErrorKey: "Key is required", msgErrorInvalid: "Invalid message"
   },
   hub: {
     title: "Privacy Hub", subtitle: "Ethical alternatives for your digital life",
@@ -1239,15 +1151,7 @@ const en: Translation = {
     warning: "Images are processed locally in your browser.", analyzing: "Analyzing image...",
     analyzeAnother: "Analyze another image", cleanGenerated: "Clean Image Generated",
     cleanDesc: "The image has been re-encoded and metadata removed.", original: "Original",
-    meta: { camera: "Camera", software: "Software", date: "Date" },
-    report: {
-      title: "Intelligence Report",
-      location: "Detected Location",
-      device: "Device",
-      date: "Original Date",
-      cleanFirst: "Recommendation: Clean before sharing.",
-      viewMap: "View on Map"
-    }
+    meta: { camera: "Camera", software: "Software", date: "Date" }
   },
   phishing: {
     title: "Cyber Trainer", subtitle: "Can you distinguish real from fake?",

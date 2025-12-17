@@ -123,8 +123,6 @@ export interface Translation {
     privacy: string;
     stories: string;
     ai?: string;
-    hardening: string;
-    tempMail: string;
   };
   inspector: {
       enable: string;
@@ -404,7 +402,6 @@ export interface Translation {
     tabFiles: string; 
     tabRadar: string;
     tabSPS: string;
-    tabIdentity: string;
     genTitle: string;
     genDesc: string;
     auditTitle: string;
@@ -617,46 +614,6 @@ export interface Translation {
     msgProcess: string;
     msgErrorKey: string;
     msgErrorInvalid: string;
-
-    // Identity Generator
-    idTitle: string;
-    idDesc: string;
-    idGenerate: string;
-    idName: string;
-    idAddress: string;
-    idPhone: string;
-    idEmail: string;
-    idJob: string;
-    idBirth: string;
-    idUsername: string;
-    idPassword: string;
-    idCC: string;
-  };
-  hardening: {
-      title: string;
-      subtitle: string;
-      windows: string;
-      linux: string;
-      macos: string;
-      android: string;
-      ios: string;
-      progress: string;
-      reset: string;
-      completed: string;
-  };
-  tempMail: {
-      title: string;
-      subtitle: string;
-      generate: string;
-      copy: string;
-      refresh: string;
-      empty: string;
-      inbox: string;
-      sender: string;
-      subject: string;
-      date: string;
-      loading: string;
-      error: string;
   };
   hub: {
       title: string;
@@ -703,15 +660,7 @@ export interface Translation {
           camera: string;
           software: string;
           date: string;
-      };
-      report: {
-          title: string;
-          location: string;
-          device: string;
-          date: string;
-          cleanFirst: string;
-          viewMap: string;
-      };
+      }
   };
   phishing: {
       title: string;

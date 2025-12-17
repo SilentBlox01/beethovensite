@@ -16,7 +16,6 @@ import { About } from './pages/About';
 import { Docs } from './pages/Docs';
 import { Analyzer } from './pages/Analyzer';
 import { Stories } from './pages/Stories';
-import { TempMail } from './pages/TempMail';
 import { Hardening } from './pages/Hardening';
 
 function App() {
@@ -45,12 +44,6 @@ function App() {
           </Layout>
         </Router>
       </ToastProvider>
-            <Route path="/stories" element={<Stories />} />
-            <Route path="/temp-mail" element={<TempMail />} />
-            <Route path="/hardening" element={<Hardening />} />
-          </Routes>
-        </Layout>
-      </Router>
     </AppProvider>
   );
 }
