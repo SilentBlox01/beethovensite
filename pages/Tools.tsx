@@ -62,6 +62,10 @@ import { IdentityGenerator } from '../components/IdentityGenerator';
 import { FadeIn, SlideUp, ScaleIn } from '../components/ui/MotionWrappers';
 import { CountUp } from '../components/ui/CountUp';
 import { motion, AnimatePresence } from 'framer-motion';
+  User, Briefcase, Calendar, Phone, CreditCard, AtSign, UserCircle
+} from 'lucide-react';
+import { useApp } from '../context/AppContext';
+import { generateIdentity } from '../utils/generators';
 
 // --- HELPERS ---
 
@@ -292,6 +296,21 @@ const RadarMetricRow = ({ label, value, score, color }: { label: string, value: 
     </div>
 );
 
+const IdentityField = ({ label, value, icon, mono }: any) => (
+    <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center gap-4 group">
+        <div className="p-2 bg-white dark:bg-slate-800 rounded-xl text-slate-400 group-hover:text-teal-500 transition-colors shadow-sm">
+            {icon}
+        </div>
+        <div className="flex-1 min-w-0">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5">{label}</div>
+            <div className={`font-bold text-slate-800 dark:text-slate-200 truncate ${mono ? 'font-mono' : ''}`}>{value}</div>
+        </div>
+        <button onClick={() => navigator.clipboard.writeText(value)} className="p-2 hover:bg-white dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-teal-500 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
+            <Copy size={16} />
+        </button>
+    </div>
+);
+
 // New Input Style
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement> & { icon?: React.ReactNode }>(
     ({ className, icon, ...props }, ref) => (
@@ -356,6 +375,10 @@ export const Tools: React.FC = () => {
   const { t } = useApp();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'keys' | 'privacy' | 'files' | 'radar' | 'sps' | 'utils'>('keys');
+  const [activeTab, setActiveTab] = useState<'keys' | 'privacy' | 'files' | 'radar' | 'sps' | 'utils' | 'id'>('keys');
+
+  // --- Identity State ---
+  const [identity, setIdentity] = useState<any>(null);
 
   // --- Password Generator State ---
   const [genLength, setGenLength] = useState(16);
@@ -1144,10 +1167,14 @@ export const Tools: React.FC = () => {
       if (activeTab === 'privacy' && !deviceInfo) {
           // Optional: Auto load or wait for user action
       }
+      if (activeTab === 'id' && !identity) {
+          setIdentity(generateIdentity());
+      }
   }, [activeTab]);
 
   const tabs = [
       { id: 'keys', label: t.tools.tabKeys, icon: <KeyRound size={18} /> },
+      { id: 'id', label: t.tools.tabIdentity, icon: <User size={18} /> },
       { id: 'privacy', label: t.tools.tabPrivacy, icon: <Shield size={18} /> },
       { id: 'identity', label: t.tools.tabIdentity || 'Identity', icon: <UserCheck size={18} /> },
       { id: 'files', label: t.tools.tabFiles, icon: <FileLock size={18} /> },
@@ -1896,6 +1923,39 @@ export const Tools: React.FC = () => {
                         )}
                     </ToolCard>
                 </SlideUp>
+            )}
+
+            {/* 7. IDENTITY */}
+            {activeTab === 'id' && (
+                <div className="animate-fade-in-up">
+                    <ToolCard title={t.tools.idTitle} icon={<User size={24} />} color="teal">
+                        <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-xl text-lg">{t.tools.idDesc}</p>
+
+                        {identity && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <div className="space-y-4">
+                                    <IdentityField label={t.tools.idName} value={identity.fullName} icon={<UserCircle size={18} />} />
+                                    <IdentityField label={t.tools.idAddress} value={identity.address} icon={<MapPin size={18} />} />
+                                    <IdentityField label={t.tools.idPhone} value={identity.phone} icon={<Phone size={18} />} />
+                                    <IdentityField label={t.tools.idEmail} value={identity.email} icon={<AtSign size={18} />} />
+                                </div>
+                                <div className="space-y-4">
+                                    <IdentityField label={t.tools.idJob} value={identity.job} icon={<Briefcase size={18} />} />
+                                    <IdentityField label={t.tools.idBirth} value={identity.birthdate} icon={<Calendar size={18} />} />
+                                    <IdentityField label={t.tools.idUsername} value={identity.username} icon={<User size={18} />} />
+                                    <IdentityField label={t.tools.idPassword} value={identity.password} icon={<Lock size={18} />} />
+                                </div>
+                                <div className="md:col-span-2">
+                                     <IdentityField label={t.tools.idCC} value={identity.cc} icon={<CreditCard size={18} />} mono />
+                                </div>
+                            </div>
+                        )}
+
+                        <Button size="lg" fullWidth onClick={() => setIdentity(generateIdentity())} className="bg-teal-600 hover:bg-teal-700 shadow-lg shadow-teal-600/20 py-4 rounded-2xl text-lg">
+                            <RefreshCw className="mr-2" size={20} /> {t.tools.idGenerate}
+                        </Button>
+                    </ToolCard>
+                </div>
             )}
 
             {/* 6. UTILITIES */}
