@@ -1,126 +1,1387 @@
 import { Translation } from '../types';
 
-const appsData = [
+const appsDataRaw = [
   // Browsers
-  { id: "firefox", name: "Firefox", description: "Navegador web rápido, privado y de código abierto.", replaces: "Google Chrome", category: "browser", icon: "firefox", url: "https://www.mozilla.org/firefox/", badge: "Privacy", pricing: "Free" },
-  { id: "brave", name: "Brave", description: "Navegador con bloqueo de anuncios y rastreadores nativo.", replaces: "Google Chrome", category: "browser", icon: "shield", url: "https://brave.com/", badge: "AdBlock", pricing: "Free" },
-  { id: "tor", name: "Tor Browser", description: "Navegación anónima a través de la red Tor.", replaces: "All Browsers", category: "browser", icon: "ghost", url: "https://www.torproject.org/", badge: "Anonymity", pricing: "Free" },
-  { id: "librewolf", name: "LibreWolf", description: "Fork de Firefox enfocado en privacidad y seguridad.", replaces: "Firefox", category: "browser", icon: "globe", url: "https://librewolf.net/", badge: "Hardened", pricing: "Free" },
-  { id: "mullvad-browser", name: "Mullvad Browser", description: "Navegador enfocado en privacidad por Mullvad VPN y Tor Project.", replaces: "Chrome", category: "browser", icon: "lock", url: "https://mullvad.net/browser", badge: "Privacy", pricing: "Free" },
-  { id: "ungoogled", name: "Ungoogled Chromium", description: "Chromium sin las dependencias de Google.", replaces: "Chrome", category: "browser", icon: "chrome", url: "https://github.com/ungoogled-software/ungoogled-chromium", badge: "De-Googled", pricing: "Free" },
-  { id: "bromite", name: "Bromite", description: "Chromium para Android con bloqueo de anuncios.", replaces: "Chrome Android", category: "browser", icon: "smartphone", url: "https://www.bromite.org/", badge: "Android", pricing: "Free" },
-  { id: "fennec", name: "Fennec F-Droid", description: "Versión de Firefox para Android sin telemetría propietaria.", replaces: "Chrome Android", category: "browser", icon: "smartphone", url: "https://f-droid.org/packages/org.mozilla.fennec_fdroid/", badge: "FOSS", pricing: "Free" },
-  { id: "mull", name: "Mull Browser", description: "Navegador Android endurecido basado en Fennec.", replaces: "Chrome Android", category: "browser", icon: "smartphone", url: "https://github.com/DivestOS/Mull-Fennec", badge: "Hardened", pricing: "Free" },
-  { id: "waterfox", name: "Waterfox", description: "Navegador ético y rápido.", replaces: "Firefox", category: "browser", icon: "droplet", url: "https://www.waterfox.net/", badge: "Ethical", pricing: "Free" },
-  { id: "pale-moon", name: "Pale Moon", description: "Navegador ligero y personalizable.", replaces: "Firefox", category: "browser", icon: "moon", url: "https://www.palemoon.org/", badge: "Lightweight", pricing: "Free" },
+  {
+    id: "firefox",
+    name: "Firefox",
+    description: {
+      es: "Navegador web rápido, privado y de código abierto.",
+      en: "Fast, private, and open-source web browser."
+    },
+    replaces: "Google Chrome",
+    category: "browser",
+    icon: "firefox",
+    url: "https://www.mozilla.org/firefox/",
+    badge: "Privacy",
+    pricing: "Free"
+  },
+  {
+    id: "brave",
+    name: "Brave",
+    description: {
+      es: "Navegador con bloqueo de anuncios y rastreadores nativo.",
+      en: "Browser with native ad and tracker blocking."
+    },
+    replaces: "Google Chrome",
+    category: "browser",
+    icon: "shield",
+    url: "https://brave.com/",
+    badge: "AdBlock",
+    pricing: "Free"
+  },
+  {
+    id: "tor",
+    name: "Tor Browser",
+    description: {
+      es: "Navegación anónima a través de la red Tor.",
+      en: "Anonymous browsing through the Tor network."
+    },
+    replaces: "All Browsers",
+    category: "browser",
+    icon: "ghost",
+    url: "https://www.torproject.org/",
+    badge: "Anonymity",
+    pricing: "Free"
+  },
+  {
+    id: "librewolf",
+    name: "LibreWolf",
+    description: {
+      es: "Fork de Firefox enfocado en privacidad y seguridad.",
+      en: "Firefox fork focused on privacy and security."
+    },
+    replaces: "Firefox",
+    category: "browser",
+    icon: "globe",
+    url: "https://librewolf.net/",
+    badge: "Hardened",
+    pricing: "Free"
+  },
+  {
+    id: "mullvad-browser",
+    name: "Mullvad Browser",
+    description: {
+      es: "Navegador enfocado en privacidad por Mullvad VPN y Tor Project.",
+      en: "Privacy-focused browser by Mullvad VPN and Tor Project."
+    },
+    replaces: "Chrome",
+    category: "browser",
+    icon: "lock",
+    url: "https://mullvad.net/browser",
+    badge: "Privacy",
+    pricing: "Free"
+  },
+  {
+    id: "ungoogled",
+    name: "Ungoogled Chromium",
+    description: {
+      es: "Chromium sin las dependencias de Google.",
+      en: "Chromium without Google dependencies."
+    },
+    replaces: "Chrome",
+    category: "browser",
+    icon: "chrome",
+    url: "https://github.com/ungoogled-software/ungoogled-chromium",
+    badge: "De-Googled",
+    pricing: "Free"
+  },
+  {
+    id: "bromite",
+    name: "Bromite",
+    description: {
+      es: "Chromium para Android con bloqueo de anuncios.",
+      en: "Chromium for Android with ad blocking."
+    },
+    replaces: "Chrome Android",
+    category: "browser",
+    icon: "smartphone",
+    url: "https://www.bromite.org/",
+    badge: "Android",
+    pricing: "Free"
+  },
+  {
+    id: "fennec",
+    name: "Fennec F-Droid",
+    description: {
+      es: "Versión de Firefox para Android sin telemetría propietaria.",
+      en: "Firefox version for Android without proprietary telemetry."
+    },
+    replaces: "Chrome Android",
+    category: "browser",
+    icon: "smartphone",
+    url: "https://f-droid.org/packages/org.mozilla.fennec_fdroid/",
+    badge: "FOSS",
+    pricing: "Free"
+  },
+  {
+    id: "mull",
+    name: "Mull Browser",
+    description: {
+      es: "Navegador Android endurecido basado en Fennec.",
+      en: "Hardened Android browser based on Fennec."
+    },
+    replaces: "Chrome Android",
+    category: "browser",
+    icon: "smartphone",
+    url: "https://github.com/DivestOS/Mull-Fennec",
+    badge: "Hardened",
+    pricing: "Free"
+  },
+  {
+    id: "waterfox",
+    name: "Waterfox",
+    description: {
+      es: "Navegador ético y rápido.",
+      en: "Ethical and fast browser."
+    },
+    replaces: "Firefox",
+    category: "browser",
+    icon: "droplet",
+    url: "https://www.waterfox.net/",
+    badge: "Ethical",
+    pricing: "Free"
+  },
+  {
+    id: "pale-moon",
+    name: "Pale Moon",
+    description: {
+      es: "Navegador ligero y personalizable.",
+      en: "Lightweight and customizable browser."
+    },
+    replaces: "Firefox",
+    category: "browser",
+    icon: "moon",
+    url: "https://www.palemoon.org/",
+    badge: "Lightweight",
+    pricing: "Free"
+  },
 
   // Email
-  { id: "proton-mail", name: "Proton Mail", description: "Correo cifrado con sede en Suiza.", replaces: "Gmail", category: "email", icon: "mail", url: "https://proton.me/mail", badge: "Encrypted", pricing: "Freemium" },
-  { id: "tutanota", name: "Tuta (Tutanota)", description: "Correo seguro y calendario cifrado.", replaces: "Gmail", category: "email", icon: "mail", url: "https://tuta.com/", badge: "Encrypted", pricing: "Freemium" },
-  { id: "mailfence", name: "Mailfence", description: "Privacidad, seguridad y libertad de email.", replaces: "Outlook", category: "email", icon: "shield", url: "https://mailfence.com/", badge: "Secure", pricing: "Freemium" },
-  { id: "posteo", name: "Posteo", description: "Correo electrónico verde, seguro y sin publicidad.", replaces: "Gmail", category: "email", icon: "mail", url: "https://posteo.de/", badge: "Green", pricing: "Paid" },
-  { id: "startmail", name: "StartMail", description: "Correo privado que protege tus datos.", replaces: "Yahoo", category: "email", icon: "mail", url: "https://www.startmail.com/", badge: "Private", pricing: "Paid" },
-  { id: "disroot", name: "Disroot", description: "Plataforma descentralizada y federada.", replaces: "Google Suite", category: "email", icon: "server", url: "https://disroot.org/", badge: "Federated", pricing: "Free" },
-  { id: "simplelogin", name: "SimpleLogin", description: "Alias de correo ilimitados para proteger tu dirección real.", replaces: "Direct Email", category: "email", icon: "mask", url: "https://simplelogin.io/", badge: "Aliases", pricing: "Freemium" },
-  { id: "anonaddy", name: "Addy.io (AnonAddy)", description: "Reenvío de correo anónimo.", replaces: "Direct Email", category: "email", icon: "mask", url: "https://addy.io/", badge: "Aliases", pricing: "Freemium" },
-  { id: "thunderbird", name: "Thunderbird", description: "Cliente de correo robusto y seguro para escritorio.", replaces: "Outlook Client", category: "email", icon: "mail", url: "https://www.thunderbird.net/", badge: "Client", pricing: "Free" },
-  { id: "k9mail", name: "K-9 Mail", description: "Cliente de correo avanzado para Android.", replaces: "Gmail App", category: "email", icon: "smartphone", url: "https://k9mail.app/", badge: "Android", pricing: "Free" },
-  { id: "fairemail", name: "FairEmail", description: "Cliente de correo enfocado en privacidad para Android.", replaces: "Gmail App", category: "email", icon: "smartphone", url: "https://email.faircode.eu/", badge: "Android", pricing: "Freemium" },
+  {
+    id: "proton-mail",
+    name: "Proton Mail",
+    description: {
+      es: "Correo cifrado con sede en Suiza.",
+      en: "Encrypted email based in Switzerland."
+    },
+    replaces: "Gmail",
+    category: "email",
+    icon: "mail",
+    url: "https://proton.me/mail",
+    badge: "Encrypted",
+    pricing: "Freemium"
+  },
+  {
+    id: "tutanota",
+    name: "Tuta (Tutanota)",
+    description: {
+      es: "Correo seguro y calendario cifrado.",
+      en: "Secure email and encrypted calendar."
+    },
+    replaces: "Gmail",
+    category: "email",
+    icon: "mail",
+    url: "https://tuta.com/",
+    badge: "Encrypted",
+    pricing: "Freemium"
+  },
+  {
+    id: "mailfence",
+    name: "Mailfence",
+    description: {
+      es: "Privacidad, seguridad y libertad de email.",
+      en: "Privacy, security, and email freedom."
+    },
+    replaces: "Outlook",
+    category: "email",
+    icon: "shield",
+    url: "https://mailfence.com/",
+    badge: "Secure",
+    pricing: "Freemium"
+  },
+  {
+    id: "posteo",
+    name: "Posteo",
+    description: {
+      es: "Correo electrónico verde, seguro y sin publicidad.",
+      en: "Green, secure, and ad-free email."
+    },
+    replaces: "Gmail",
+    category: "email",
+    icon: "mail",
+    url: "https://posteo.de/",
+    badge: "Green",
+    pricing: "Paid"
+  },
+  {
+    id: "startmail",
+    name: "StartMail",
+    description: {
+      es: "Correo privado que protege tus datos.",
+      en: "Private email that protects your data."
+    },
+    replaces: "Yahoo",
+    category: "email",
+    icon: "mail",
+    url: "https://www.startmail.com/",
+    badge: "Private",
+    pricing: "Paid"
+  },
+  {
+    id: "disroot",
+    name: "Disroot",
+    description: {
+      es: "Plataforma descentralizada y federada.",
+      en: "Decentralized and federated platform."
+    },
+    replaces: "Google Suite",
+    category: "email",
+    icon: "server",
+    url: "https://disroot.org/",
+    badge: "Federated",
+    pricing: "Free"
+  },
+  {
+    id: "simplelogin",
+    name: "SimpleLogin",
+    description: {
+      es: "Alias de correo ilimitados para proteger tu dirección real.",
+      en: "Unlimited email aliases to protect your real address."
+    },
+    replaces: "Direct Email",
+    category: "email",
+    icon: "mask",
+    url: "https://simplelogin.io/",
+    badge: "Aliases",
+    pricing: "Freemium"
+  },
+  {
+    id: "anonaddy",
+    name: "Addy.io (AnonAddy)",
+    description: {
+      es: "Reenvío de correo anónimo.",
+      en: "Anonymous email forwarding."
+    },
+    replaces: "Direct Email",
+    category: "email",
+    icon: "mask",
+    url: "https://addy.io/",
+    badge: "Aliases",
+    pricing: "Freemium"
+  },
+  {
+    id: "thunderbird",
+    name: "Thunderbird",
+    description: {
+      es: "Cliente de correo robusto y seguro para escritorio.",
+      en: "Robust and secure desktop email client."
+    },
+    replaces: "Outlook Client",
+    category: "email",
+    icon: "mail",
+    url: "https://www.thunderbird.net/",
+    badge: "Client",
+    pricing: "Free"
+  },
+  {
+    id: "k9mail",
+    name: "K-9 Mail",
+    description: {
+      es: "Cliente de correo avanzado para Android.",
+      en: "Advanced email client for Android."
+    },
+    replaces: "Gmail App",
+    category: "email",
+    icon: "smartphone",
+    url: "https://k9mail.app/",
+    badge: "Android",
+    pricing: "Free"
+  },
+  {
+    id: "fairemail",
+    name: "FairEmail",
+    description: {
+      es: "Cliente de correo enfocado en privacidad para Android.",
+      en: "Privacy-focused email client for Android."
+    },
+    replaces: "Gmail App",
+    category: "email",
+    icon: "smartphone",
+    url: "https://email.faircode.eu/",
+    badge: "Android",
+    pricing: "Freemium"
+  },
 
   // Messaging
-  { id: "signal", name: "Signal", description: "Mensajería cifrada de extremo a extremo estándar de oro.", replaces: "WhatsApp", category: "messaging", icon: "message-circle", url: "https://signal.org/", badge: "Gold Standard", pricing: "Free" },
-  { id: "telegram", name: "Telegram", description: "Mensajería rápida y segura (cifrado E2E opcional).", replaces: "WhatsApp", category: "messaging", icon: "send", url: "https://telegram.org/", badge: "Fast", pricing: "Free" },
-  { id: "threema", name: "Threema", description: "Mensajería segura que no requiere número de teléfono.", replaces: "WhatsApp", category: "messaging", icon: "lock", url: "https://threema.ch/", badge: "No Phone #", pricing: "Paid" },
-  { id: "session", name: "Session", description: "Mensajería privada que no requiere número ni ID.", replaces: "WhatsApp", category: "messaging", icon: "ghost", url: "https://getsession.org/", badge: "Anonymous", pricing: "Free" },
-  { id: "element", name: "Element", description: "Chat seguro y descentralizado sobre Matrix.", replaces: "Slack", category: "messaging", icon: "hash", url: "https://element.io/", badge: "Decentralized", pricing: "Freemium" },
-  { id: "briar", name: "Briar", description: "Mensajería P2P vía Tor/Bluetooth/WiFi sin servidores.", replaces: "WhatsApp", category: "messaging", icon: "wifi", url: "https://briarproject.org/", badge: "P2P", pricing: "Free" },
-  { id: "jami", name: "Jami", description: "Comunicación universal, distribuida y privada.", replaces: "Skype", category: "messaging", icon: "video", url: "https://jami.net/", badge: "Distributed", pricing: "Free" },
-  { id: "wire", name: "Wire", description: "Colaboración segura moderna.", replaces: "Slack", category: "messaging", icon: "users", url: "https://wire.com/", badge: "Collaboration", pricing: "Freemium" },
-  { id: "simplex", name: "SimpleX Chat", description: "El primer chat sin identificadores de usuario.", replaces: "WhatsApp", category: "messaging", icon: "user-x", url: "https://simplex.chat/", badge: "No ID", pricing: "Free" },
-  { id: "conversations", name: "Conversations", description: "Cliente XMPP/Jabber moderno para Android.", replaces: "WhatsApp", category: "messaging", icon: "message-square", url: "https://conversations.im/", badge: "XMPP", pricing: "Paid" },
-  { id: "fluffychat", name: "FluffyChat", description: "Cliente Matrix simple y bonito.", replaces: "Discord", category: "messaging", icon: "message-circle", url: "https://fluffychat.im/", badge: "Matrix", pricing: "Free" },
+  {
+    id: "signal",
+    name: "Signal",
+    description: {
+      es: "Mensajería cifrada de extremo a extremo estándar de oro.",
+      en: "Gold standard end-to-end encrypted messaging."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "message-circle",
+    url: "https://signal.org/",
+    badge: "Gold Standard",
+    pricing: "Free"
+  },
+  {
+    id: "telegram",
+    name: "Telegram",
+    description: {
+      es: "Mensajería rápida y segura (cifrado E2E opcional).",
+      en: "Fast and secure messaging (optional E2E encryption)."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "send",
+    url: "https://telegram.org/",
+    badge: "Fast",
+    pricing: "Free"
+  },
+  {
+    id: "threema",
+    name: "Threema",
+    description: {
+      es: "Mensajería segura que no requiere número de teléfono.",
+      en: "Secure messaging that doesn't require a phone number."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "lock",
+    url: "https://threema.ch/",
+    badge: "No Phone #",
+    pricing: "Paid"
+  },
+  {
+    id: "session",
+    name: "Session",
+    description: {
+      es: "Mensajería privada que no requiere número ni ID.",
+      en: "Private messaging requiring no number or ID."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "ghost",
+    url: "https://getsession.org/",
+    badge: "Anonymous",
+    pricing: "Free"
+  },
+  {
+    id: "element",
+    name: "Element",
+    description: {
+      es: "Chat seguro y descentralizado sobre Matrix.",
+      en: "Secure and decentralized chat on Matrix."
+    },
+    replaces: "Slack",
+    category: "messaging",
+    icon: "hash",
+    url: "https://element.io/",
+    badge: "Decentralized",
+    pricing: "Freemium"
+  },
+  {
+    id: "briar",
+    name: "Briar",
+    description: {
+      es: "Mensajería P2P vía Tor/Bluetooth/WiFi sin servidores.",
+      en: "P2P messaging via Tor/Bluetooth/WiFi without servers."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "wifi",
+    url: "https://briarproject.org/",
+    badge: "P2P",
+    pricing: "Free"
+  },
+  {
+    id: "jami",
+    name: "Jami",
+    description: {
+      es: "Comunicación universal, distribuida y privada.",
+      en: "Universal, distributed, and private communication."
+    },
+    replaces: "Skype",
+    category: "messaging",
+    icon: "video",
+    url: "https://jami.net/",
+    badge: "Distributed",
+    pricing: "Free"
+  },
+  {
+    id: "wire",
+    name: "Wire",
+    description: {
+      es: "Colaboración segura moderna.",
+      en: "Modern secure collaboration."
+    },
+    replaces: "Slack",
+    category: "messaging",
+    icon: "users",
+    url: "https://wire.com/",
+    badge: "Collaboration",
+    pricing: "Freemium"
+  },
+  {
+    id: "simplex",
+    name: "SimpleX Chat",
+    description: {
+      es: "El primer chat sin identificadores de usuario.",
+      en: "The first chat without user identifiers."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "user-x",
+    url: "https://simplex.chat/",
+    badge: "No ID",
+    pricing: "Free"
+  },
+  {
+    id: "conversations",
+    name: "Conversations",
+    description: {
+      es: "Cliente XMPP/Jabber moderno para Android.",
+      en: "Modern XMPP/Jabber client for Android."
+    },
+    replaces: "WhatsApp",
+    category: "messaging",
+    icon: "message-square",
+    url: "https://conversations.im/",
+    badge: "XMPP",
+    pricing: "Paid"
+  },
+  {
+    id: "fluffychat",
+    name: "FluffyChat",
+    description: {
+      es: "Cliente Matrix simple y bonito.",
+      en: "Simple and cute Matrix client."
+    },
+    replaces: "Discord",
+    category: "messaging",
+    icon: "message-circle",
+    url: "https://fluffychat.im/",
+    badge: "Matrix",
+    pricing: "Free"
+  },
 
   // Social
-  { id: "mastodon", name: "Mastodon", description: "Red social descentralizada, sin algoritmos manipuladores.", replaces: "Twitter/X", category: "social", icon: "users", url: "https://joinmastodon.org/", badge: "Fediverse", pricing: "Free" },
-  { id: "lemmy", name: "Lemmy", description: "Agregador de enlaces similar a Reddit, federado.", replaces: "Reddit", category: "social", icon: "list", url: "https://join-lemmy.org/", badge: "Fediverse", pricing: "Free" },
-  { id: "pixelfed", name: "Pixelfed", description: "Plataforma ética para compartir fotos.", replaces: "Instagram", category: "social", icon: "image", url: "https://pixelfed.org/", badge: "Fediverse", pricing: "Free" },
-  { id: "nitter", name: "Nitter", description: "Frontend privado para Twitter.", replaces: "Twitter Web", category: "social", icon: "twitter", url: "https://nitter.net/", badge: "Frontend", pricing: "Free" },
-  { id: "barinsta", name: "Barinsta", description: "Cliente alternativo de Instagram enfocado en privacidad.", replaces: "Instagram App", category: "social", icon: "instagram", url: "https://github.com/austinhuang0131/Barinsta", badge: "Android", pricing: "Free" },
-  { id: "infinity", name: "Infinity for Reddit", description: "Cliente de Reddit limpio y sin anuncios.", replaces: "Reddit App", category: "social", icon: "smartphone", url: "https://github.com/Docile-Alligator/Infinity-For-Reddit", badge: "Android", pricing: "Free" },
-  { id: "nostr", name: "Nostr (Amethyst)", description: "Protocolo descentralizado resistente a la censura.", replaces: "Twitter", category: "social", icon: "zap", url: "https://nostr.com/", badge: "Protocol", pricing: "Free" },
+  {
+    id: "mastodon",
+    name: "Mastodon",
+    description: {
+      es: "Red social descentralizada, sin algoritmos manipuladores.",
+      en: "Decentralized social network, no manipulative algorithms."
+    },
+    replaces: "Twitter/X",
+    category: "social",
+    icon: "users",
+    url: "https://joinmastodon.org/",
+    badge: "Fediverse",
+    pricing: "Free"
+  },
+  {
+    id: "lemmy",
+    name: "Lemmy",
+    description: {
+      es: "Agregador de enlaces similar a Reddit, federado.",
+      en: "Link aggregator similar to Reddit, federated."
+    },
+    replaces: "Reddit",
+    category: "social",
+    icon: "list",
+    url: "https://join-lemmy.org/",
+    badge: "Fediverse",
+    pricing: "Free"
+  },
+  {
+    id: "pixelfed",
+    name: "Pixelfed",
+    description: {
+      es: "Plataforma ética para compartir fotos.",
+      en: "Ethical photo sharing platform."
+    },
+    replaces: "Instagram",
+    category: "social",
+    icon: "image",
+    url: "https://pixelfed.org/",
+    badge: "Fediverse",
+    pricing: "Free"
+  },
+  {
+    id: "nitter",
+    name: "Nitter",
+    description: {
+      es: "Frontend privado para Twitter.",
+      en: "Private frontend for Twitter."
+    },
+    replaces: "Twitter Web",
+    category: "social",
+    icon: "twitter",
+    url: "https://nitter.net/",
+    badge: "Frontend",
+    pricing: "Free"
+  },
+  {
+    id: "barinsta",
+    name: "Barinsta",
+    description: {
+      es: "Cliente alternativo de Instagram enfocado en privacidad.",
+      en: "Alternative Instagram client focused on privacy."
+    },
+    replaces: "Instagram App",
+    category: "social",
+    icon: "instagram",
+    url: "https://github.com/austinhuang0131/Barinsta",
+    badge: "Android",
+    pricing: "Free"
+  },
+  {
+    id: "infinity",
+    name: "Infinity for Reddit",
+    description: {
+      es: "Cliente de Reddit limpio y sin anuncios.",
+      en: "Clean and ad-free Reddit client."
+    },
+    replaces: "Reddit App",
+    category: "social",
+    icon: "smartphone",
+    url: "https://github.com/Docile-Alligator/Infinity-For-Reddit",
+    badge: "Android",
+    pricing: "Free"
+  },
+  {
+    id: "nostr",
+    name: "Nostr (Amethyst)",
+    description: {
+      es: "Protocolo descentralizado resistente a la censura.",
+      en: "Decentralized censorship-resistant protocol."
+    },
+    replaces: "Twitter",
+    category: "social",
+    icon: "zap",
+    url: "https://nostr.com/",
+    badge: "Protocol",
+    pricing: "Free"
+  },
 
   // Cloud & Storage
-  { id: "nextcloud", name: "Nextcloud", description: "Nube productiva auto-hospedada.", replaces: "Google Drive", category: "cloud", icon: "cloud", url: "https://nextcloud.com/", badge: "Self-Hosted", pricing: "Free" },
-  { id: "proton-drive", name: "Proton Drive", description: "Almacenamiento en la nube cifrado suizo.", replaces: "Google Drive", category: "cloud", icon: "cloud", url: "https://proton.me/drive", badge: "Encrypted", pricing: "Freemium" },
-  { id: "filen", name: "Filen", description: "Almacenamiento en la nube con cifrado zero-knowledge.", replaces: "Dropbox", category: "cloud", icon: "hard-drive", url: "https://filen.io/", badge: "Zero-Knowledge", pricing: "Freemium" },
-  { id: "mega", name: "MEGA", description: "Almacenamiento cifrado con generoso plan gratuito.", replaces: "Dropbox", category: "cloud", icon: "cloud", url: "https://mega.io/", badge: "Generous", pricing: "Freemium" },
-  { id: "pcloud", name: "pCloud", description: "Almacenamiento seguro en Suiza.", replaces: "Dropbox", category: "cloud", icon: "cloud", url: "https://www.pcloud.com/", badge: "Swiss", pricing: "Freemium" },
-  { id: "cryptomator", name: "Cryptomator", description: "Encripta tus datos antes de subirlos a la nube.", replaces: "None", category: "cloud", icon: "lock", url: "https://cryptomator.org/", badge: "Tool", pricing: "Free" },
-  { id: "syncthing", name: "Syncthing", description: "Sincronización de archivos continua y descentralizada.", replaces: "Dropbox", category: "cloud", icon: "refresh-cw", url: "https://syncthing.net/", badge: "P2P", pricing: "Free" },
-  { id: "seafile", name: "Seafile", description: "Sincronización de archivos de alto rendimiento.", replaces: "Dropbox", category: "cloud", icon: "server", url: "https://www.seafile.com/", badge: "Self-Hosted", pricing: "Free" },
+  {
+    id: "nextcloud",
+    name: "Nextcloud",
+    description: {
+      es: "Nube productiva auto-hospedada.",
+      en: "Self-hosted productivity cloud."
+    },
+    replaces: "Google Drive",
+    category: "cloud",
+    icon: "cloud",
+    url: "https://nextcloud.com/",
+    badge: "Self-Hosted",
+    pricing: "Free"
+  },
+  {
+    id: "proton-drive",
+    name: "Proton Drive",
+    description: {
+      es: "Almacenamiento en la nube cifrado suizo.",
+      en: "Swiss encrypted cloud storage."
+    },
+    replaces: "Google Drive",
+    category: "cloud",
+    icon: "cloud",
+    url: "https://proton.me/drive",
+    badge: "Encrypted",
+    pricing: "Freemium"
+  },
+  {
+    id: "filen",
+    name: "Filen",
+    description: {
+      es: "Almacenamiento en la nube con cifrado zero-knowledge.",
+      en: "Zero-knowledge encrypted cloud storage."
+    },
+    replaces: "Dropbox",
+    category: "cloud",
+    icon: "hard-drive",
+    url: "https://filen.io/",
+    badge: "Zero-Knowledge",
+    pricing: "Freemium"
+  },
+  {
+    id: "mega",
+    name: "MEGA",
+    description: {
+      es: "Almacenamiento cifrado con generoso plan gratuito.",
+      en: "Encrypted storage with generous free plan."
+    },
+    replaces: "Dropbox",
+    category: "cloud",
+    icon: "cloud",
+    url: "https://mega.io/",
+    badge: "Generous",
+    pricing: "Freemium"
+  },
+  {
+    id: "pcloud",
+    name: "pCloud",
+    description: {
+      es: "Almacenamiento seguro en Suiza.",
+      en: "Secure storage in Switzerland."
+    },
+    replaces: "Dropbox",
+    category: "cloud",
+    icon: "cloud",
+    url: "https://www.pcloud.com/",
+    badge: "Swiss",
+    pricing: "Freemium"
+  },
+  {
+    id: "cryptomator",
+    name: "Cryptomator",
+    description: {
+      es: "Encripta tus datos antes de subirlos a la nube.",
+      en: "Encrypt your data before uploading to cloud."
+    },
+    replaces: "None",
+    category: "cloud",
+    icon: "lock",
+    url: "https://cryptomator.org/",
+    badge: "Tool",
+    pricing: "Free"
+  },
+  {
+    id: "syncthing",
+    name: "Syncthing",
+    description: {
+      es: "Sincronización de archivos continua y descentralizada.",
+      en: "Continuous and decentralized file synchronization."
+    },
+    replaces: "Dropbox",
+    category: "cloud",
+    icon: "refresh-cw",
+    url: "https://syncthing.net/",
+    badge: "P2P",
+    pricing: "Free"
+  },
+  {
+    id: "seafile",
+    name: "Seafile",
+    description: {
+      es: "Sincronización de archivos de alto rendimiento.",
+      en: "High-performance file synchronization."
+    },
+    replaces: "Dropbox",
+    category: "cloud",
+    icon: "server",
+    url: "https://www.seafile.com/",
+    badge: "Self-Hosted",
+    pricing: "Free"
+  },
 
   // Search
-  { id: "duckduckgo", name: "DuckDuckGo", description: "El buscador que no te rastrea.", replaces: "Google", category: "search", icon: "search", url: "https://duckduckgo.com/", badge: "Privacy", pricing: "Free" },
-  { id: "startpage", name: "Startpage", description: "Resultados de Google sin el rastreo de Google.", replaces: "Google", category: "search", icon: "search", url: "https://www.startpage.com/", badge: "Proxy", pricing: "Free" },
-  { id: "searx", name: "SearXNG", description: "Metabuscador de código abierto y privacidad.", replaces: "Google", category: "search", icon: "search", url: "https://searx.space/", badge: "Meta", pricing: "Free" },
-  { id: "brave-search", name: "Brave Search", description: "Índice de búsqueda independiente y privado.", replaces: "Google", category: "search", icon: "search", url: "https://search.brave.com/", badge: "Independent", pricing: "Free" },
-  { id: "whoogle", name: "Whoogle", description: "Búsquedas de Google auto-hospedadas sin anuncios.", replaces: "Google", category: "search", icon: "server", url: "https://github.com/benbusby/whoogle-search", badge: "Self-Hosted", pricing: "Free" },
-  { id: "mojeek", name: "Mojeek", description: "Buscador con su propio índice independiente.", replaces: "Google/Bing", category: "search", icon: "search", url: "https://www.mojeek.com/", badge: "Independent", pricing: "Free" },
-  { id: "swisscows", name: "Swisscows", description: "Buscador privado suizo familiar.", replaces: "Google", category: "search", icon: "shield", url: "https://swisscows.com/", badge: "Swiss", pricing: "Free" },
+  {
+    id: "duckduckgo",
+    name: "DuckDuckGo",
+    description: {
+      es: "El buscador que no te rastrea.",
+      en: "The search engine that doesn't track you."
+    },
+    replaces: "Google",
+    category: "search",
+    icon: "search",
+    url: "https://duckduckgo.com/",
+    badge: "Privacy",
+    pricing: "Free"
+  },
+  {
+    id: "startpage",
+    name: "Startpage",
+    description: {
+      es: "Resultados de Google sin el rastreo de Google.",
+      en: "Google results without Google tracking."
+    },
+    replaces: "Google",
+    category: "search",
+    icon: "search",
+    url: "https://www.startpage.com/",
+    badge: "Proxy",
+    pricing: "Free"
+  },
+  {
+    id: "searx",
+    name: "SearXNG",
+    description: {
+      es: "Metabuscador de código abierto y privacidad.",
+      en: "Open source privacy metasearch engine."
+    },
+    replaces: "Google",
+    category: "search",
+    icon: "search",
+    url: "https://searx.space/",
+    badge: "Meta",
+    pricing: "Free"
+  },
+  {
+    id: "brave-search",
+    name: "Brave Search",
+    description: {
+      es: "Índice de búsqueda independiente y privado.",
+      en: "Independent and private search index."
+    },
+    replaces: "Google",
+    category: "search",
+    icon: "search",
+    url: "https://search.brave.com/",
+    badge: "Independent",
+    pricing: "Free"
+  },
+  {
+    id: "whoogle",
+    name: "Whoogle",
+    description: {
+      es: "Búsquedas de Google auto-hospedadas sin anuncios.",
+      en: "Self-hosted Google search without ads."
+    },
+    replaces: "Google",
+    category: "search",
+    icon: "server",
+    url: "https://github.com/benbusby/whoogle-search",
+    badge: "Self-Hosted",
+    pricing: "Free"
+  },
+  {
+    id: "mojeek",
+    name: "Mojeek",
+    description: {
+      es: "Buscador con su propio índice independiente.",
+      en: "Search engine with its own independent index."
+    },
+    replaces: "Google/Bing",
+    category: "search",
+    icon: "search",
+    url: "https://www.mojeek.com/",
+    badge: "Independent",
+    pricing: "Free"
+  },
+  {
+    id: "swisscows",
+    name: "Swisscows",
+    description: {
+      es: "Buscador privado suizo familiar.",
+      en: "Family-friendly Swiss private search engine."
+    },
+    replaces: "Google",
+    category: "search",
+    icon: "shield",
+    url: "https://swisscows.com/",
+    badge: "Swiss",
+    pricing: "Free"
+  },
 
   // Password Managers
-  { id: "bitwarden", name: "Bitwarden", description: "Gestor de contraseñas open source líder.", replaces: "LastPass", category: "password-manager", icon: "key", url: "https://bitwarden.com/", badge: "Recommended", pricing: "Freemium" },
-  { id: "keepassxc", name: "KeePassXC", description: "Gestor de contraseñas local y offline.", replaces: "LastPass", category: "password-manager", icon: "hard-drive", url: "https://keepassxc.org/", badge: "Offline", pricing: "Free" },
-  { id: "1password", name: "1Password", description: "Gestor de contraseñas con excelente UX.", replaces: "LastPass", category: "password-manager", icon: "key", url: "https://1password.com/", badge: "UX", pricing: "Paid" },
-  { id: "lesspass", name: "LessPass", description: "Gestor de contraseñas sin base de datos (stateless).", replaces: "All", category: "password-manager", icon: "hash", url: "https://lesspass.com/", badge: "Stateless", pricing: "Free" },
-  { id: "aegis", name: "Aegis Authenticator", description: "App de 2FA segura y con copias de seguridad.", replaces: "Google Auth", category: "password-manager", icon: "shield", url: "https://getaegis.app/", badge: "2FA", pricing: "Free" },
-  { id: "raivo", name: "Raivo OTP", description: "Autenticador simple y seguro para iOS.", replaces: "Google Auth", category: "password-manager", icon: "smartphone", url: "https://github.com/raivo-otp/ios-application", badge: "iOS 2FA", pricing: "Free" },
-  { id: "ente-auth", name: "Ente Auth", description: "Autenticador open source con sincronización cifrada.", replaces: "Authy", category: "password-manager", icon: "cloud", url: "https://ente.io/auth", badge: "Sync 2FA", pricing: "Free" },
+  {
+    id: "bitwarden",
+    name: "Bitwarden",
+    description: {
+      es: "Gestor de contraseñas open source líder.",
+      en: "Leading open source password manager."
+    },
+    replaces: "LastPass",
+    category: "password-manager",
+    icon: "key",
+    url: "https://bitwarden.com/",
+    badge: "Recommended",
+    pricing: "Freemium"
+  },
+  {
+    id: "keepassxc",
+    name: "KeePassXC",
+    description: {
+      es: "Gestor de contraseñas local y offline.",
+      en: "Local and offline password manager."
+    },
+    replaces: "LastPass",
+    category: "password-manager",
+    icon: "hard-drive",
+    url: "https://keepassxc.org/",
+    badge: "Offline",
+    pricing: "Free"
+  },
+  {
+    id: "1password",
+    name: "1Password",
+    description: {
+      es: "Gestor de contraseñas con excelente UX.",
+      en: "Password manager with excellent UX."
+    },
+    replaces: "LastPass",
+    category: "password-manager",
+    icon: "key",
+    url: "https://1password.com/",
+    badge: "UX",
+    pricing: "Paid"
+  },
+  {
+    id: "lesspass",
+    name: "LessPass",
+    description: {
+      es: "Gestor de contraseñas sin base de datos (stateless).",
+      en: "Stateless password manager (no database)."
+    },
+    replaces: "All",
+    category: "password-manager",
+    icon: "hash",
+    url: "https://lesspass.com/",
+    badge: "Stateless",
+    pricing: "Free"
+  },
+  {
+    id: "aegis",
+    name: "Aegis Authenticator",
+    description: {
+      es: "App de 2FA segura y con copias de seguridad.",
+      en: "Secure 2FA app with backups."
+    },
+    replaces: "Google Auth",
+    category: "password-manager",
+    icon: "shield",
+    url: "https://getaegis.app/",
+    badge: "2FA",
+    pricing: "Free"
+  },
+  {
+    id: "raivo",
+    name: "Raivo OTP",
+    description: {
+      es: "Autenticador simple y seguro para iOS.",
+      en: "Simple and secure authenticator for iOS."
+    },
+    replaces: "Google Auth",
+    category: "password-manager",
+    icon: "smartphone",
+    url: "https://github.com/raivo-otp/ios-application",
+    badge: "iOS 2FA",
+    pricing: "Free"
+  },
+  {
+    id: "ente-auth",
+    name: "Ente Auth",
+    description: {
+      es: "Autenticador open source con sincronización cifrada.",
+      en: "Open source authenticator with encrypted sync."
+    },
+    replaces: "Authy",
+    category: "password-manager",
+    icon: "cloud",
+    url: "https://ente.io/auth",
+    badge: "Sync 2FA",
+    pricing: "Free"
+  },
 
   // VPN & DNS
-  { id: "mullvad", name: "Mullvad VPN", description: "VPN sin registros, sin datos personales.", replaces: "ISP Tracking", category: "vpn", icon: "shield", url: "https://mullvad.net/", badge: "Anonymous", pricing: "Paid" },
-  { id: "proton-vpn", name: "Proton VPN", description: "VPN segura de los creadores de Proton Mail.", replaces: "ISP Tracking", category: "vpn", icon: "shield", url: "https://protonvpn.com/", badge: "Free Tier", pricing: "Freemium" },
-  { id: "ivpn", name: "IVPN", description: "VPN ética y transparente.", replaces: "ISP Tracking", category: "vpn", icon: "shield", url: "https://www.ivpn.net/", badge: "Ethical", pricing: "Paid" },
-  { id: "orbot", name: "Orbot", description: "Proxy Tor para Android.", replaces: "VPN", category: "vpn", icon: "ghost", url: "https://orbot.app/", badge: "Tor", pricing: "Free" },
-  { id: "nextdns", name: "NextDNS", description: "DNS firewall que bloquea anuncios y rastreadores.", replaces: "ISP DNS", category: "dns", icon: "server", url: "https://nextdns.io/", badge: "Cloud", pricing: "Freemium" },
-  { id: "pihole", name: "Pi-hole", description: "Agujero negro para publicidad en Internet.", replaces: "AdBlock", category: "dns", icon: "box", url: "https://pi-hole.net/", badge: "Self-Hosted", pricing: "Free" },
-  { id: "rethinkdns", name: "RethinkDNS", description: "DNS y Firewall rápido y privado para Android.", replaces: "VPN", category: "dns", icon: "smartphone", url: "https://rethinkdns.com/", badge: "Android", pricing: "Free" },
+  {
+    id: "mullvad",
+    name: "Mullvad VPN",
+    description: {
+      es: "VPN sin registros, sin datos personales.",
+      en: "VPN with no logs, no personal data."
+    },
+    replaces: "ISP Tracking",
+    category: "vpn",
+    icon: "shield",
+    url: "https://mullvad.net/",
+    badge: "Anonymous",
+    pricing: "Paid"
+  },
+  {
+    id: "proton-vpn",
+    name: "Proton VPN",
+    description: {
+      es: "VPN segura de los creadores de Proton Mail.",
+      en: "Secure VPN from the makers of Proton Mail."
+    },
+    replaces: "ISP Tracking",
+    category: "vpn",
+    icon: "shield",
+    url: "https://protonvpn.com/",
+    badge: "Free Tier",
+    pricing: "Freemium"
+  },
+  {
+    id: "ivpn",
+    name: "IVPN",
+    description: {
+      es: "VPN ética y transparente.",
+      en: "Ethical and transparent VPN."
+    },
+    replaces: "ISP Tracking",
+    category: "vpn",
+    icon: "shield",
+    url: "https://www.ivpn.net/",
+    badge: "Ethical",
+    pricing: "Paid"
+  },
+  {
+    id: "orbot",
+    name: "Orbot",
+    description: {
+      es: "Proxy Tor para Android.",
+      en: "Tor proxy for Android."
+    },
+    replaces: "VPN",
+    category: "vpn",
+    icon: "ghost",
+    url: "https://orbot.app/",
+    badge: "Tor",
+    pricing: "Free"
+  },
+  {
+    id: "nextdns",
+    name: "NextDNS",
+    description: {
+      es: "DNS firewall que bloquea anuncios y rastreadores.",
+      en: "DNS firewall that blocks ads and trackers."
+    },
+    replaces: "ISP DNS",
+    category: "dns",
+    icon: "server",
+    url: "https://nextdns.io/",
+    badge: "Cloud",
+    pricing: "Freemium"
+  },
+  {
+    id: "pihole",
+    name: "Pi-hole",
+    description: {
+      es: "Agujero negro para publicidad en Internet.",
+      en: "Black hole for internet advertisements."
+    },
+    replaces: "AdBlock",
+    category: "dns",
+    icon: "box",
+    url: "https://pi-hole.net/",
+    badge: "Self-Hosted",
+    pricing: "Free"
+  },
+  {
+    id: "rethinkdns",
+    name: "RethinkDNS",
+    description: {
+      es: "DNS y Firewall rápido y privado para Android.",
+      en: "Fast and private DNS and Firewall for Android."
+    },
+    replaces: "VPN",
+    category: "dns",
+    icon: "smartphone",
+    url: "https://rethinkdns.com/",
+    badge: "Android",
+    pricing: "Free"
+  },
 
   // OS
-  { id: "linux-mint", name: "Linux Mint", description: "Sistema operativo ideal para principiantes en Linux.", replaces: "Windows", category: "os", icon: "cpu", url: "https://linuxmint.com/", badge: "Beginner", pricing: "Free" },
-  { id: "ubuntu", name: "Ubuntu", description: "La distribución Linux más popular.", replaces: "Windows", category: "os", icon: "cpu", url: "https://ubuntu.com/", badge: "Popular", pricing: "Free" },
-  { id: "tails", name: "Tails", description: "OS portátil que olvida todo al apagarse.", replaces: "Windows", category: "os", icon: "ghost", url: "https://tails.boum.org/", badge: "Amnesic", pricing: "Free" },
-  { id: "qubes", name: "Qubes OS", description: "Sistema operativo razonablemente seguro.", replaces: "Windows", category: "os", icon: "box", url: "https://www.qubes-os.org/", badge: "Advanced", pricing: "Free" },
-  { id: "grapheneos", name: "GrapheneOS", description: "OS móvil enfocado en privacidad y seguridad.", replaces: "Android", category: "os", icon: "smartphone", url: "https://grapheneos.org/", badge: "Pixel", pricing: "Free" },
-  { id: "calyxos", name: "CalyxOS", description: "Android enfocado en privacidad y usabilidad.", replaces: "Android", category: "os", icon: "smartphone", url: "https://calyxos.org/", badge: "Android", pricing: "Free" },
-  { id: "lineageos", name: "LineageOS", description: "Distribución Android libre y de código abierto.", replaces: "Android", category: "os", icon: "smartphone", url: "https://lineageos.org/", badge: "Legacy", pricing: "Free" },
-  { id: "divestos", name: "DivestOS", description: "Fork suave de LineageOS enfocado en seguridad.", replaces: "Android", category: "os", icon: "shield", url: "https://divestos.org/", badge: "Hardened", pricing: "Free" },
+  {
+    id: "linux-mint",
+    name: "Linux Mint",
+    description: {
+      es: "Sistema operativo ideal para principiantes en Linux.",
+      en: "Ideal operating system for Linux beginners."
+    },
+    replaces: "Windows",
+    category: "os",
+    icon: "cpu",
+    url: "https://linuxmint.com/",
+    badge: "Beginner",
+    pricing: "Free"
+  },
+  {
+    id: "ubuntu",
+    name: "Ubuntu",
+    description: {
+      es: "La distribución Linux más popular.",
+      en: "The most popular Linux distribution."
+    },
+    replaces: "Windows",
+    category: "os",
+    icon: "cpu",
+    url: "https://ubuntu.com/",
+    badge: "Popular",
+    pricing: "Free"
+  },
+  {
+    id: "tails",
+    name: "Tails",
+    description: {
+      es: "OS portátil que olvida todo al apagarse.",
+      en: "Portable OS that forgets everything on shutdown."
+    },
+    replaces: "Windows",
+    category: "os",
+    icon: "ghost",
+    url: "https://tails.boum.org/",
+    badge: "Amnesic",
+    pricing: "Free"
+  },
+  {
+    id: "qubes",
+    name: "Qubes OS",
+    description: {
+      es: "Sistema operativo razonablemente seguro.",
+      en: "A reasonably secure operating system."
+    },
+    replaces: "Windows",
+    category: "os",
+    icon: "box",
+    url: "https://www.qubes-os.org/",
+    badge: "Advanced",
+    pricing: "Free"
+  },
+  {
+    id: "grapheneos",
+    name: "GrapheneOS",
+    description: {
+      es: "OS móvil enfocado en privacidad y seguridad.",
+      en: "Mobile OS focused on privacy and security."
+    },
+    replaces: "Android",
+    category: "os",
+    icon: "smartphone",
+    url: "https://grapheneos.org/",
+    badge: "Pixel",
+    pricing: "Free"
+  },
+  {
+    id: "calyxos",
+    name: "CalyxOS",
+    description: {
+      es: "Android enfocado en privacidad y usabilidad.",
+      en: "Android focused on privacy and usability."
+    },
+    replaces: "Android",
+    category: "os",
+    icon: "smartphone",
+    url: "https://calyxos.org/",
+    badge: "Android",
+    pricing: "Free"
+  },
+  {
+    id: "lineageos",
+    name: "LineageOS",
+    description: {
+      es: "Distribución Android libre y de código abierto.",
+      en: "Free and open source Android distribution."
+    },
+    replaces: "Android",
+    category: "os",
+    icon: "smartphone",
+    url: "https://lineageos.org/",
+    badge: "Legacy",
+    pricing: "Free"
+  },
+  {
+    id: "divestos",
+    name: "DivestOS",
+    description: {
+      es: "Fork suave de LineageOS enfocado en seguridad.",
+      en: "Soft fork of LineageOS focused on security."
+    },
+    replaces: "Android",
+    category: "os",
+    icon: "shield",
+    url: "https://divestos.org/",
+    badge: "Hardened",
+    pricing: "Free"
+  },
 
   // Maps
-  { id: "organic-maps", name: "Organic Maps", description: "Mapas offline rápidos y detallados.", replaces: "Google Maps", category: "maps", icon: "map", url: "https://organicmaps.app/", badge: "Offline", pricing: "Free" },
-  { id: "osmand", name: "OsmAnd", description: "Mapas y navegación avanzada con OpenStreetMap.", replaces: "Google Maps", category: "maps", icon: "map", url: "https://osmand.net/", badge: "Advanced", pricing: "Freemium" },
-  { id: "magic-earth", name: "Magic Earth", description: "Navegación paso a paso sin rastreo.", replaces: "Waze", category: "maps", icon: "navigation", url: "https://www.magicearth.com/", badge: "Privacy", pricing: "Free" },
+  {
+    id: "organic-maps",
+    name: "Organic Maps",
+    description: {
+      es: "Mapas offline rápidos y detallados.",
+      en: "Fast and detailed offline maps."
+    },
+    replaces: "Google Maps",
+    category: "maps",
+    icon: "map",
+    url: "https://organicmaps.app/",
+    badge: "Offline",
+    pricing: "Free"
+  },
+  {
+    id: "osmand",
+    name: "OsmAnd",
+    description: {
+      es: "Mapas y navegación avanzada con OpenStreetMap.",
+      en: "Advanced maps and navigation with OpenStreetMap."
+    },
+    replaces: "Google Maps",
+    category: "maps",
+    icon: "map",
+    url: "https://osmand.net/",
+    badge: "Advanced",
+    pricing: "Freemium"
+  },
+  {
+    id: "magic-earth",
+    name: "Magic Earth",
+    description: {
+      es: "Navegación paso a paso sin rastreo.",
+      en: "Turn-by-turn navigation without tracking."
+    },
+    replaces: "Waze",
+    category: "maps",
+    icon: "navigation",
+    url: "https://www.magicearth.com/",
+    badge: "Privacy",
+    pricing: "Free"
+  },
 
   // Media
-  { id: "vlc", name: "VLC Media Player", description: "El reproductor multimedia que reproduce todo.", replaces: "Windows Player", category: "media", icon: "video", url: "https://www.videolan.org/", badge: "Universal", pricing: "Free" },
-  { id: "newpipe", name: "NewPipe", description: "Cliente ligero de YouTube para Android sin Google.", replaces: "YouTube App", category: "media", icon: "video", url: "https://newpipe.net/", badge: "Android", pricing: "Free" },
-  { id: "grayjay", name: "Grayjay", description: "Sigue a creadores, no a plataformas.", replaces: "YouTube/Twitch", category: "media", icon: "video", url: "https://grayjay.app/", badge: "Follow", pricing: "Paid" },
-  { id: "libretube", name: "LibreTube", description: "Frontend de YouTube basado en Piped.", replaces: "YouTube App", category: "media", icon: "video", url: "https://libretube.dev/", badge: "Piped", pricing: "Free" },
-  { id: "spotube", name: "Spotube", description: "Cliente de Spotify sin anuncios y open source.", replaces: "Spotify", category: "media", icon: "music", url: "https://spotube.krtirtho.com/", badge: "Client", pricing: "Free" },
-  { id: "aves", name: "Aves Gallery", description: "Galería de imágenes open source que maneja todo tipo de medios.", replaces: "Google Photos", category: "media", icon: "image", url: "https://github.com/deckerst/aves", badge: "Android", pricing: "Free" },
+  {
+    id: "vlc",
+    name: "VLC Media Player",
+    description: {
+      es: "El reproductor multimedia que reproduce todo.",
+      en: "The multimedia player that plays everything."
+    },
+    replaces: "Windows Player",
+    category: "media",
+    icon: "video",
+    url: "https://www.videolan.org/",
+    badge: "Universal",
+    pricing: "Free"
+  },
+  {
+    id: "newpipe",
+    name: "NewPipe",
+    description: {
+      es: "Cliente ligero de YouTube para Android sin Google.",
+      en: "Lightweight YouTube client for Android without Google."
+    },
+    replaces: "YouTube App",
+    category: "media",
+    icon: "video",
+    url: "https://newpipe.net/",
+    badge: "Android",
+    pricing: "Free"
+  },
+  {
+    id: "grayjay",
+    name: "Grayjay",
+    description: {
+      es: "Sigue a creadores, no a plataformas.",
+      en: "Follow creators, not platforms."
+    },
+    replaces: "YouTube/Twitch",
+    category: "media",
+    icon: "video",
+    url: "https://grayjay.app/",
+    badge: "Follow",
+    pricing: "Paid"
+  },
+  {
+    id: "libretube",
+    name: "LibreTube",
+    description: {
+      es: "Frontend de YouTube basado en Piped.",
+      en: "YouTube frontend based on Piped."
+    },
+    replaces: "YouTube App",
+    category: "media",
+    icon: "video",
+    url: "https://libretube.dev/",
+    badge: "Piped",
+    pricing: "Free"
+  },
+  {
+    id: "spotube",
+    name: "Spotube",
+    description: {
+      es: "Cliente de Spotify sin anuncios y open source.",
+      en: "Ad-free and open source Spotify client."
+    },
+    replaces: "Spotify",
+    category: "media",
+    icon: "music",
+    url: "https://spotube.krtirtho.com/",
+    badge: "Client",
+    pricing: "Free"
+  },
+  {
+    id: "aves",
+    name: "Aves Gallery",
+    description: {
+      es: "Galería de imágenes open source que maneja todo tipo de medios.",
+      en: "Open source image gallery handling all media types."
+    },
+    replaces: "Google Photos",
+    category: "media",
+    icon: "image",
+    url: "https://github.com/deckerst/aves",
+    badge: "Android",
+    pricing: "Free"
+  },
 
   // Utilities & Productivity
-  { id: "veracrypt", name: "VeraCrypt", description: "Cifrado de disco gratuito y de código abierto.", replaces: "BitLocker", category: "utilities", icon: "lock", url: "https://www.veracrypt.fr/", badge: "Encryption", pricing: "Free" },
-  { id: "bleachbit", name: "BleachBit", description: "Limpia archivos inútiles y protege tu privacidad.", replaces: "CCleaner", category: "utilities", icon: "trash", url: "https://www.bleachbit.org/", badge: "Cleaner", pricing: "Free" },
-  { id: "netguard", name: "NetGuard", description: "Firewall simple para Android sin root.", replaces: "None", category: "utilities", icon: "shield", url: "https://github.com/M66B/NetGuard", badge: "Firewall", pricing: "Free" },
-  { id: "f-droid", name: "F-Droid", description: "Catálogo de aplicaciones FOSS para Android.", replaces: "Google Play", category: "store", icon: "download", url: "https://f-droid.org/", badge: "FOSS", pricing: "Free" },
-  { id: "aurora", name: "Aurora Store", description: "Cliente anónimo para Google Play Store.", replaces: "Google Play", category: "store", icon: "download", url: "https://auroraoss.com/", badge: "Anonymous", pricing: "Free" },
-  { id: "cryptpad", name: "CryptPad", description: "Suite de colaboración cifrada en tiempo real.", replaces: "Google Docs", category: "productivity", icon: "file-text", url: "https://cryptpad.fr/", badge: "Encrypted", pricing: "Free" },
-  { id: "standard-notes", name: "Standard Notes", description: "Notas seguras, cifradas y duraderas.", replaces: "Evernote", category: "productivity", icon: "file-text", url: "https://standardnotes.com/", badge: "E2EE", pricing: "Freemium" },
-  { id: "joplin", name: "Joplin", description: "Aplicación de toma de notas y lista de tareas.", replaces: "Evernote", category: "productivity", icon: "file-text", url: "https://joplinapp.org/", badge: "Markdown", pricing: "Free" },
-  { id: "obsidian", name: "Obsidian", description: "Base de conocimientos personal sobre archivos locales.", replaces: "Roam", category: "productivity", icon: "file-text", url: "https://obsidian.md/", badge: "Local", pricing: "Freemium" },
-  { id: "libreoffice", name: "LibreOffice", description: "La suite ofimática libre y potente.", replaces: "MS Office", category: "productivity", icon: "file-text", url: "https://www.libreoffice.org/", badge: "Suite", pricing: "Free" },
-  { id: "warpinator", name: "Warpinator", description: "Envía y recibe archivos a través de la red local.", replaces: "AirDrop", category: "utilities", icon: "share", url: "https://github.com/linuxmint/warpinator", badge: "Transfer", pricing: "Free" }
+  {
+    id: "veracrypt",
+    name: "VeraCrypt",
+    description: {
+      es: "Cifrado de disco gratuito y de código abierto.",
+      en: "Free and open source disk encryption."
+    },
+    replaces: "BitLocker",
+    category: "utilities",
+    icon: "lock",
+    url: "https://www.veracrypt.fr/",
+    badge: "Encryption",
+    pricing: "Free"
+  },
+  {
+    id: "bleachbit",
+    name: "BleachBit",
+    description: {
+      es: "Limpia archivos inútiles y protege tu privacidad.",
+      en: "Clean useless files and protect your privacy."
+    },
+    replaces: "CCleaner",
+    category: "utilities",
+    icon: "trash",
+    url: "https://www.bleachbit.org/",
+    badge: "Cleaner",
+    pricing: "Free"
+  },
+  {
+    id: "netguard",
+    name: "NetGuard",
+    description: {
+      es: "Firewall simple para Android sin root.",
+      en: "Simple no-root firewall for Android."
+    },
+    replaces: "None",
+    category: "utilities",
+    icon: "shield",
+    url: "https://github.com/M66B/NetGuard",
+    badge: "Firewall",
+    pricing: "Free"
+  },
+  {
+    id: "f-droid",
+    name: "F-Droid",
+    description: {
+      es: "Catálogo de aplicaciones FOSS para Android.",
+      en: "FOSS application catalog for Android."
+    },
+    replaces: "Google Play",
+    category: "store",
+    icon: "download",
+    url: "https://f-droid.org/",
+    badge: "FOSS",
+    pricing: "Free"
+  },
+  {
+    id: "aurora",
+    name: "Aurora Store",
+    description: {
+      es: "Cliente anónimo para Google Play Store.",
+      en: "Anonymous client for Google Play Store."
+    },
+    replaces: "Google Play",
+    category: "store",
+    icon: "download",
+    url: "https://auroraoss.com/",
+    badge: "Anonymous",
+    pricing: "Free"
+  },
+  {
+    id: "cryptpad",
+    name: "CryptPad",
+    description: {
+      es: "Suite de colaboración cifrada en tiempo real.",
+      en: "Real-time encrypted collaboration suite."
+    },
+    replaces: "Google Docs",
+    category: "productivity",
+    icon: "file-text",
+    url: "https://cryptpad.fr/",
+    badge: "Encrypted",
+    pricing: "Free"
+  },
+  {
+    id: "standard-notes",
+    name: "Standard Notes",
+    description: {
+      es: "Notas seguras, cifradas y duraderas.",
+      en: "Secure, encrypted, and lasting notes."
+    },
+    replaces: "Evernote",
+    category: "productivity",
+    icon: "file-text",
+    url: "https://standardnotes.com/",
+    badge: "E2EE",
+    pricing: "Freemium"
+  },
+  {
+    id: "joplin",
+    name: "Joplin",
+    description: {
+      es: "Aplicación de toma de notas y lista de tareas.",
+      en: "Note-taking and to-do application."
+    },
+    replaces: "Evernote",
+    category: "productivity",
+    icon: "file-text",
+    url: "https://joplinapp.org/",
+    badge: "Markdown",
+    pricing: "Free"
+  },
+  {
+    id: "obsidian",
+    name: "Obsidian",
+    description: {
+      es: "Base de conocimientos personal sobre archivos locales.",
+      en: "Personal knowledge base on local files."
+    },
+    replaces: "Roam",
+    category: "productivity",
+    icon: "file-text",
+    url: "https://obsidian.md/",
+    badge: "Local",
+    pricing: "Freemium"
+  },
+  {
+    id: "libreoffice",
+    name: "LibreOffice",
+    description: {
+      es: "La suite ofimática libre y potente.",
+      en: "Free and powerful office suite."
+    },
+    replaces: "MS Office",
+    category: "productivity",
+    icon: "file-text",
+    url: "https://www.libreoffice.org/",
+    badge: "Suite",
+    pricing: "Free"
+  },
+  {
+    id: "warpinator",
+    name: "Warpinator",
+    description: {
+      es: "Envía y recibe archivos a través de la red local.",
+      en: "Send and receive files across the local network."
+    },
+    replaces: "AirDrop",
+    category: "utilities",
+    icon: "share",
+    url: "https://github.com/linuxmint/warpinator",
+    badge: "Transfer",
+    pricing: "Free"
+  }
 ] as const;
 
 const es: Translation = {
@@ -431,6 +1692,7 @@ const es: Translation = {
     tabFiles: "Archivos",
     tabRadar: "Radar",
     tabSPS: "SPS",
+    tabIdentity: "Identidad",
     genTitle: "Generador de Contraseñas",
     genDesc: "Crea contraseñas robustas y aleatorias localmente.",
     auditTitle: "Auditor de Contraseñas",
@@ -566,7 +1828,6 @@ const es: Translation = {
       location: "Ubicación"
     },
     radarLogs: "Registros del Sistema",
-    tabIdentity: "Identidad",
     idGenTitle: "Generador de Identidad",
     idGenDesc: "Crea identidades falsas realistas para registrarte en sitios sospechosos.",
     idGenBtn: "Generar Identidad",
@@ -673,7 +1934,10 @@ const es: Translation = {
       maps: "Mapas",
       media: "Multimedia"
     },
-    apps: appsData.map(app => ({...app}))
+    apps: appsDataRaw.map(app => ({
+      ...app,
+      description: app.description.es
+    }))
   },
   lab: {
     title: "Laboratorio de Imagen",
@@ -1075,6 +2339,7 @@ const en: Translation = {
   tools: {
     title: "Toolbox", subtitle: "Essential utilities for your privacy",
     tabKeys: "Keys", tabPrivacy: "Privacy", tabUtils: "Utilities", tabFiles: "Files", tabRadar: "Radar", tabSPS: "SPS",
+    tabIdentity: "Identity",
     genTitle: "Password Generator", genDesc: "Create robust and random passwords locally.",
     auditTitle: "Password Auditor", auditDesc: "Check strength and if it has been leaked.",
     leaksTitle: "Check Leaks", leaksDesc: "See if your email has been compromised.",
@@ -1142,7 +2407,10 @@ const en: Translation = {
       os: "OS", vpn: "VPN", pass: "Passwords", dns: "DNS", store: "Stores", productivity: "Productivity", utilities: "Utilities",
       social: "Social Networks", maps: "Maps", media: "Media"
     },
-    apps: appsData.map(app => ({...app})) // Clone apps structure
+    apps: appsDataRaw.map(app => ({
+      ...app,
+      description: app.description.en
+    }))
   },
   lab: {
     title: "Image Lab", subtitle: "Remove hidden metadata from your photos",
