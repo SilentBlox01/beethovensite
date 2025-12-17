@@ -58,7 +58,6 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { IdentityGenerator } from '../components/IdentityGenerator';
-import { TempMailTool } from '../components/TempMailTool';
 
 // --- HELPERS ---
 
@@ -1316,7 +1315,6 @@ export const Tools: React.FC = () => {
             {activeTab === 'identity' && (
               <div className="space-y-8 animate-fade-in-up">
                 <IdentityGenerator />
-                <TempMailTool />
               </div>
             )}
 
