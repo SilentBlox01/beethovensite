@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useToast } from '../context/ToastContext';
 import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
 import {
   User,
   MapPin,
@@ -11,11 +10,13 @@ import {
   Phone,
   Mail,
   UserCheck,
-  Globe,
   Copy,
   RefreshCw,
   Hash,
-  Download
+  Briefcase,
+  Building,
+  CreditCard,
+  Landmark
 } from 'lucide-react';
 import { generateIdentity } from '../utils/generators';
 
@@ -40,11 +41,14 @@ export const IdentityGenerator: React.FC = () => {
 Name: ${identity.fullName}
 Gender: ${identity.gender}
 Email: ${identity.email}
+Username: ${identity.username}
+Job: ${identity.job} at ${identity.company}
 Address: ${identity.address}
 City: ${identity.city}, ${identity.state} ${identity.zip}
 Phone: ${identity.phone}
 DOB: ${identity.birthDate}
-Username: ${identity.username}
+Credit Card: ${identity.creditCard} (Exp: ${identity.ccExp}, CVV: ${identity.ccCvv})
+IBAN: ${identity.iban}
     `.trim();
     navigator.clipboard.writeText(text);
     toast.success("Identity copied to clipboard");
@@ -80,6 +84,7 @@ Username: ${identity.username}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Personal Details */}
         <div className="space-y-4">
           <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
             <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">{t.tools.gdprName}</label>
@@ -88,30 +93,42 @@ Username: ${identity.username}
               {identity.fullName}
             </div>
           </div>
-          <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-             <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Email</label>
-             <div className="text-lg font-mono text-slate-900 dark:text-white flex items-center gap-2">
-               <Mail size={18} className="text-slate-400" />
-               {identity.email}
-             </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Email</label>
+                <div className="text-sm font-mono text-slate-900 dark:text-white flex items-center gap-2 truncate" title={identity.email}>
+                    <Mail size={16} className="text-slate-400 shrink-0" />
+                    {identity.email}
+                </div>
+            </div>
+            <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Username</label>
+                <div className="text-sm font-mono text-slate-900 dark:text-white flex items-center gap-2 truncate">
+                    <Hash size={16} className="text-slate-400 shrink-0" />
+                    {identity.username}
+                </div>
+            </div>
           </div>
-           <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
-             <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Username</label>
-             <div className="text-lg font-mono text-slate-900 dark:text-white flex items-center gap-2">
-               <Hash size={18} className="text-slate-400" />
-               {identity.username}
+          <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+             <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">Occupation</label>
+             <div className="flex gap-4">
+                 <div className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200">
+                     <Briefcase size={16} className="text-slate-400" /> {identity.job}
+                 </div>
+                 <div className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200">
+                     <Building size={16} className="text-slate-400" /> {identity.company}
+                 </div>
              </div>
           </div>
         </div>
 
+        {/* Contact & Financial */}
         <div className="space-y-4">
           <div className="bg-slate-50 dark:bg-slate-950/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
              <label className="text-xs font-bold uppercase text-slate-400 mb-1 block">{t.tools.deviceInfo.location}</label>
              <div className="text-lg text-slate-900 dark:text-white flex items-start gap-2">
                <MapPin size={18} className="text-slate-400 mt-1 shrink-0" />
-               <div>
-                 <div>{identity.address}</div>
-               </div>
+               <div>{identity.address}</div>
              </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -129,6 +146,26 @@ Username: ${identity.username}
                  {identity.birthDate}
                </div>
             </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-5 rounded-2xl border border-slate-700 relative overflow-hidden text-white shadow-lg">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <CreditCard size={100} />
+              </div>
+              <div className="relative z-10 space-y-4">
+                  <div className="flex justify-between items-center">
+                      <div className="text-xs uppercase tracking-widest text-slate-400 font-bold">Credit Card</div>
+                      <div className="font-mono text-xs text-slate-400">CVV: {identity.ccCvv}</div>
+                  </div>
+                  <div className="font-mono text-xl tracking-widest text-shadow">{identity.creditCard}</div>
+                  <div className="flex justify-between items-center">
+                      <div className="text-xs text-slate-400">EXP: {identity.ccExp}</div>
+                      <div className="text-xs text-slate-400 font-mono truncate max-w-[150px]" title={identity.iban}>
+                          <Landmark size={12} className="inline mr-1" />
+                          {identity.iban}
+                      </div>
+                  </div>
+              </div>
           </div>
         </div>
       </div>

@@ -395,6 +395,7 @@ export const Tools: React.FC = () => {
   const [stegMode, setStegMode] = useState<'hide' | 'reveal'>('hide');
   const [stegFile, setStegFile] = useState<File | null>(null);
   const [stegMessage, setStegMessage] = useState('');
+  const [stegPass, setStegPass] = useState('');
   const [stegResultImg, setStegResultImg] = useState<string | null>(null);
   const [stegResultMsg, setStegResultMsg] = useState<string | null>(null);
   const stegInputRef = useRef<HTMLInputElement>(null);
@@ -680,6 +681,7 @@ export const Tools: React.FC = () => {
       let location = t.tools.unknown;
       let isp = t.tools.unknown;
       try {
+          // Attempt local fetch first to avoid external dependency if possible or fallback
           const res = await fetch('https://ipapi.co/json/');
           const data = await res.json();
           if (data.ip) {
@@ -690,6 +692,21 @@ export const Tools: React.FC = () => {
       } catch (e) {
           ip = "Blocked (Adblock/Privacy)";
       }
+      
+      let batteryStatus = t.tools.unknown;
+      if ((nav as any).getBattery) {
+          try {
+              const battery = await (nav as any).getBattery();
+              const charging = battery.charging ? '⚡' : '';
+              batteryStatus = `${Math.round(battery.level * 100)}% ${charging}`;
+          } catch (e) {}
+      }
+
+      let netInfo = t.tools.unknown;
+      if (connection) {
+           netInfo = `${connection.effectiveType} (${connection.downlink} Mbps)`;
+      }
+
       const info = {
           userAgent: nav.userAgent,
           language: nav.language,
@@ -698,8 +715,8 @@ export const Tools: React.FC = () => {
           pixelRatio: `${pixelRatio}x`,
           memory: memory,
           cores: cores,
-          connection: connection ? connection.effectiveType : t.tools.unknown,
-          battery: t.tools.unknown,
+          connection: netInfo,
+          battery: batteryStatus,
           gpu: gpuInfo.renderer,
           timezone: `${timezone} (UTC ${timezoneOffset > 0 ? '-' : '+'}${Math.abs(timezoneOffset)/60})`,
           canvasHash: canvasHash.substring(0, 16) + '...',
@@ -718,12 +735,7 @@ export const Tools: React.FC = () => {
       };
       const dataString = `${info.userAgent}-${info.screenRes}-${info.timezone}-${gpuInfo.renderer}-${canvasHash}-${audioHash}-${info.cores}-${info.memory}-${fonts.length}`;
       info.uniqueId = (await sha256(dataString)).substring(0, 16).toUpperCase();
-      if ((nav as any).getBattery) {
-          try {
-              const battery = await (nav as any).getBattery();
-              info.battery = `${Math.round(battery.level * 100)}%`;
-          } catch (e) {}
-      }
+
       setDeviceInfo(info);
       setLoadingFingerprint(false);
   };
@@ -740,12 +752,24 @@ export const Tools: React.FC = () => {
       setVaultProcessing(true);
       setVaultError(null);
       try {
-          const fileBuffer = await vaultFile.arrayBuffer();
           const encoder = new TextEncoder();
           const keyMaterial = await window.crypto.subtle.importKey(
               "raw", encoder.encode(vaultPass), { name: "PBKDF2" }, false, ["deriveKey"]
           );
+
           if (mode === 'encrypt') {
+              // Compression
+              let stream;
+              // @ts-ignore
+              if ('CompressionStream' in window) {
+                  const readable = vaultFile.stream();
+                  // @ts-ignore
+                  const compressedReadable = readable.pipeThrough(new CompressionStream('gzip'));
+                  stream = await new Response(compressedReadable).arrayBuffer();
+              } else {
+                  stream = await vaultFile.arrayBuffer();
+              }
+
               const salt = window.crypto.getRandomValues(new Uint8Array(16));
               const iv = window.crypto.getRandomValues(new Uint8Array(12));
               const key = await window.crypto.subtle.deriveKey(
@@ -753,11 +777,12 @@ export const Tools: React.FC = () => {
                   keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt"]
               );
               const encrypted = await window.crypto.subtle.encrypt(
-                  { name: "AES-GCM", iv }, key, fileBuffer
+                  { name: "AES-GCM", iv }, key, stream
               );
               const blob = new Blob([salt, iv, encrypted], { type: 'application/octet-stream' });
               downloadBlob(blob, `${vaultFile.name}.enc`);
           } else {
+              const fileBuffer = await vaultFile.arrayBuffer();
               const salt = fileBuffer.slice(0, 16);
               const iv = fileBuffer.slice(16, 28);
               const data = fileBuffer.slice(28);
@@ -768,8 +793,24 @@ export const Tools: React.FC = () => {
               const decrypted = await window.crypto.subtle.decrypt(
                   { name: "AES-GCM", iv: iv }, key, data
               );
-              const blob = new Blob([decrypted]);
-              downloadBlob(blob, vaultFile.name.replace('.enc', ''));
+              
+              // Decompression
+              let resultBlob;
+               // @ts-ignore
+              if ('DecompressionStream' in window) {
+                  try {
+                      const stream = new Blob([decrypted]).stream();
+                      // @ts-ignore
+                      const decompressedStream = stream.pipeThrough(new DecompressionStream('gzip'));
+                      resultBlob = await new Response(decompressedStream).blob();
+                  } catch (e) {
+                      // Fallback if not compressed or error
+                      resultBlob = new Blob([decrypted]);
+                  }
+              } else {
+                  resultBlob = new Blob([decrypted]);
+              }
+              downloadBlob(resultBlob, vaultFile.name.replace('.enc', ''));
           }
       } catch (e) {
           console.error(e);
@@ -792,7 +833,7 @@ export const Tools: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
           const img = new Image();
-          img.onload = () => {
+          img.onload = async () => {
               const canvas = document.createElement('canvas');
               const ctx = canvas.getContext('2d');
               canvas.width = img.width;
@@ -802,7 +843,37 @@ export const Tools: React.FC = () => {
               const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
               const data = imgData.data;
               if (stegMode === 'hide') {
-                  const binaryText = textToBinary(stegMessage + '\0'); 
+                  let payload = stegMessage;
+                  if (stegPass) {
+                      try {
+                          const encoder = new TextEncoder();
+                          const keyMaterial = await window.crypto.subtle.importKey(
+                              "raw", encoder.encode(stegPass), { name: "PBKDF2" }, false, ["deriveKey"]
+                          );
+                          const salt = window.crypto.getRandomValues(new Uint8Array(16));
+                          const iv = window.crypto.getRandomValues(new Uint8Array(12));
+                          const key = await window.crypto.subtle.deriveKey(
+                              { name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" },
+                              keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt"]
+                          );
+                          const encrypted = await window.crypto.subtle.encrypt(
+                              { name: "AES-GCM", iv }, key, encoder.encode(stegMessage)
+                          );
+                          // Format: SALT(16) + IV(12) + ENCRYPTED
+                          const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+                          combined.set(salt);
+                          combined.set(iv, salt.length);
+                          combined.set(new Uint8Array(encrypted), salt.length + iv.length);
+                          
+                          // Convert to base64 for embedding as string
+                          payload = "ENC:" + btoa(String.fromCharCode(...combined));
+                      } catch (e) {
+                          toast.error("Encryption failed");
+                          return;
+                      }
+                  }
+
+                  const binaryText = textToBinary(payload + '\0'); 
                   if (binaryText.length > data.length / 4) {
                       toast.error('Message too long for this image!');
                       return;
@@ -826,7 +897,36 @@ export const Tools: React.FC = () => {
                   let text = binaryToText(binaryText);
                   const nullIndex = text.indexOf('\0');
                   if (nullIndex !== -1) {
-                      setStegResultMsg(text.substring(0, nullIndex));
+                      let extracted = text.substring(0, nullIndex);
+                      if (extracted.startsWith('ENC:')) {
+                           if (!stegPass) {
+                               setStegResultMsg("🔒 Encrypted Content. Enter Password to Decrypt.");
+                               return;
+                           }
+                           try {
+                               const encryptedData = Uint8Array.from(atob(extracted.substring(4)), c => c.charCodeAt(0));
+                               const salt = encryptedData.slice(0, 16);
+                               const iv = encryptedData.slice(16, 28);
+                               const data = encryptedData.slice(28);
+
+                               const encoder = new TextEncoder();
+                               const keyMaterial = await window.crypto.subtle.importKey(
+                                   "raw", encoder.encode(stegPass), { name: "PBKDF2" }, false, ["deriveKey"]
+                               );
+                               const key = await window.crypto.subtle.deriveKey(
+                                   { name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" },
+                                   keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+                               );
+                               const decrypted = await window.crypto.subtle.decrypt(
+                                   { name: "AES-GCM", iv }, key, data
+                               );
+                               setStegResultMsg(new TextDecoder().decode(decrypted));
+                           } catch (e) {
+                               setStegResultMsg("❌ Decryption Failed (Wrong Password?)");
+                           }
+                      } else {
+                           setStegResultMsg(extracted);
+                      }
                   } else {
                       setStegResultMsg(t.tools.stegNoHidden);
                   }
@@ -1429,6 +1529,8 @@ export const Tools: React.FC = () => {
                                     <Widget icon={<Clock size={20} />} label={t.tools.deviceInfo.timezone} value={deviceInfo?.timezone} color="bg-amber-600" />
                                     <Widget icon={<Cpu size={20} />} label="GPU / WebGL" value={deviceInfo?.gpu} color="bg-indigo-500" />
                                     <Widget icon={<HardDrive size={20} />} label="Memory" value={deviceInfo?.memory} color="bg-rose-500" />
+                                    <Widget icon={<Zap size={20} />} label="Battery" value={deviceInfo?.battery} color="bg-yellow-400" />
+                                    <Widget icon={<Activity size={20} />} label="Connection" value={deviceInfo?.connection} color="bg-cyan-500" />
                                     <Widget icon={<Bot size={20} />} label={t.tools.deviceInfo.bot} value={deviceInfo?.bot} color={deviceInfo?.bot.startsWith('Yes') ? 'bg-red-500' : 'bg-cyan-500'} />
                                     <Widget icon={<Eye size={20} />} label={t.tools.deviceInfo.incognito} value={deviceInfo?.incognito} color="bg-pink-500" />
                                     <Widget icon={<MapPin size={20} />} label={t.tools.deviceInfo.location} value={deviceInfo?.location} color="bg-teal-500" />
@@ -1611,6 +1713,18 @@ export const Tools: React.FC = () => {
                                         onChange={(e) => setStegMessage(e.target.value)}
                                     ></textarea>
                                 )}
+
+                                <div>
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 ml-1">Password (Optional)</label>
+                                    <Input 
+                                        type="password" 
+                                        value={stegPass}
+                                        onChange={(e) => setStegPass(e.target.value)}
+                                        placeholder="Add encryption layer..."
+                                        className="focus:border-indigo-500"
+                                        icon={<Lock size={20} />}
+                                    />
+                                </div>
                                 
                                 <Button onClick={handleStegProcess} disabled={!stegFile} className="bg-indigo-600 hover:bg-indigo-700 w-full rounded-2xl shadow-lg shadow-indigo-600/20 py-4">
                                     {stegMode === 'hide' ? t.tools.stegHideBtn : t.tools.stegRevealBtn}
