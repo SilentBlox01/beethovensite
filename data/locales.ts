@@ -568,7 +568,7 @@ const es: Translation = {
     radarLogs: "Registros del Sistema",
     tabIdentity: "Identidad",
     idGenTitle: "Generador de Identidad",
-    idGenDesc: "Crea identidades falsas realistas para registrarte en sitios sospechosos.",
+    idGenDesc: "Crea identidades falsas realistas con datos financieros simulados para pruebas o registro privado.",
     idGenBtn: "Generar Identidad",
     idGenGender: "Género",
     idGenGenderRandom: "Aleatorio",
